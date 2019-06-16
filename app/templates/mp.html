@@ -1,0 +1,9 @@
+{% extends "index.html" %}
+
+{% block mp %}
+<b> Average engagement for MPs on Twitter </b>
+    {% for mp in mplist %}
+        {{ mp }}
+    {% endfor %}
+
+{% endblock %}
