@@ -56,7 +56,6 @@ def intialiseDB():
     addParty('Conservative', 'blue')
     addParty('Green', 'green')
     addParty('Scottish Nationalist', 'orange')
-    addParty('Independent', 'black')
     # add initial data into mp table
     addMP('14933304', 'Jo Swinson', 'Female', 'Liberal Democrat')
     addMP('80802900', 'Caroline Lucas', 'Female', 'Green')
@@ -110,41 +109,6 @@ def getMPname(user_id):
     conn.close()
     return name
 
-# returns gender of mp from database
-
-
-def getMPgender(user_id):
-    # connect to db
-    conn = sqlite3.connect(db)
-    # get cursor
-    c = conn.cursor()
-    sql = ''' SELECT gender FROM mp WHERE user_id =?'''
-    c.execute(sql, (user_id,))
-    fetch = c.fetchone()
-    # get string of name only
-    gender = fetch[0]
-    print(gender)
-    # close connection
-    conn.close()
-    return gender
-
-# return party of mp from database
-
-
-def getMPparty(user_id):
-    # connect to db
-    conn = sqlite3.connect(db)
-    # get cursor
-    c = conn.cursor()
-    sql = ''' SELECT party FROM mp WHERE user_id = ?'''
-    c.execute(sql, (user_id,))
-    fetch = c.fetchone()
-    # get string of name only
-    party = fetch[0]
-    print(party)
-    # close connection
-    conn.close()
-    return party
 
 # return user_ids for all mps in database as a list
 
@@ -212,10 +176,9 @@ def all_mp_tweets(mp_ids):
         get_all_tweets(user_id)
         print(getMPname(user_id), ' MP tweets imported to database')
 
-# returns the average engagement for a mp
+# returns the average engagement for mps, genders and parties
 
-
-def getAvgEngagement(user_id):
+def getMPEngagement(user_id):
     # connect to db
     conn = sqlite3.connect(db)
     # get cursor
@@ -246,20 +209,99 @@ def getAvgEngagement(user_id):
     # return average
     return avg
 
-# returns list of name, gender, party and average
-# engagement for each mp in list
+def getGenderEngagement(gender):
+    # connect to db
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
+    # get total retweet_count and favorite_count for user_id
+    favesql = ''' SELECT sum(favorite_count) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE gender = ?'''
+    c.execute(favesql, (gender,))
+    fetch = c.fetchone()
+    totalfavorite = fetch[0]
+    print("Total favorite: ", totalfavorite)
+    # find sum of total retweet_count and favorite_count
+    retweetsql = ''' SELECT sum(retweet_count) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE gender = ?'''
+    c.execute(retweetsql, (gender,))
+    fetch = c.fetchone()
+    totalretweet = fetch[0]
+    print("Total retweet: ", totalretweet)
+    # get total number of status items for user_id
+    totalsql = ''' SELECT COUNT(*) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE gender = ?'''
+    c.execute(totalsql, (gender,))
+    fetch = c.fetchone()
+    total = fetch[0]
+    print("Total tweets: ", total)
+    # find average
+    avg = round((totalretweet + totalfavorite) / total)
+    print("Average engagement: ", avg)
+    # close connection
+    conn.close()
+    # return average
+    return avg
+
+def getPartyEngagement(party):
+     # connect to db
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
+    # get total retweet_count and favorite_count for user_id
+    favesql = ''' SELECT sum(favorite_count) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE party = ?'''
+    c.execute(favesql, (party,))
+    fetch = c.fetchone()
+    totalfavorite = fetch[0]
+    print("Total favorite: ", totalfavorite)
+    # find sum of total retweet_count and favorite_count
+    retweetsql = ''' SELECT sum(retweet_count) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE party = ?'''
+    c.execute(retweetsql, (party,))
+    fetch = c.fetchone()
+    totalretweet = fetch[0]
+    print("Total retweet: ", totalretweet)
+    # get total number of status items for user_id
+    totalsql = ''' SELECT COUNT(*) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE party = ?'''
+    c.execute(totalsql, (party,))
+    fetch = c.fetchone()
+    total = fetch[0]
+    print("Total tweets: ", total)
+    # find average
+    avg = round((totalretweet + totalfavorite) / total)
+    print("Average engagement: ", avg)
+    # close connection
+    conn.close()
+    # return average
+    return avg
 
 
-def getAllAvgEngagement():
+
+# returns list of mp name and average engagement
+
+
+def getMPs():
     mps = get_user_ids()
     list = []
     for user_id in mps:
-        list.append([getMPname(user_id), getMPgender(user_id),
-                     getMPparty(user_id), getAvgEngagement(user_id)])
-
+        list.append([getMPname(user_id), getMPEngagement(user_id)])
     print(list)
     return list
 
+# returns list of gender and average engagement 
+
+def getGenders():
+    genders = ['Male', 'Female']
+    list = []
+    for gender in genders:
+        list.append([gender, getGenderEngagement(gender)])
+    print(list)
+    return list
+
+# return list of party and average engagement
+def getParties():
+    parties = getPartyNames()
+    list = []
+    for party in parties:
+        list.append([party, getPartyEngagement(party)])
+    print(list)
+    return list
 # party module
 
 # add party to the database
@@ -279,34 +321,16 @@ def addParty(name, colour):
     # close connection
     conn.close()
 
-# delete party and associated mps from the databass
-
-
-def deleteParty(name):
-    # connect to db
-    conn = sqlite3.connect(db)
-    # get cursor
-    c = conn.cursor()
-    sql = ''' DELETE FROM party WHERE name = ? '''
-    c.execute(sql, (name,))
-    print('deleting: ', name)
-    sql1 = ''' DELETE FROM mp WHERE party = ? '''
-    c.execute(sql1, (name,))
-    print('deleting associated mps')
-    # commit database changes
-    conn.commit()
-    # close connection
-    conn.close()
 
 # returns list of names for parties in the database
 
 
-def getNames():
+def getPartyNames():
     # connect to db
     conn = sqlite3.connect(db)
     # get cursor
     c = conn.cursor()
-    sql = ''' SELECT name FROM party '''
+    sql = ''' SELECT DISTINCT name FROM party '''
     names = [id[0] for id in c.execute(sql)]
     print(names)
     # close connection
@@ -365,31 +389,13 @@ def addStatus(id_str, created_at, user_id, favorite_count, retweet_count):
     # close connection
     conn.close()
 
-# delete status item from the database
-
-
-def delStatus(id_str):
-    # connect to it
-    conn = sqlite3.connect(db)
-    # get cursor
-    c = conn.cursor()
-    sql = ''' DELETE FROM status WHERE id_str = ?'''
-    c.execute(sql, (id_str,))
-    print('deleting status: ')
-    print(id_str)
-    # commit database changes
-    conn.commit()
-    # close connection
-    conn.close()
-
 
 # flask module
 
 # route() decorator tells Flask what URL should trigger our function
 @app.route('/')
 def main():
-    mplist = getAllAvgEngagement()
-    return render_template("index.html", mplist=mplist)
+    return render_template("index.html")
 
 # route to refresh or initialise databse
 @app.route('/refresh')
@@ -397,9 +403,27 @@ def refresh():
     intialiseDB()
     return 'database has been refreshed'
 
+@app.route('/mp')
+def mp():
+    mplist = getMPs()
+    return render_template('mp.html', mplist=mplist)
+
+@app.route('/gender')
+def gender():
+    genderlist = getGenders()
+    return render_template('gender.html', genderlist=genderlist)
+
+@app.route('/party')
+def party():
+    partylist = getParties()
+    return render_template('party.html', partylist=partylist)
+
+@app.route('/test')
+def test():
+    list = getMPs()
+    return render_template('test.html', list=list)
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-test = app.instance_path
-print(test)

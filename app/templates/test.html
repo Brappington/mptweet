@@ -18,12 +18,12 @@
         function drawChart() {
             // create the data table
             var data1 = new google.visualization.DataTable();
-            data1.addColumn('string', 'Party');
+            data1.addColumn('string', 'Member of parliament');
             data1.addColumn('number', 'Engagement');
-            data1.addRows( {{ partylist | safe }} );
+            data1.addRows( {{ list | safe }} );
             // Set chart options
             var options = {
-                'title': 'Average engagement by political party',
+                'title': 'Individual MPs engagement',
                 'width': 400,
                 'height': 300
             }
@@ -36,6 +36,9 @@
 
 <body>
     <div id="chart1_div"></div>
+    <h2> Average engagement for MPs aggregated by gender on Twitter </h2>
+    {{ mpl}}
+    <h2>Average engagement for MPs aggregated by party on Twitter </h2>
 </body>
 
 </html>
