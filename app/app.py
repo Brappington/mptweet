@@ -8,7 +8,6 @@ app = Flask(__name__)
 
 # instance of sqlite datbase
 db = "app/database/mptweet.db"
-
 # twitter api config
 consumer_key = 'NtLIPnCyyeEiiEWl3LWPCNssl'
 consumer_secret = 'nkOUbyh5mUeVp3pxO5mjqbBIJFxaQYNoUN0ybcPJPC3fwnEcTI'
@@ -17,8 +16,9 @@ access_secret = 'xLZBZxojXvpPMIE4tJnylTJ7DIZLKZauLytyzSUb2Y1s6'
 
 # database module
 
+
 def createtables():
-    # connect to it
+    # connect to db
     conn = sqlite3.connect(db)
     # get cursor
     c = conn.cursor()
@@ -106,8 +106,6 @@ def getMPname(user_id):
     # get string of name only
     name = fetch[0]
     print(name)
-    # commit database changes
-    conn.commit()
     # close connection
     conn.close()
     return name
@@ -126,8 +124,6 @@ def getMPgender(user_id):
     # get string of name only
     gender = fetch[0]
     print(gender)
-    # commit database changes
-    conn.commit()
     # close connection
     conn.close()
     return gender
@@ -146,8 +142,6 @@ def getMPparty(user_id):
     # get string of name only
     party = fetch[0]
     print(party)
-    # commit database changes
-    conn.commit()
     # close connection
     conn.close()
     return party
@@ -163,8 +157,6 @@ def get_user_ids():
     sql = ''' SELECT user_id FROM mp'''
     ids = [id[0] for id in c.execute(sql)]
     print(ids)
-    # commit database changes
-    conn.commit()
     # close connection
     conn.close()
     return ids
@@ -317,8 +309,6 @@ def getNames():
     sql = ''' SELECT name FROM party '''
     names = [id[0] for id in c.execute(sql)]
     print(names)
-    # commit database changes
-    conn.commit()
     # close connection
     conn.close()
     return names
@@ -334,8 +324,6 @@ def getColours():
     sql = ''' SELECT colour FROM party '''
     colour = [id[0] for id in c.execute(sql)]
     print(colour)
-    # commit database changes
-    conn.commit()
     # close connection
     conn.close()
     return colour
@@ -394,13 +382,14 @@ def delStatus(id_str):
     # close connection
     conn.close()
 
+
 # flask module
 
 # route() decorator tells Flask what URL should trigger our function
 @app.route('/')
 def main():
     mplist = getAllAvgEngagement()
-    return render_template("index.html", mplist = mplist)
+    return render_template("index.html", mplist=mplist)
 
 # route to refresh or initialise databse
 @app.route('/refresh')
@@ -408,5 +397,9 @@ def refresh():
     intialiseDB()
     return 'database has been refreshed'
 
+
 if __name__ == "__main__":
     app.run(debug=True)
+
+test = app.instance_path
+print(test)
