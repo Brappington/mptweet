@@ -5,9 +5,21 @@
 </head>
 
 <body>
-    <button>Average engagement for MPs on Twitter </button>
-    <button>Average engagement for MPs aggregated by gender on Twitter</button>
-    <button>Average engagement for MPs aggregated by party on Twitter</button>
+    <a href={{ url_for('mp') }}>Average engagement for MPs on Twitter </a>
+    <br>
+    <div> MP Chart here</div>
+    <div> additional data for mp here</div>
+    <a href={{ url_for('gender') }}>Average engagement for MPs aggregated by gender on Twitter</a>
+    <br>
+    <div> Gender Chart here</div>
+    <div> Additional data about gender here</div>
+
+    <a href={{ url_for('party') }}>Average engagement for MPs aggregated by party on Twitter</a>
+    <div> Party Chart here</div>
+    <div> additonal data here</div>
+
+
+
 </body>
 
 </html>

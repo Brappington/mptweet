@@ -299,7 +299,7 @@ def getParties():
     parties = getPartyNames()
     list = []
     for party in parties:
-        list.append([party, getPartyEngagement(party)])
+        list.append([party, getPartyEngagement(party), 'color: ' + getColour(party)])
     print(list)
     return list
 # party module

@@ -20,15 +20,17 @@
             var data1 = new google.visualization.DataTable();
             data1.addColumn('string', 'Party');
             data1.addColumn('number', 'Engagement');
+            data1.addColumn({ type:'string', role: 'style'});
             data1.addRows( {{ partylist | safe }} );
             // Set chart options
             var options = {
                 'title': 'Average engagement by political party',
                 'width': 400,
-                'height': 300
+                'height': 300,
+                'legend': 'none',
             }
             // Instantiate and draw our chart, passing in some options.
-            var chart1 = new google.visualization.PieChart(document.getElementById('chart1_div'));
+            var chart1 = new google.visualization.BarChart(document.getElementById('chart1_div'));
             chart1.draw(data1, options);
         }
     </script>

@@ -17,25 +17,33 @@
         // draws it.
         function drawChart() {
             // create the data table
-            var data1 = new google.visualization.DataTable();
-            data1.addColumn('string', 'Member of parliament');
-            data1.addColumn('number', 'Engagement');
-            data1.addRows( {{ mplist | safe }} );
+            var mplist = {{ mplist | safe }}
+            // add colours for chart
+            var colours = ['ff9966', '996633', 'ffcccc', 'cc6633', '669966', '339966', 'ccffcc', '33cc99', '339999', '339966', 'ccffcc', '33cc99' ];
+            for (i=0; i < mplist.length; i++) {
+                mplist[i].push(colours[i])
+            }
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Member of parliament');
+            data.addColumn('number', 'Engagement');
+            data.addColumn({ type:'string', role: 'style'});
+            data.addRows(mplist);
             // Set chart options
             var options = {
                 'title': 'Average engagement by individual MPs',
                 'width': 400,
-                'height': 300
+                'height': 300,
+                'legend': 'none'
             }
             // Instantiate and draw our chart, passing in some options.
-            var chart1 = new google.visualization.PieChart(document.getElementById('chart1_div'));
-            chart1.draw(data1, options);
+            var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
         }
     </script>
 </head>
 
 <body>
-    <div id="chart1_div"></div>
+    <div id="chart_div"></div>
 </body>
 
 </html>
