@@ -1,0 +1,28 @@
+* {
+    box-sizing: border-box;
+}
+
+#chart_div {
+    width: 35%;
+    padding: 15px;
+    border: 1px solid red;
+}
+
+#chart_div1 {
+    width: 35%;
+    padding: 15px;
+    border: 1px solid red;
+}
+
+#chart_div2 {
+    width: 35%;
+    padding: 15px;
+    border: 1px solid red;
+}
+
+#info {
+    width: 35%;
+    background-color: bisque;
+    padding: 15px;
+    border: 1px solid red;
+}

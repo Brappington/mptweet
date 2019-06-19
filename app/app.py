@@ -32,7 +32,7 @@ def createtables():
     create_mp = "CREATE TABLE mp (user_id VARCHAR(255) PRIMARY KEY NOT NULL, name VARCHAR(255) NOT NULL, gender CHECK(gender IN ('Male', 'Female')) NOT NULL, party VARCHAR(255) NOT NULL, FOREIGN KEY (party) REFERENCES party(name))"
     # create status update
     create_status = "CREATE TABLE status (id_str VARCHAR(255) PRIMARY KEY, created_at TEXT, user_id VARCHAR(255) NOT NULL, favorite_count MEDIUMINT, retweet_count MEDIUMINT, FOREIGN KEY (user_id) REFERENCES mp(user_id))"
-    # execute creating tables
+    # execute create tables sql
     c.execute(drop_mp)
     c.execute(drop_party)
     c.execute(drop_status)
@@ -337,20 +337,6 @@ def getPartyNames():
     conn.close()
     return names
 
-# returns a list of colours for each party in the database
-
-
-def getColours():
-    # connect to db
-    conn = sqlite3.connect(db)
-    # get cursor
-    c = conn.cursor()
-    sql = ''' SELECT colour FROM party '''
-    colour = [id[0] for id in c.execute(sql)]
-    print(colour)
-    # close connection
-    conn.close()
-    return colour
 
 # returns the colour of a party in the database
 
