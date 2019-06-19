@@ -395,34 +395,17 @@ def addStatus(id_str, created_at, user_id, favorite_count, retweet_count):
 # route() decorator tells Flask what URL should trigger our function
 @app.route('/')
 def main():
-    return render_template("index.html")
+    mplist = getMPs()
+    genderlist = getGenders()
+    partylist =getParties()
+    return render_template('index.html', mplist=mplist, genderlist = genderlist, partylist = partylist)
+
 
 # route to refresh or initialise databse
 @app.route('/refresh')
 def refresh():
     intialiseDB()
     return 'database has been refreshed'
-
-@app.route('/mp')
-def mp():
-    mplist = getMPs()
-    return render_template('mp.html', mplist=mplist)
-
-@app.route('/gender')
-def gender():
-    genderlist = getGenders()
-    return render_template('gender.html', genderlist=genderlist)
-
-@app.route('/party')
-def party():
-    partylist = getParties()
-    return render_template('party.html', partylist=partylist)
-
-@app.route('/test')
-def test():
-    list = getMPs()
-    return render_template('test.html', list=list)
-
 
 
 if __name__ == "__main__":
