@@ -208,7 +208,7 @@ def get_all_tweets(user_id):
     for tweet in alltweets:
         addStatus(tweet.id_str, tweet.created_at,
                   tweet.user.id_str, tweet.favorite_count, tweet.retweet_count, tweet.text)
-                  
+
 # gets recent tweets for mps from list and adds them to database
 
 
@@ -349,24 +349,6 @@ def getParties():
             party), 'color: ' + getColour(party)])
     print(list)
     return list
-# party module
-
-# add party to the database
-
-
-def addParty(name, colour):
-    # connect to db
-    conn = sqlite3.connect(db)
-    # get cursor
-    c = conn.cursor()
-    sql = ''' INSERT INTO party(name, colour) VALUES(?,?)'''
-    c.execute(sql, (name, colour))
-    print(name)
-    print(colour)
-    # commit database changes
-    conn.commit()
-    # close connection
-    conn.close()
 
 
 # returns list of names for parties in the database
