@@ -1,6 +1,7 @@
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 
     <!--Load the AJAX API-->
@@ -19,12 +20,12 @@
         // draws it.
         function drawChart() {
             // create the data table
-            var mplist = {{ mplist | safe }}
+            var mplist = {{ mplist | safe }};
             // add colours for chart
             var colours = ['ff9966', '996633', 'ffcccc', 'cc6633', '669966', '339966', 'ccffcc', '33cc99', '339999', '339966', 'ccffcc', '33cc99' ];
             for (i=0; i < mplist.length; i++) {
                 mplist[i].push(colours[i])
-            }
+            };
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Member of parliament');
             data.addColumn('number', 'Engagement');
@@ -33,13 +34,22 @@
             // Set chart options
             var options = {
                 'title': 'Average engagement by individual MPs',
-                'width': 400,
-                'height': 300,
                 'legend': 'none'
-            }
+            };
             // Instantiate and draw our mp chart, passing in some options.
             var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
             chart.draw(data, options);
+        }
+         // Set a callback to run when the Google Visualization API is loaded.
+         google.charts.load('current', {
+            'packages': ['corechart']
+        });
+         google.charts.setOnLoadCallback(drawChart1);
+
+        // Callback that creates and populates a data table,
+        // instantiates the chart, passes in the data and
+        // draws it.
+        function drawChart1() {
             
             // create the party data tables
             var data1 = new google.visualization.DataTable();
@@ -51,22 +61,30 @@
             // Set chart options
             var options = {
                 'title': 'Average engagement by political party',
-                'width': 400,
-                'height': 300,
                 'legend': 'none',
-            }
+            };
             // Instantiate and draw our chart, passing in some options.
             var chart1 = new google.visualization.BarChart(document.getElementById('chart1_div'));
             chart1.draw(data1, options);
+        }
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.load('current', {
+                    'packages': ['corechart']
+                });
+         google.charts.setOnLoadCallback(drawChart2);
 
+        // Callback that creates and populates a data table,
+        // instantiates the chart, passes in the data and
+        // draws it.
+        function drawChart2() {
             // create the gender data tables 
             // create the data table
-            var genderlist = {{ genderlist | safe}}
+            var genderlist = {{ genderlist | safe}};
             // add colour for the chart
-            console.log(genderlist)
-            genderlist[0].push('blue')
-            genderlist[1].push('red')
-            console.log(genderlist)
+            console.log(genderlist);
+            genderlist[0].push('blue');
+            genderlist[1].push('red');
+            console.log(genderlist);
             var data2 = new google.visualization.DataTable();
             data2.addColumn('string', 'Gender');
             data2.addColumn('number', 'Engagement');
@@ -75,24 +93,39 @@
             // Set chart options
             var options2 = {
                 'title': 'Average engagement by gender',
-                'width': 400,
-                'height': 300,
                 'legend': 'none',
-            }
+            };
             // Instantiate and draw our gender chart, passing in some options.
             var chart2 = new google.visualization.BarChart(document.getElementById('chart2_div'));
             chart2.draw(data2, options2);
-        }
+           }
     </script>
 </head>
 
 <body>
-        <div id="chart_div"></div>
-        <span id="info">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque tempore, autem facere odit laboriosam dolores porro ut sapiente, accusamus necessitatibus distinctio perspiciatis. Corporis at vero eligendi iusto qui nobis nihil.</span>
-        <div id="chart1_div"></div>
-        <span id="info">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque tempore, autem facere odit laboriosam dolores porro ut sapiente, accusamus necessitatibus distinctio perspiciatis. Corporis at vero eligendi iusto qui nobis nihil.</span>
-        <div id="chart2_div"></div>
-        <span id="info">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque tempore, autem facere odit laboriosam dolores porro ut sapiente, accusamus necessitatibus distinctio perspiciatis. Corporis at vero eligendi iusto qui nobis nihil.</span>
+    <h1>Twitter Application</h1>
+    <div class="row">
+            <div id="chart_div" class="chart"></div>
+            <div class="info">
+                        <blockquote class="twitter-tweet" data-cards="hidden" data-lang="en"><p lang="en" dir="ltr">More and more people are being forced from their homes<br><br>More and more doors are being slammed in their faces<br><br>Refugees have a right to a place of safety<br><br>And so much to offer<a href="https://twitter.com/hashtag/WorldRefugeeDay?src=hash&amp;ref_src=twsrc%5Etfw">#WorldRefugeeDay</a> <a href="https://t.co/xK7217oezY">pic.twitter.com/xK7217oezY</a></p>&mdash; Caroline Lucas (@CarolineLucas) <a href="https://twitter.com/CarolineLucas/status/1141667072809869312?ref_src=twsrc%5Etfw">June 20, 2019</a></blockquote>
+                        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>         
+            </div>    
+    </div>
+    <div class="row">
+            <div id="chart1_div" class="chart"></div>
+            <div class="info">
+                    <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">The Government will soon provide free sanitary products in schools to end <a href="https://twitter.com/hashtag/periodpoverty?src=hash&amp;ref_src=twsrc%5Etfw">#periodpoverty</a>   <br><br>I&#39;ve asked ministers to ensure the free products are sustainable &amp; don&#39;t cause <a href="https://twitter.com/hashtag/PlasticPollution?src=hash&amp;ref_src=twsrc%5Etfw">#PlasticPollution</a> <br><br>Thanks to <a href="https://twitter.com/ecoelleuk?ref_src=twsrc%5Etfw">@ecoelleuk</a> for her campaigning on this!<a href="https://t.co/JTUsRDJKvO">https://t.co/JTUsRDJKvO</a></p>&mdash; Caroline Lucas (@CarolineLucas) <a href="https://twitter.com/CarolineLucas/status/1141694587616092167?ref_src=twsrc%5Etfw">June 20, 2019</a></blockquote>
+                    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </div>
+    </div>
+    <div class="row">
+            <div id="chart2_div" class="chart"></div>
+            <div class="info">
+                    <blockquote class="twitter-tweet" data-cards="hidden" data-lang="en"><p lang="en" dir="ltr">I agree with Mary....More here....<a href="https://t.co/rD0wxrQNKm">https://t.co/rD0wxrQNKm</a> <a href="https://t.co/MNhAvHQRkD">https://t.co/MNhAvHQRkD</a></p>&mdash; Ed Miliband (@Ed_Miliband) <a href="https://twitter.com/Ed_Miliband/status/1141334623919706113?ref_src=twsrc%5Etfw">June 19, 2019</a></blockquote>
+                    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>                    
+            </div>       
+    </div>
+   
 </body>
 
 </html>

@@ -31,7 +31,7 @@ def createtables():
     # create mp table
     create_mp = "CREATE TABLE mp (user_id VARCHAR(255) PRIMARY KEY NOT NULL, name VARCHAR(255) NOT NULL, gender CHECK(gender IN ('Male', 'Female')) NOT NULL, party VARCHAR(255) NOT NULL, FOREIGN KEY (party) REFERENCES party(name))"
     # create status update
-    create_status = "CREATE TABLE status (id_str VARCHAR(255) PRIMARY KEY, created_at TEXT, user_id VARCHAR(255) NOT NULL, favorite_count MEDIUMINT, retweet_count MEDIUMINT, FOREIGN KEY (user_id) REFERENCES mp(user_id))"
+    create_status = "CREATE TABLE status (id_str VARCHAR(255) PRIMARY KEY, created_at TEXT, user_id VARCHAR(255) NOT NULL, favorite_count MEDIUMINT, retweet_count MEDIUMINT, text TEXT NOT NULL, FOREIGN KEY (user_id) REFERENCES mp(user_id))"
     # execute create tables sql
     c.execute(drop_mp)
     c.execute(drop_party)
@@ -81,11 +81,52 @@ def addMP(user_id, name, gender, party):
     c = conn.cursor()
     sql = ''' INSERT INTO mp(user_id, name, gender, party)
     VALUES(?,?,?,?)'''
-    c.execute(sql, (user_id, name, gender, party))
-    print(user_id)
-    print(name)
-    print(gender)
-    print(party)
+    try:
+        c.execute(sql, (user_id, name, gender, party))
+        print(user_id, name, gender, party)
+    except sqlite3.IntegrityError:
+        print("MP ",  name, " already exists!")
+    # commit database changes
+    conn.commit()
+    # close connection
+    conn.close()
+
+# add status to database
+
+
+def addStatus(id_str, created_at, user_id, favorite_count, retweet_count, text):
+    # connect to it
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
+    sql = ''' INSERT INTO status(id_str, created_at, user_id, favorite_count, retweet_count, text)
+    VALUES(?,?,?,?,?,?)'''
+    try:
+        c.execute(sql, (id_str, created_at, user_id,
+                        favorite_count, retweet_count, text))
+        print('adding tweet: ')
+        print(id_str, created_at, user_id, favorite_count, retweet_count, text)
+    except sqlite3.IntegrityError:
+        print('Tweet already exists!')
+    # commit database changes
+    conn.commit()
+    # close connection
+    conn.close()
+
+
+# add party to the database
+
+def addParty(name, colour):
+    # connect to db
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
+    sql = ''' INSERT INTO party(name, colour) VALUES(?,?)'''
+    try:
+        c.execute(sql, (name, colour))
+        print(name, colour)
+    except sqlite3.IntegrityError:
+        print(name, ' already exists!')
     # commit database changes
     conn.commit()
     # close connection
@@ -166,8 +207,8 @@ def get_all_tweets(user_id):
     # iterates through tweets and adds each tweet to database
     for tweet in alltweets:
         addStatus(tweet.id_str, tweet.created_at,
-                  tweet.user.id_str, tweet.favorite_count, tweet.retweet_count)
-
+                  tweet.user.id_str, tweet.favorite_count, tweet.retweet_count, tweet.text)
+                  
 # gets recent tweets for mps from list and adds them to database
 
 
@@ -177,6 +218,7 @@ def all_mp_tweets(mp_ids):
         print(getMPname(user_id), ' MP tweets imported to database')
 
 # returns the average engagement for mps, genders and parties
+
 
 def getMPEngagement(user_id):
     # connect to db
@@ -209,6 +251,7 @@ def getMPEngagement(user_id):
     # return average
     return avg
 
+
 def getGenderEngagement(gender):
     # connect to db
     conn = sqlite3.connect(db)
@@ -239,6 +282,7 @@ def getGenderEngagement(gender):
     conn.close()
     # return average
     return avg
+
 
 def getPartyEngagement(party):
      # connect to db
@@ -272,7 +316,6 @@ def getPartyEngagement(party):
     return avg
 
 
-
 # returns list of mp name and average engagement
 
 
@@ -284,7 +327,8 @@ def getMPs():
     print(list)
     return list
 
-# returns list of gender and average engagement 
+# returns list of gender and average engagement
+
 
 def getGenders():
     genders = ['Male', 'Female']
@@ -295,11 +339,14 @@ def getGenders():
     return list
 
 # return list of party and average engagement
+
+
 def getParties():
     parties = getPartyNames()
     list = []
     for party in parties:
-        list.append([party, getPartyEngagement(party), 'color: ' + getColour(party)])
+        list.append([party, getPartyEngagement(
+            party), 'color: ' + getColour(party)])
     print(list)
     return list
 # party module
@@ -353,38 +400,16 @@ def getColour(name):
     print("The colour of", name, "is:", colour)
     return colour
 
-# status (tweet) module
 
-
-def addStatus(id_str, created_at, user_id, favorite_count, retweet_count):
-    # connect to it
-    conn = sqlite3.connect(db)
-    # get cursor
-    c = conn.cursor()
-    sql = ''' INSERT INTO status(id_str, created_at, user_id, favorite_count, retweet_count)
-    VALUES(?,?,?,?,?)'''
-    try:
-        c.execute(sql, (id_str, created_at, user_id,
-                        favorite_count, retweet_count))
-        print('adding tweet: ')
-        print(id_str, created_at, user_id, favorite_count, retweet_count)
-    except sqlite3.IntegrityError:
-        print('Tweet already exists!')
-    # commit database changes
-    conn.commit()
-    # close connection
-    conn.close()
-
-
-# flask module
+# flask
 
 # route() decorator tells Flask what URL should trigger our function
 @app.route('/')
 def main():
     mplist = getMPs()
     genderlist = getGenders()
-    partylist =getParties()
-    return render_template('index.html', mplist=mplist, genderlist = genderlist, partylist = partylist)
+    partylist = getParties()
+    return render_template('index.html', mplist=mplist, genderlist=genderlist, partylist=partylist)
 
 
 # route to refresh or initialise databse

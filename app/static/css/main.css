@@ -2,27 +2,25 @@
     box-sizing: border-box;
 }
 
-#chart_div {
-    width: 35%;
-    padding: 15px;
-    border: 1px solid red;
+.chart {
+    width:60%;
+    min-height: 450px;
+    float: left;
+}
+.info {
+    width: 40%;
+    float: left;
+    max-height: 100%;
 }
 
-#chart_div1 {
-    width: 35%;
-    padding: 15px;
-    border: 1px solid red;
+.mpinfo{
+    
 }
 
-#chart_div2 {
-    width: 35%;
-    padding: 15px;
-    border: 1px solid red;
+.partyinfo{
+
 }
 
-#info {
-    width: 35%;
-    background-color: bisque;
-    padding: 15px;
-    border: 1px solid red;
-}
+.row {
+    margin:0 !important;
+  }
