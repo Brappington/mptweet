@@ -17,7 +17,7 @@ access_secret = 'xLZBZxojXvpPMIE4tJnylTJ7DIZLKZauLytyzSUb2Y1s6'
 # database module
 
 
-def createtables():
+def createTables():
     # connect to db
     conn = sqlite3.connect(db)
     # get cursor
@@ -49,7 +49,7 @@ def createtables():
 
 def intialiseDB():
     # create database and tables
-    createtables()
+    createTables()
     # add initial data into party table
     addParty('Liberal Democrat', 'yellow')
     addParty('Labour', 'red')
@@ -135,7 +135,7 @@ def addParty(name, colour):
 # returns name of mp from database as string
 
 
-def getMPname(user_id):
+def getMPName(user_id):
     # connect to db
     conn = sqlite3.connect(db)
     # get cursor
@@ -215,7 +215,7 @@ def getAllTweets(user_id):
 def allMPTweets(mp_ids):
     for user_id in mp_ids:
         getAllTweets(user_id)
-        print(getMPname(user_id), ' MP tweets imported to database')
+        print(getMPName(user_id), ' MP tweets imported to database')
 
 # returns the average engagement for mps, genders and parties
 
@@ -323,7 +323,7 @@ def getMPs():
     mps = getUserIds()
     list = []
     for user_id in mps:
-        list.append([getMPname(user_id), getMPEngagement(user_id)])
+        list.append([getMPName(user_id), getMPEngagement(user_id)])
     print(list)
     return list
 
