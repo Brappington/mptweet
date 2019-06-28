@@ -65,9 +65,9 @@ def intialiseDB():
     addMP('19058678', 'Michael Fabricant', 'Male', 'Conservative')
     addMP('14104027', 'Grant Shapps', 'Male', 'Conservative')
     # get user_ids for MPs in database
-    mps = get_user_ids()
+    mps = getUserIds()
     # get tweets from mps and add to database
-    all_mp_tweets(mps)
+    allMPTweets(mps)
 
 # mp module
 
@@ -154,7 +154,7 @@ def getMPname(user_id):
 # return user_ids for all mps in database as a list
 
 
-def get_user_ids():
+def getUserIds():
     # connect to db
     conn = sqlite3.connect(db)
     # get cursor
@@ -169,15 +169,15 @@ def get_user_ids():
 # gets recent tweets for mp with provided user_id and adds them to database
 
 
-def get_all_tweets(user_id):
+def getAllTweets(user_id):
     # Twitter only allows access to a users most recent 3240 tweets with this method
 
-    # authorize twitter, initialize tweepy
+    # authorize twitter, initialise tweepy
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_secret)
     api = tweepy.API(auth)
 
-    # initialize a list to hold all the tweepy Tweets
+    # initialize a list to hold all the  Tweets
     alltweets = []
 
     # make initial request for most recent tweets (200 is the maximum allowed count)
@@ -204,7 +204,7 @@ def get_all_tweets(user_id):
         oldest = alltweets[-1].id - 1
 
         print("...%s tweets downloaded so far" % (len(alltweets)))
-    # iterates through tweets and adds each tweet to database
+    # iterates through tweets and adds each tweet to database using addStatus()
     for tweet in alltweets:
         addStatus(tweet.id_str, tweet.created_at,
                   tweet.user.id_str, tweet.favorite_count, tweet.retweet_count, tweet.text)
@@ -212,9 +212,9 @@ def get_all_tweets(user_id):
 # gets recent tweets for mps from list and adds them to database
 
 
-def all_mp_tweets(mp_ids):
+def allMPTweets(mp_ids):
     for user_id in mp_ids:
-        get_all_tweets(user_id)
+        getAllTweets(user_id)
         print(getMPname(user_id), ' MP tweets imported to database')
 
 # returns the average engagement for mps, genders and parties
@@ -320,7 +320,7 @@ def getPartyEngagement(party):
 
 
 def getMPs():
-    mps = get_user_ids()
+    mps = getUserIds()
     list = []
     for user_id in mps:
         list.append([getMPname(user_id), getMPEngagement(user_id)])
