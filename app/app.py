@@ -217,7 +217,7 @@ def allMPTweets(mp_ids):
         getAllTweets(user_id)
         print(getMPName(user_id), ' MP tweets imported to database')
 
-# returns the average engagement for mps, genders and parties
+# These functions return the average engagement for mps, genders and parties respectively
 
 
 def getMPEngagement(user_id):
