@@ -177,19 +177,19 @@ def getAllTweets(user_id):
     auth.set_access_token(access_token, access_secret)
     api = tweepy.API(auth)
 
-    # initialize a list to hold all the  Tweets
+    # initialize a list to save all the  Tweets
     alltweets = []
 
-    # make initial request for most recent tweets (200 is the maximum allowed count)
+    # make first request for most recent tweets (200 is the maximum allowed count)
     new_tweets = api.user_timeline(user_id=user_id, count=200)
 
     # save most recent tweets
     alltweets.extend(new_tweets)
 
-    # save the id of the oldest tweet less one
+    # save id of the oldest tweet minus one
     oldest = alltweets[-1].id - 1
 
-    # keep grabbing tweets until there are no tweets left to grab
+    # keep getting tweets until there are no tweets left to get
     while len(new_tweets) > 0:
         print("getting tweets before %s" % (oldest))
 
@@ -200,7 +200,7 @@ def getAllTweets(user_id):
         # save most recent tweets
         alltweets.extend(new_tweets)
 
-        # update the id of the oldest tweet less one
+        # update the id of the oldest tweet minus one
         oldest = alltweets[-1].id - 1
 
         print("...%s tweets downloaded so far" % (len(alltweets)))
@@ -382,7 +382,53 @@ def getColour(name):
     print("The colour of", name, "is:", colour)
     return colour
 
+# get most engaged tweets
+# mp
 
+def mostEngagedMPTweet():
+    # connect to db
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
+    sql = ''' SELECT id_str FROM (SELECT  MAX(favorite_count + retweet_count), id_str FROM status) '''
+    c.execute(sql)
+    fetch = c.fetchone()
+    tweetid = fetch[0]
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_secret)
+    api = tweepy.API(auth)
+    embed_tweet = api.get_oembed(tweetid)
+    print("The id of the tweet is: ", tweetid)
+    print(embed_tweet)
+
+# gender
+
+def mostEngagedGenderTweet():
+    # connect to db
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
+    gender = 'Female'
+    sql = ''' SELECT MAX(favorite_count + retweet_count) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE gender = ? '''
+    c.execute(sql, (gender,))
+    fetch = c.fetchone()
+    tweetid = fetch[0]
+    print("The id of the tweet is: ", tweetid)
+
+# party
+
+def mostEngagedPartyTweet():
+    # connect to db
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
+    party = 'Labour'
+    sql = ''' SELECT MAX(favorite_count + retweet_count) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE party = ? '''
+    c.execute(sql, (party,))
+    fetch = c.fetchone()
+    tweetid = fetch[0]
+    print("The id of the tweet is: ", tweetid)
+    
 # flask
 
 # route() decorator tells Flask what URL should trigger our function
@@ -400,6 +446,12 @@ def refresh():
     intialiseDB()
     return 'database has been refreshed'
 
+@app.route('/test')
+def test():
+    test = mostEngagedMPTweet()
+    mostEngagedGenderTweet()
+    mostEngagedPartyTweet()
+    return print(test)
 
 if __name__ == "__main__":
     app.run(debug=True)
