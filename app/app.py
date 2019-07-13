@@ -2,6 +2,7 @@
 from flask import Flask, render_template
 import sqlite3
 import tweepy
+import json
 # instance of the flask class is our WSGI application
 # we use __name__ so that it can adapt to be imported as a module.
 app = Flask(__name__)
@@ -181,7 +182,7 @@ def getAllTweets(user_id):
     alltweets = []
 
     # make first request for most recent tweets (200 is the maximum allowed count)
-    new_tweets = api.user_timeline(user_id=user_id, count=200)
+    new_tweets = api.user_timeline(user_id=user_id, count=200, include_rts=False)
 
     # save most recent tweets
     alltweets.extend(new_tweets)
@@ -194,8 +195,9 @@ def getAllTweets(user_id):
         print("getting tweets before %s" % (oldest))
 
         # all subsequent requests use the max_id param to prevent duplicates
+        # added include_rts=False to not include retweets
         new_tweets = api.user_timeline(
-            user_id=user_id, count=200, max_id=oldest)
+            user_id=user_id, count=200, max_id=oldest, include_rts=False)
 
         # save most recent tweets
         alltweets.extend(new_tweets)
@@ -385,50 +387,68 @@ def getColour(name):
 # get most engaged tweets
 # mp
 
-def mostEngagedMPTweet():
+def mostEngagedMPTweet(mp):
     # connect to db
     conn = sqlite3.connect(db)
     # get cursor
     c = conn.cursor()
-    sql = ''' SELECT id_str FROM (SELECT  MAX(favorite_count + retweet_count), id_str FROM status) '''
-    c.execute(sql)
+    sql = ''' SELECT id_str FROM (SELECT  MAX(favorite_count + retweet_count), id_str FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE
+    name = ?) '''
+    c.execute(sql, (mp,))
     fetch = c.fetchone()
     tweetid = fetch[0]
+    print("The id of the tweet is: ", tweetid)
+    return(getEmbed(tweetid))
+
+# gender
+
+def mostEngagedGenderTweet(gender):
+    # connect to db
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
+    sql = ''' SELECT id_str FROM (SELECT MAX(favorite_count + retweet_count), id_str FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE gender = ? )'''
+    c.execute(sql, (gender,))
+    fetch = c.fetchone()
+    tweetid = fetch[0]
+    print("The id of gender most engaged tweet is: ", tweetid)
+    return(getEmbed(tweetid))
+
+# party
+
+def mostEngagedPartyTweet(party):
+    # connect to db
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
+    sql = ''' SELECT id_str FROM (SELECT MAX(favorite_count + retweet_count), id_str FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE party = ? )'''
+    c.execute(sql, (party,))
+    fetch = c.fetchone()
+    tweetid = fetch[0]
+    print("The id of the party most engaged tweet is: ", tweetid)
+    return(getEmbed(tweetid))
+    
+
+# get embededed tweet
+def getEmbed(tweetid):
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_secret)
     api = tweepy.API(auth)
     embed_tweet = api.get_oembed(tweetid)
-    print("The id of the tweet is: ", tweetid)
-    print(embed_tweet)
+    print(embed_tweet["html"])
+    return(embed_tweet["html"])
 
-# gender
+# find the maximum value for the 2nd item in list of lists
 
-def mostEngagedGenderTweet():
-    # connect to db
-    conn = sqlite3.connect(db)
-    # get cursor
-    c = conn.cursor()
-    gender = 'Female'
-    sql = ''' SELECT MAX(favorite_count + retweet_count) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE gender = ? '''
-    c.execute(sql, (gender,))
-    fetch = c.fetchone()
-    tweetid = fetch[0]
-    print("The id of the tweet is: ", tweetid)
-
-# party
-
-def mostEngagedPartyTweet():
-    # connect to db
-    conn = sqlite3.connect(db)
-    # get cursor
-    c = conn.cursor()
-    party = 'Labour'
-    sql = ''' SELECT MAX(favorite_count + retweet_count) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE party = ? '''
-    c.execute(sql, (party,))
-    fetch = c.fetchone()
-    tweetid = fetch[0]
-    print("The id of the tweet is: ", tweetid)
-    
+def myMax(listoflists):
+    if not listoflists:
+        raise ValueError('empty list')
+    maximum = listoflists[0]
+    for item in listoflists:
+        # Compare values by their second element.
+        if item[1] > maximum[1]:
+            maximum = item
+    return maximum
 # flask
 
 # route() decorator tells Flask what URL should trigger our function
@@ -436,7 +456,7 @@ def mostEngagedPartyTweet():
 def main():
     mplist = getMPs()
     genderlist = getGenders()
-    partylist = getParties()
+    partylist = getParties()    
     return render_template('index.html', mplist=mplist, genderlist=genderlist, partylist=partylist)
 
 
@@ -448,10 +468,23 @@ def refresh():
 
 @app.route('/test')
 def test():
-    test = mostEngagedMPTweet()
-    mostEngagedGenderTweet()
-    mostEngagedPartyTweet()
-    return print(test)
+    mplist = getMPs()
+    mptweet = mostEngagedMPTweet(myMax(mplist)[0])
+    genderlist = getGenders()
+    gendertweet = mostEngagedGenderTweet(myMax(genderlist)[0])
+    partylist = getParties()
+    partytweet = mostEngagedPartyTweet(myMax(partylist)[0])
+    return render_template('index.html', mplist=mplist, mptweet=mptweet,genderlist=genderlist, gendertweet=gendertweet, partylist=partylist, partytweet=partytweet)
+
+@app.route('/gender')
+def testgender():
+    genderlist = getGenders()
+    print(myMax(genderlist))
+    partylist = getParties()
+    print(myMax(partylist))
+    mplist =getMPs()
+    print(myMax(mplist))
+    return "test"
 
 if __name__ == "__main__":
     app.run(debug=True)

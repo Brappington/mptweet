@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- load style sheets-->
     <link href="https://fonts.googleapis.com/css?family=Oswald|Permanent+Marker&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/test.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <!-- Load jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <!--Load the AJAX API-->
@@ -115,18 +115,15 @@
     <div class="container">
             <div id="chart_div" class="chart1"></div>
             <div class="tweet1">
-                        <blockquote class="twitter-tweet" data-cards="hidden" data-lang="en"><p lang="en" dir="ltr">More and more people are being forced from their homes<br><br>More and more doors are being slammed in their faces<br><br>Refugees have a right to a place of safety<br><br>And so much to offer<a href="https://twitter.com/hashtag/WorldRefugeeDay?src=hash&amp;ref_src=twsrc%5Etfw">#WorldRefugeeDay</a> <a href="https://t.co/xK7217oezY">pic.twitter.com/xK7217oezY</a></p>&mdash; Caroline Lucas (@CarolineLucas) <a href="https://twitter.com/CarolineLucas/status/1141667072809869312?ref_src=twsrc%5Etfw">June 20, 2019</a></blockquote>
-                        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>         
+                {{ mptweet | safe }}         
             </div>
             <div id="chart1_div" class="chart2"></div>
             <div class="tweet2">
-                    <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">The Government will soon provide free sanitary products in schools to end <a href="https://twitter.com/hashtag/periodpoverty?src=hash&amp;ref_src=twsrc%5Etfw">#periodpoverty</a>   <br><br>I&#39;ve asked ministers to ensure the free products are sustainable &amp; don&#39;t cause <a href="https://twitter.com/hashtag/PlasticPollution?src=hash&amp;ref_src=twsrc%5Etfw">#PlasticPollution</a> <br><br>Thanks to <a href="https://twitter.com/ecoelleuk?ref_src=twsrc%5Etfw">@ecoelleuk</a> for her campaigning on this!<a href="https://t.co/JTUsRDJKvO">https://t.co/JTUsRDJKvO</a></p>&mdash; Caroline Lucas (@CarolineLucas) <a href="https://twitter.com/CarolineLucas/status/1141694587616092167?ref_src=twsrc%5Etfw">June 20, 2019</a></blockquote>
-                    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                {{ partytweet | safe }}
             </div>    
             <div id="chart2_div" class="chart3"></div>
             <div class="tweet3">
-                    <blockquote class="twitter-tweet" data-cards="hidden" data-lang="en"><p lang="en" dir="ltr">I agree with Mary....More here....<a href="https://t.co/rD0wxrQNKm">https://t.co/rD0wxrQNKm</a> <a href="https://t.co/MNhAvHQRkD">https://t.co/MNhAvHQRkD</a></p>&mdash; Ed Miliband (@Ed_Miliband) <a href="https://twitter.com/Ed_Miliband/status/1141334623919706113?ref_src=twsrc%5Etfw">June 19, 2019</a></blockquote>
-                    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>                    
+                {{ gendertweet | safe }}                
             </div>       
     </div>   
 </body>
