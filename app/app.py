@@ -435,7 +435,6 @@ def getEmbed(tweetid):
     auth.set_access_token(access_token, access_secret)
     api = tweepy.API(auth)
     embed_tweet = api.get_oembed(tweetid)
-    print(embed_tweet["html"])
     return(embed_tweet["html"])
 
 # find the maximum value for the 2nd item in list of lists
@@ -455,9 +454,12 @@ def myMax(listoflists):
 @app.route('/')
 def main():
     mplist = getMPs()
+    mptweet = mostEngagedMPTweet(myMax(mplist)[0])
     genderlist = getGenders()
-    partylist = getParties()    
-    return render_template('index.html', mplist=mplist, genderlist=genderlist, partylist=partylist)
+    gendertweet = mostEngagedGenderTweet(myMax(genderlist)[0])
+    partylist = getParties()
+    partytweet = mostEngagedPartyTweet(myMax(partylist)[0])
+    return render_template('index.html', mplist=mplist, mptweet=mptweet,genderlist=genderlist, gendertweet=gendertweet, partylist=partylist, partytweet=partytweet)
 
 
 # route to refresh or initialise databse
@@ -468,22 +470,6 @@ def refresh():
 
 @app.route('/test')
 def test():
-    mplist = getMPs()
-    mptweet = mostEngagedMPTweet(myMax(mplist)[0])
-    genderlist = getGenders()
-    gendertweet = mostEngagedGenderTweet(myMax(genderlist)[0])
-    partylist = getParties()
-    partytweet = mostEngagedPartyTweet(myMax(partylist)[0])
-    return render_template('index.html', mplist=mplist, mptweet=mptweet,genderlist=genderlist, gendertweet=gendertweet, partylist=partylist, partytweet=partytweet)
-
-@app.route('/gender')
-def testgender():
-    genderlist = getGenders()
-    print(myMax(genderlist))
-    partylist = getParties()
-    print(myMax(partylist))
-    mplist =getMPs()
-    print(myMax(mplist))
     return "test"
 
 if __name__ == "__main__":
