@@ -2,7 +2,6 @@
 from flask import Flask, render_template
 import sqlite3
 import tweepy
-import json
 # instance of the flask class is our WSGI application
 # we use __name__ so that it can adapt to be imported as a module.
 app = Flask(__name__)
@@ -59,12 +58,16 @@ def intialiseDB():
     addParty('Scottish Nationalist', 'orange')
     # add initial data into mp table
     addMP('14933304', 'Jo Swinson', 'Female', 'Liberal Democrat')
+    addMP('33300246', 'Chuka Umunna', 'Male', 'Liberal Democrats')
     addMP('80802900', 'Caroline Lucas', 'Female', 'Green')
     addMP('173089105', 'Roberta Blackman-Woods', 'Female', 'Labour')
     addMP('61781260', 'Ed Miliband', 'Male', 'Labour')
+    addMP('117777690', 'Jeremy Corbyn', 'Male', 'Labour')
     addMP('120236641', 'Mhairi Black', 'Female', 'Scottish Nationalist')
     addMP('19058678', 'Michael Fabricant', 'Male', 'Conservative')
-    addMP('14104027', 'Grant Shapps', 'Male', 'Conservative')
+    addMP('3131144855', 'Boris Johnson', 'Male', 'Conservative')
+    addMP('747807250819981312', 'Theresa May', 'Female', 'Conservative')
+  
     # get user_ids for MPs in database
     mps = getUserIds()
     # get tweets from mps and add to database
@@ -393,7 +396,8 @@ def mostEngagedMPTweet(mp):
     # get cursor
     c = conn.cursor()
     sql = ''' SELECT id_str FROM (SELECT  MAX(favorite_count + retweet_count), id_str FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE
-    name = ?) '''
+    name = ? AND
+    created_at > date('now','-1 month')) '''
     c.execute(sql, (mp,))
     fetch = c.fetchone()
     tweetid = fetch[0]
@@ -407,7 +411,8 @@ def mostEngagedGenderTweet(gender):
     conn = sqlite3.connect(db)
     # get cursor
     c = conn.cursor()
-    sql = ''' SELECT id_str FROM (SELECT MAX(favorite_count + retweet_count), id_str FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE gender = ? )'''
+    sql = ''' SELECT id_str FROM (SELECT MAX(favorite_count + retweet_count), id_str FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE gender = ? AND
+    created_at > date('now','-1 month'))'''
     c.execute(sql, (gender,))
     fetch = c.fetchone()
     tweetid = fetch[0]
@@ -421,7 +426,8 @@ def mostEngagedPartyTweet(party):
     conn = sqlite3.connect(db)
     # get cursor
     c = conn.cursor()
-    sql = ''' SELECT id_str FROM (SELECT MAX(favorite_count + retweet_count), id_str FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE party = ? )'''
+    sql = ''' SELECT id_str FROM (SELECT MAX(favorite_count + retweet_count), id_str FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE party = ? AND
+    created_at > date('now','-1 month'))'''
     c.execute(sql, (party,))
     fetch = c.fetchone()
     tweetid = fetch[0]
@@ -435,6 +441,7 @@ def getEmbed(tweetid):
     auth.set_access_token(access_token, access_secret)
     api = tweepy.API(auth)
     embed_tweet = api.get_oembed(tweetid)
+    print(embed_tweet)
     return(embed_tweet["html"])
 
 # find the maximum value for the 2nd item in list of lists
@@ -470,7 +477,14 @@ def refresh():
 
 @app.route('/test')
 def test():
-    return "test"
+    mplist = getMPs()
+    mptweet = mostEngagedMPTweet(myMax(mplist)[0])
+    genderlist = getGenders()
+    gendertweet = mostEngagedGenderTweet(myMax(genderlist)[0])
+    partylist = getParties()
+    partytweet = mostEngagedPartyTweet(myMax(partylist)[0])
+    return render_template('test.html', mplist=mplist, mptweet=mptweet,genderlist=genderlist, gendertweet=gendertweet, partylist=partylist, partytweet=partytweet)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
