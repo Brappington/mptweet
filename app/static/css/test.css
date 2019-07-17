@@ -5,7 +5,6 @@ body {
 
 h1 {
     font-family: 'Permanent Marker', cursive;
-    background: #FFF301;
     color: #ED008C;
     text-align: center;
     border-bottom: 5px solid #ED008C;
@@ -15,10 +14,6 @@ h2 {
     font-family: 'Permanent Marker', cursive;
     color: #ED008C;
     padding: 0em;
-}
-
-twitter-widget {
-    width: fit-content !important;
 }
 
 .maincontainer {
@@ -34,6 +29,7 @@ twitter-widget {
     grid-gap: 5px;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     grid-template-rows: repeat(auto-fit, 1fr);
+    grid-column-gap: 2em;
     padding: 1em;
 }
 
@@ -43,5 +39,5 @@ twitter-widget {
 }
 
 .tweet {
-  
+  justify-items: center;
 }
