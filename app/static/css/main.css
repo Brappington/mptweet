@@ -28,7 +28,9 @@ twitter-widget {
     margin-bottom: 10px;
     height: auto;
 }
-
+.tweet{
+    height: auto;
+}
 #chart_div {
     grid-area: 1 / 1 / 2 / 2;
 }
@@ -58,7 +60,7 @@ twitter-widget {
     .container { 
         display: grid; 
         grid-template-columns: 1fr; 
-        grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-rows: auto auto auto auto auto auto;
         grid-column-gap: 0px;
         grid-row-gap: 0px;
         padding: 1em;

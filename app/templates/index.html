@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,7 +38,7 @@
             // Set chart options
             var options = {
                 'title': 'Average engagement by individual MPs',
-                'legend': 'none'
+                'legend': 'none',
             };
             // Instantiate and draw our mp chart, passing in some options.
             var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
@@ -122,18 +123,19 @@
 <body>
     <h1>MP Engagement on Twitter </h1>
     <div class="container">
-            <div id="chart_div" class="chart"></div>
+            <div id="chart_div" class="chart">
+            </div>
             <div id="tweet1" class="tweet">
                 {{ mptweet | safe }}         
             </div>
             <div id="chart1_div" class="chart"></div>
             <div id="tweet2" class="tweet">
                 {{ partytweet | safe }}
-            </div>    
+            </div>   
             <div id="chart2_div" class="chart"></div>
             <div id="tweet3" class="tweet">
-                {{ gendertweet | safe }}                
-            </div>       
+                {{ gendertweet | safe }}    
+            </div>                   
     </div>   
 </body>
 <footer>

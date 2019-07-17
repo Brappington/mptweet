@@ -1,0 +1,47 @@
+body {
+    font-family: 'Oswald', sans-serif;
+    background: #FFF301;
+}
+
+h1 {
+    font-family: 'Permanent Marker', cursive;
+    background: #FFF301;
+    color: #ED008C;
+    text-align: center;
+    border-bottom: 5px solid #ED008C;
+}
+
+h2 {
+    font-family: 'Permanent Marker', cursive;
+    color: #ED008C;
+    padding: 0em;
+}
+
+twitter-widget {
+    width: fit-content !important;
+}
+
+.maincontainer {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 50px 1fr 50px 1fr 50px 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+
+.container {
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-rows: repeat(auto-fit, 1fr);
+    padding: 1em;
+}
+
+.chart {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.tweet {
+  
+}
