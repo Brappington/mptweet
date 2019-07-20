@@ -3,6 +3,9 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="description" content="MP twitter engagement app">
+    <meta name="author" content="Jack Powell">
     <!-- load style sheets-->
     <link href="https://fonts.googleapis.com/css?family=Oswald|Permanent+Marker&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
@@ -68,7 +71,8 @@
                 'legend': 'none',
             };
             // Instantiate and draw our chart, passing in some options.
-            var chart1 = new google.visualization.BarChart(document.getElementById('chart_div2'));
+            var container = document.getElementById('chart_div2');
+            var chart1 = new google.visualization.BarChart(container);
             chart1.draw(data1, options);
         }
         // Set a callback to run when the Google Visualization API is loaded.
@@ -122,34 +126,34 @@
 
 <body>
     <h1>MP Engagement on Twitter </h1>
-
-    <div class="maincontainer">
-            <H2>Twitter engagement by MPs</H2>
-            <div class="container">
-                <div id="chart_div1" class="chart">
+    <main>
+        <div class="maincontainer">
+                <H2 tabindex="0">Twitter engagement by MPs</H2>
+                <div class="container">
+                    <div id="chart_div1" class="chart shadow" tabindex="0"></div>
+                    <div id="tweet1" class="tweet" tabindex="0">
+                            {{ mptweet | safe }} 
+                    </div>
                 </div>
-                <div id="tweet1" class="tweet">
-                        {{ mptweet | safe }} 
+                <H2 tabindex="0">Twitter engagement by party</H2>
+                <div class="container">
+                        <div id="chart_div2" class="chart shadow" tabindex="0"></div>
+                        <div id="tweet2" class="tweet" tabindex="0">
+                            {{ partytweet | safe }}
+                        </div> 
                 </div>
-            </div>
-            <H2>Twitter engagement by party</H2>
-            <div class="container">
-                    <div id="chart_div2" class="chart"></div>
-                    <div id="tweet2" class="tweet">
-                        {{ partytweet | safe }}
-                    </div> 
-            </div>
-            <H2>Twitter engagement by gender</H2>
-            <div class="container">  
-                    <div id="chart_div3" class="chart"></div>
-                    <div id="tweet3" class="tweet">
-                        {{ gendertweet | safe }}    
-                    </div>    
-            </div>               
-    </div>
-    
+                <H2 tabindex="0">Twitter engagement by gender</H2>
+                <div class="container">  
+                        <div id="chart_div3" class="chart shadow" tabindex="0"></div>
+                        <div id="tweet3" class="tweet" tabindex="0">
+                            {{ gendertweet | safe }} 
+                        </div>    
+                </div>               
+        </div>
+    </main>
+   
 </body>
 <footer>
-    <p>Contact me at my<a href="mailto:webmaster@example.com"> Email</a> for Subject Access Requests</p>
+    <a href="mailto:webmaster@example.com">Contact me at my Email for Subject Access Requests</a>
 </footer>
 </html>

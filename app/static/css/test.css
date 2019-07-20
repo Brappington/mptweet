@@ -1,27 +1,27 @@
 body {
-    font-family: 'Oswald', sans-serif;
-    background: #FFF301;
+    background: #0d1219;
+    color: #ffffff;
 }
 
 h1 {
-    font-family: 'Permanent Marker', cursive;
-    color: #ED008C;
+    font-family: 'Rubik';
     text-align: center;
-    border-bottom: 5px solid #ED008C;
+    border-bottom: 5px solid;
+    padding-bottom: 1em;
 }
 
 h2 {
-    font-family: 'Permanent Marker', cursive;
-    color: #ED008C;
-    padding: 0em;
+    font-family: 'Roboto Mono';
+    padding-bottom: 2em;
 }
 
 .maincontainer {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 50px 1fr 50px 1fr 50px 1fr;
+    grid-template-rows: 65px 1fr 65px 1fr 65px 1fr;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
+    
 }
 
 .container {
@@ -31,6 +31,8 @@ h2 {
     grid-template-rows: repeat(auto-fit, 1fr);
     grid-column-gap: 2em;
     padding: 1em;
+    background: #0d1219;
+
 }
 
 .chart {

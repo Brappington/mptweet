@@ -1,0 +1,27 @@
+{
+    "parties": [{
+            "name": "Labour",
+            "colour": "Red"
+        },
+        {
+            "name": "Conservative",
+            "colour": "Blue"
+        },
+        {
+            "name": "Liberal Democrat",
+            "colour": "Yellow"
+        },
+        {
+            "name": "Scottish Nationalist",
+            "colour": "Orange"
+        },
+        {
+            "name": "Green Party",
+            "colour": "Green"
+        },
+        {
+            "name": "Jack",
+            "colour": "Black"
+        }
+    ]
+}

@@ -3,8 +3,9 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- load fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Rubik|Roboto+Mono" rel="stylesheet">
     <!-- load style sheets-->
-    <link href="https://fonts.googleapis.com/css?family=Oswald|Permanent+Marker&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/test.css') }}">
     <!-- Load jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -122,9 +123,8 @@
 
 <body>
     <h1>MP Engagement on Twitter </h1>
-
     <div class="maincontainer">
-            <H2>Twitter engagement by MPs</H2>
+            <h2>Twitter engagement by MPs</h2>
             <div class="container">
                 <div id="chart_div1" class="chart">
                 </div>
@@ -132,14 +132,14 @@
                         {{ mptweet | safe }} 
                 </div>
             </div>
-            <H2>Twitter engagement by party</H2>
+            <h2>Twitter engagement by party</h2>
             <div class="container">
                     <div id="chart_div2" class="chart"></div>
                     <div id="tweet2" class="tweet">
                         {{ partytweet | safe }}
                     </div> 
             </div>
-            <H2>Twitter engagement by gender</H2>
+            <h2>Twitter engagement by gender</h2>
             <div class="container">  
                     <div id="chart_div3" class="chart"></div>
                     <div id="tweet3" class="tweet">

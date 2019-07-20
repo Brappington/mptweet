@@ -1,25 +1,27 @@
 body {
     font-family: 'Oswald', sans-serif;
-    background: #FFF301;
+    background: #ffffff;
 }
 
 h1 {
     font-family: 'Permanent Marker', cursive;
     color: #ED008C;
     text-align: center;
-    border-bottom: 5px solid #ED008C;
+    border: 5px solid #ED008C;
 }
 
 h2 {
-    font-family: 'Permanent Marker', cursive;
+    font-family: 'Oswald', sans-serif;
     color: #ED008C;
-    padding: 0em;
+    padding: 5px;
+    border: 5px solid #ED008C;
+    text-align: center;
 }
 
 .maincontainer {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 50px 1fr 50px 1fr 50px 1fr;
+    grid-template-rows: 100px 1fr 100px 1fr 100px 1fr;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
 }
@@ -33,11 +35,17 @@ h2 {
     padding: 1em;
 }
 
+.shadow {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
 .chart {
     margin-top: 10px;
     margin-bottom: 10px;
+    width: 100%;
 }
 
 .tweet {
-  justify-items: center;
+	/* potential class. delete laterif unused*/
 }

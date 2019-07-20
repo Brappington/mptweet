@@ -9,18 +9,17 @@ app = Flask(__name__)
 
 # instance of sqlite datbase
 db = "app/database/mptweet.db"
-
 # read the json  data of Parties for the database
 with open('app/static/data/partyData.json', 'r') as myfile:
     data=myfile.read()
 # parse file
-partydata = json.loads(data)
+partyData = json.load(data)
 
 # read the json  data of MPs for the database
 with open('app/static/data/mpData.json', 'r') as myfile:
     data=myfile.read()
 # parse file
-mpdata = json.loads(data)
+mpData = json.load(data)
 
 # twitter api config
 consumer_key = 'NtLIPnCyyeEiiEWl3LWPCNssl'
@@ -28,64 +27,112 @@ consumer_secret = 'nkOUbyh5mUeVp3pxO5mjqbBIJFxaQYNoUN0ybcPJPC3fwnEcTI'
 access_token = '1090976401333858304-Vu5Y7y7KUyxpblwkzegs7VMxfKbXTt'
 access_secret = 'xLZBZxojXvpPMIE4tJnylTJ7DIZLKZauLytyzSUb2Y1s6'
 
-# database module
+# twitter class
 
 
-def createTables():
-    # connect to db
-    conn = sqlite3.connect(db)
-    # get cursor
-    c = conn.cursor()
-    # drop tables if exist
-    drop_mp = "DROP TABLE IF EXISTS mp"
-    drop_party = "DROP TABLE IF EXISTS party"
-    drop_status = "DROP TABLE IF EXISTS status"
-    # create party table
-    create_party = "CREATE TABLE party (name VARCHAR(255) PRIMARY KEY NOT NULL, colour CHECK(colour IN ('red', 'blue', 'yellow', 'green', 'orange', 'black')) NOT NULL)"
-    # create mp table
-    create_mp = "CREATE TABLE mp (user_id VARCHAR(255) PRIMARY KEY NOT NULL, name VARCHAR(255) NOT NULL, gender CHECK(gender IN ('Male', 'Female')) NOT NULL, party VARCHAR(255) NOT NULL, FOREIGN KEY (party) REFERENCES party(name))"
-    # create status update
-    create_status = "CREATE TABLE status (id_str VARCHAR(255) PRIMARY KEY, created_at TEXT, user_id VARCHAR(255) NOT NULL, favorite_count MEDIUMINT, retweet_count MEDIUMINT, text TEXT NOT NULL, FOREIGN KEY (user_id) REFERENCES mp(user_id))"
-    # execute create tables sql
-    c.execute(drop_mp)
-    c.execute(drop_party)
-    c.execute(drop_status)
-    c.execute(create_party)
-    c.execute(create_mp)
-    c.execute(create_status)
-    # commit database changes
-    conn.commit()
-    # close connection
-    conn.close()
+class Twitter():
+    def __init__(self):
+        # authorize twitter, initialise tweepy
+        self.auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+        self.auth.set_access_token(access_token, access_secret)
+
+        self.api = tweepy.API(self.auth)
+
+    def getAllTweets(self, user_id):
+            # Twitter only allows access to a users most recent 3240 tweets with this method
+
+            # initialize a list to save all the  Tweets
+            alltweets = []
+
+            # make first request for most recent tweets (200 is the maximum allowed count)
+            new_tweets = self.api.user_timeline(
+                user_id=user_id, count=200, include_rts=False)
+
+            # save most recent tweets
+            alltweets.extend(new_tweets)
+
+            # save id of the oldest tweet minus one
+            oldest = alltweets[-1].id - 1
+
+            # keep getting tweets until there are no tweets left to get
+            while len(new_tweets) > 0:
+                print("getting tweets before %s" % (oldest))
+
+                # all subsequent requests use the max_id param to prevent duplicates
+                # added include_rts=False to not include retweets
+                new_tweets = self.api.user_timeline(
+                    user_id=user_id, count=200, max_id=oldest, include_rts=False)
+
+                # save most recent tweets
+                alltweets.extend(new_tweets)
+
+                # update the id of the oldest tweet minus one
+                oldest = alltweets[-1].id - 1
+
+                print("...%s tweets downloaded so far" % (len(alltweets)))
+            # iterates through tweets and adds each tweet to database using addStatus()
+            for tweet in alltweets:
+                addStatus(tweet.id_str, tweet.created_at,
+                          tweet.user.id_str, tweet.favorite_count, tweet.retweet_count, tweet.text)
+
+        # gets recent tweets for mps from list and adds them to database
+    
+    def allMPTweets(self, mp_ids):
+            for user_id in mp_ids:
+                self.getAllTweets(user_id)
+                print(getMPName(user_id), ' MP tweets imported to database')
+
+
+# database class
+class Data():
+    def __init__(self):
+        self.database = db
+        self.party = partyData
+        self.mps = mpData
+        self.connection = sqlite3.connect(self.database)
+
+    def createTables(self):
+            # connect to db
+            conn = self.connection
+            # get cursor
+            c = conn.cursor()
+            # drop tables if exist
+            drop_mp = "DROP TABLE IF EXISTS mp"
+            drop_party = "DROP TABLE IF EXISTS party"
+            drop_status = "DROP TABLE IF EXISTS status"
+            # create party table
+            create_party = "CREATE TABLE party (name VARCHAR(255) PRIMARY KEY NOT NULL, colour CHECK(colour IN ('red', 'blue', 'yellow', 'green', 'orange', 'black')) NOT NULL)"
+            # create mp table
+            create_mp = "CREATE TABLE mp (user_id VARCHAR(255) PRIMARY KEY NOT NULL, name VARCHAR(255) NOT NULL, gender CHECK(gender IN ('Male', 'Female')) NOT NULL, party VARCHAR(255) NOT NULL, FOREIGN KEY (party) REFERENCES party(name))"
+            # create status update
+            create_status = "CREATE TABLE status (id_str VARCHAR(255) PRIMARY KEY, created_at TEXT, user_id VARCHAR(255) NOT NULL, favorite_count MEDIUMINT, retweet_count MEDIUMINT, text TEXT NOT NULL, FOREIGN KEY (user_id) REFERENCES mp(user_id))"
+            # execute create tables sql
+            c.execute(drop_mp)
+            c.execute(drop_party)
+            c.execute(drop_status)
+            c.execute(create_party)
+            c.execute(create_mp)
+            c.execute(create_status)
+            # commit database changes
+            conn.commit()
+            # close connection
+            conn.close()
+
+    def intialiseDB(self):
+            # create database and tables
+            Data.createTables(self)
+            for x in self.party:
+                addParty(x.name, x.colour)
+            for x in self.mps:
+                addMP(x.user_id, x.name, x.gender, x.party)
+            # get user_ids for MPs in database
+            mps = getUserIds()
+            # get tweets from mps and add to database
+            Twitter.allMPTweets(self, mps)
 
 # initialise a new database with provided data.
 
 
-def intialiseDB():
-    # create database and tables
-    createTables()
-    for y in mpdata["mps"]:
-        addMP(y["user_id"], y["name"], y["gender"], y["party"])
-    for x in partydata["parties"]:
-        print(x["name"], x["colour"])
-        addParty(x["name"], x["colour"])
-    # add initial data into party table
-    """ # add initial data into mp table
-    addMP('14933304', 'Jo Swinson', 'Female', 'Liberal Democrat')
-    addMP('33300246', 'Chuka Umunna', 'Male', 'Liberal Democrats')
-    addMP('80802900', 'Caroline Lucas', 'Female', 'Green')
-    addMP('173089105', 'Roberta Blackman-Woods', 'Female', 'Labour')
-    addMP('61781260', 'Ed Miliband', 'Male', 'Labour')
-    addMP('117777690', 'Jeremy Corbyn', 'Male', 'Labour')
-    addMP('120236641', 'Mhairi Black', 'Female', 'Scottish Nationalist')
-    addMP('19058678', 'Michael Fabricant', 'Male', 'Conservative')
-    addMP('3131144855', 'Boris Johnson', 'Male', 'Conservative')
-    addMP('747807250819981312', 'Theresa May', 'Female', 'Conservative') """
-  
-    # get user_ids for MPs in database
-    """ mps = getUserIds()
-    # get tweets from mps and add to database
-    allMPTweets(mps) """
 
 # mp module
 
@@ -147,7 +194,7 @@ def addParty(name, colour):
         print(name, ' already exists!')
     # commit database changes
     conn.commit()
-    # close connection`
+    # close connection
     conn.close()
 
 # returns name of mp from database as string
@@ -184,57 +231,6 @@ def getUserIds():
     conn.close()
     return ids
 
-# gets recent tweets for mp with provided user_id and adds them to database
-
-
-def getAllTweets(user_id):
-    # Twitter only allows access to a users most recent 3240 tweets with this method
-
-    # authorize twitter, initialise tweepy
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_token, access_secret)
-    api = tweepy.API(auth)
-
-    # initialize a list to save all the  Tweets
-    alltweets = []
-
-    # make first request for most recent tweets (200 is the maximum allowed count)
-    new_tweets = api.user_timeline(user_id=user_id, count=200, include_rts=False)
-
-    # save most recent tweets
-    alltweets.extend(new_tweets)
-
-    # save id of the oldest tweet minus one
-    oldest = alltweets[-1].id - 1
-
-    # keep getting tweets until there are no tweets left to get
-    while len(new_tweets) > 0:
-        print("getting tweets before %s" % (oldest))
-
-        # all subsequent requests use the max_id param to prevent duplicates
-        # added include_rts=False to not include retweets
-        new_tweets = api.user_timeline(
-            user_id=user_id, count=200, max_id=oldest, include_rts=False)
-
-        # save most recent tweets
-        alltweets.extend(new_tweets)
-
-        # update the id of the oldest tweet minus one
-        oldest = alltweets[-1].id - 1
-
-        print("...%s tweets downloaded so far" % (len(alltweets)))
-    # iterates through tweets and adds each tweet to database using addStatus()
-    for tweet in alltweets:
-        addStatus(tweet.id_str, tweet.created_at,
-                  tweet.user.id_str, tweet.favorite_count, tweet.retweet_count, tweet.text)
-
-# gets recent tweets for mps from list and adds them to database
-
-
-def allMPTweets(mp_ids):
-    for user_id in mp_ids:
-        getAllTweets(user_id)
-        print(getMPName(user_id), ' MP tweets imported to database')
 
 # These functions return the average engagement for mps, genders and parties respectively
 
@@ -404,6 +400,7 @@ def getColour(name):
 # get most engaged tweets
 # mp
 
+
 def mostEngagedMPTweet(mp):
     # connect to db
     conn = sqlite3.connect(db)
@@ -420,6 +417,7 @@ def mostEngagedMPTweet(mp):
 
 # gender
 
+
 def mostEngagedGenderTweet(gender):
     # connect to db
     conn = sqlite3.connect(db)
@@ -435,6 +433,7 @@ def mostEngagedGenderTweet(gender):
 
 # party
 
+
 def mostEngagedPartyTweet(party):
     # connect to db
     conn = sqlite3.connect(db)
@@ -447,7 +446,7 @@ def mostEngagedPartyTweet(party):
     tweetid = fetch[0]
     print("The id of the party most engaged tweet is: ", tweetid)
     return(getEmbed(tweetid))
-    
+
 
 # get embededed tweet
 def getEmbed(tweetid):
@@ -459,6 +458,7 @@ def getEmbed(tweetid):
     return(embed_tweet["html"])
 
 # find the maximum value for the 2nd item in list of lists
+
 
 def myMax(listoflists):
     if not listoflists:
@@ -480,7 +480,7 @@ def main():
     gendertweet = mostEngagedGenderTweet(myMax(genderlist)[0])
     partylist = getParties()
     partytweet = mostEngagedPartyTweet(myMax(partylist)[0])
-    return render_template('index.html', mplist=mplist, mptweet=mptweet,genderlist=genderlist, gendertweet=gendertweet, partylist=partylist, partytweet=partytweet)
+    return render_template('index.html', mplist=mplist, mptweet=mptweet, genderlist=genderlist, gendertweet=gendertweet, partylist=partylist, partytweet=partytweet)
 
 
 # route to refresh or initialise databse
@@ -488,6 +488,7 @@ def main():
 def refresh():
     intialiseDB()
     return 'database has been refreshed'
+
 
 @app.route('/test')
 def test():
@@ -497,7 +498,7 @@ def test():
     gendertweet = mostEngagedGenderTweet(myMax(genderlist)[0])
     partylist = getParties()
     partytweet = mostEngagedPartyTweet(myMax(partylist)[0])
-    return render_template('test.html', mplist=mplist, mptweet=mptweet,genderlist=genderlist, gendertweet=gendertweet, partylist=partylist, partytweet=partytweet)
+    return render_template('test.html', mplist=mplist, mptweet=mptweet, genderlist=genderlist, gendertweet=gendertweet, partylist=partylist, partytweet=partytweet)
 
 
 if __name__ == "__main__":
