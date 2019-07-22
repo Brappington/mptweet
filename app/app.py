@@ -1,8 +1,14 @@
 # import flask class
 from flask import Flask, render_template
+from apscheduler.schedulers.background import BackgroundScheduler
 import sqlite3
 import tweepy
 import json
+import atexit
+
+# initialise isntance of BackgroundScheduler for automating database updates
+scheduler = BackgroundScheduler()
+
 # instance of the flask class is our WSGI application
 # we use __name__ so that it can adapt to be imported as a module.
 app = Flask(__name__)
@@ -30,44 +36,51 @@ access_secret = 'xLZBZxojXvpPMIE4tJnylTJ7DIZLKZauLytyzSUb2Y1s6'
 
 # database module
 
-
-def createTables():
-    # connect to db
-    conn = sqlite3.connect(db)
-    # get cursor
-    c = conn.cursor()
+# delete the database 
+def deleteDatabase(cursor):
     # drop tables if exist
     drop_mp = "DROP TABLE IF EXISTS mp"
     drop_party = "DROP TABLE IF EXISTS party"
     drop_status = "DROP TABLE IF EXISTS status"
+    cursor.execute(drop_mp)
+    cursor.execute(drop_party)
+    cursor.execute(drop_status)
+
+def createTables(cursor):
     # create party table
     create_party = "CREATE TABLE party (name VARCHAR(255) PRIMARY KEY NOT NULL, colour CHECK(colour IN ('red', 'blue', 'yellow', 'green', 'orange', 'black')) NOT NULL)"
     # create mp table
     create_mp = "CREATE TABLE mp (user_id VARCHAR(255) PRIMARY KEY NOT NULL, name VARCHAR(255) NOT NULL, gender CHECK(gender IN ('Male', 'Female')) NOT NULL, party VARCHAR(255) NOT NULL, FOREIGN KEY (party) REFERENCES party(name))"
     # create status update
     create_status = "CREATE TABLE status (id_str VARCHAR(255) PRIMARY KEY, created_at TEXT, user_id VARCHAR(255) NOT NULL, favorite_count MEDIUMINT, retweet_count MEDIUMINT, text TEXT NOT NULL, FOREIGN KEY (user_id) REFERENCES mp(user_id))"
-    # execute create tables sql
-    c.execute(drop_mp)
-    c.execute(drop_party)
-    c.execute(drop_status)
-    c.execute(create_party)
-    c.execute(create_mp)
-    c.execute(create_status)
-    # commit database changes
-    conn.commit()
-    # close connection
-    conn.close()
+    cursor.execute(create_party)
+    cursor.execute(create_mp)
+    cursor.execute(create_status)
 
-# initialise a new database with provided data.
-
-
-def intialiseDB():
-    # create database and tables
-    createTables()
+# add data from mpdata and party data json files stored in app/static/data/
+def addJsonData():
+    # add data from json
     for y in mpdata["mps"]:
         addMP(y["user_id"], y["name"], y["gender"], y["party"])
     for x in partydata["parties"]:
         addParty(x["name"], x["colour"])
+
+# initialise a new database with provided data.
+def intialiseDB():
+    # create database and tables
+        # connect to db
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
+    # delete previous database and create new
+    deleteDatabase(c)
+    createTables(c)
+    # commit database changes
+    conn.commit()
+    # close connection
+    conn.close()
+    # add data from json
+    addJsonData()
     # get user_ids for MPs in database
     mps = getUserIds()
     # get tweets from mps and add to database
@@ -453,6 +466,16 @@ def myMax(listoflists):
         if item[1] > maximum[1]:
             maximum = item
     return maximum
+
+
+# add intialiseDB job to scheduler and have it run daily
+scheduler.add_job(func=allMPTweets, trigger="interval", hours=24, args=[getUserIds()])
+scheduler.start()
+
+# shutdown the scheduler when exiting the app
+atexit.register(lambda: scheduler.shutdown())
+
+
 # flask
 
 # route() decorator tells Flask what URL should trigger our function
