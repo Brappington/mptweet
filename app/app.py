@@ -67,31 +67,15 @@ def intialiseDB():
     for y in mpdata["mps"]:
         addMP(y["user_id"], y["name"], y["gender"], y["party"])
     for x in partydata["parties"]:
-        print(x["name"], x["colour"])
         addParty(x["name"], x["colour"])
-    # add initial data into party table
-    """ # add initial data into mp table
-    addMP('14933304', 'Jo Swinson', 'Female', 'Liberal Democrat')
-    addMP('33300246', 'Chuka Umunna', 'Male', 'Liberal Democrats')
-    addMP('80802900', 'Caroline Lucas', 'Female', 'Green')
-    addMP('173089105', 'Roberta Blackman-Woods', 'Female', 'Labour')
-    addMP('61781260', 'Ed Miliband', 'Male', 'Labour')
-    addMP('117777690', 'Jeremy Corbyn', 'Male', 'Labour')
-    addMP('120236641', 'Mhairi Black', 'Female', 'Scottish Nationalist')
-    addMP('19058678', 'Michael Fabricant', 'Male', 'Conservative')
-    addMP('3131144855', 'Boris Johnson', 'Male', 'Conservative')
-    addMP('747807250819981312', 'Theresa May', 'Female', 'Conservative') """
-  
     # get user_ids for MPs in database
-    """ mps = getUserIds()
+    mps = getUserIds()
     # get tweets from mps and add to database
-    allMPTweets(mps) """
+    allMPTweets(mps) 
 
 # mp module
 
 # add mp to database
-
-
 def addMP(user_id, name, gender, party):
     # connect to db
     conn = sqlite3.connect(db)
