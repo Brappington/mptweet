@@ -1,21 +1,30 @@
+:root {
+    --bgColor: white;
+    --textColor: black;
+    --accent: #5b50b6;
+    --bgDarkColor: #5b50b6;
+    --textDarkColor: #FEFFFF;
+    --accentDark: #538cd9; 
+}
+
 body {
     font-family: 'Oswald', sans-serif;
-    background: #ffffff;
+    background: var(--bgColor);
 }
 
 h1 {
-    font-family: 'Permanent Marker', cursive;
-    color: #ED008C;
+    font-family: 'Oswald';
+    color: var(--textColor);
+    background: var(--accent);
     text-align: center;
-    border: 5px solid #ED008C;
 }
 
 h2 {
     font-family: 'Oswald', sans-serif;
-    color: #ED008C;
-    padding: 5px;
-    border: 5px solid #ED008C;
+    color: var(--textColor);
+    background: var(--accent);
     text-align: center;
+    padding-top: 10px;
 }
 
 .maincontainer {
@@ -41,11 +50,21 @@ h2 {
 }
 
 .chart {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    width: 100%;
+    color: var(--textColour);
 }
 
 .tweet {
-	/* potential class. delete laterif unused*/
+    /* potential class. delete laterif unused*/
+    align-items: center;
+    display: inline-block;
+    color: var(--textColour);
 }
+.twitter-tweet {
+    margin: auto;
+    
+ }
+
+ p {
+     text-align: center;
+     color: var(--textColor);
+ }

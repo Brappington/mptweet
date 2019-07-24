@@ -1,13 +1,8 @@
 # import flask class
 from flask import Flask, render_template
-from apscheduler.schedulers.background import BackgroundScheduler
 import sqlite3
 import tweepy
 import json
-import atexit
-
-# initialise isntance of BackgroundScheduler for automating database updates
-scheduler = BackgroundScheduler()
 
 # instance of the flask class is our WSGI application
 # we use __name__ so that it can adapt to be imported as a module.
@@ -466,14 +461,6 @@ def myMax(listoflists):
         if item[1] > maximum[1]:
             maximum = item
     return maximum
-
-
-# add intialiseDB job to scheduler and have it run daily
-scheduler.add_job(func=allMPTweets, trigger="interval", hours=24, args=[getUserIds()])
-scheduler.start()
-
-# shutdown the scheduler when exiting the app
-atexit.register(lambda: scheduler.shutdown())
 
 
 # flask
