@@ -81,6 +81,13 @@ def intialiseDB():
     # get tweets from mps and add to database
     allMPTweets(mps) 
 
+# updates the database without deleting it
+def updateDB():
+    # get user_ids for MPs in database
+    mps = getUserIds()
+    # get tweets from mps and add to database
+    allMPTweets(mps)
+
 # mp module
 
 # add mp to database
@@ -475,24 +482,6 @@ def main():
     partylist = getParties()
     partytweet = mostEngagedPartyTweet(myMax(partylist)[0])
     return render_template('index.html', mplist=mplist, mptweet=mptweet,genderlist=genderlist, gendertweet=gendertweet, partylist=partylist, partytweet=partytweet)
-
-
-# route to refresh or initialise databse
-@app.route('/refresh')
-def refresh():
-    intialiseDB()
-    return 'database has been refreshed'
-
-@app.route('/test')
-def test():
-    mplist = getMPs()
-    mptweet = mostEngagedMPTweet(myMax(mplist)[0])
-    genderlist = getGenders()
-    gendertweet = mostEngagedGenderTweet(myMax(genderlist)[0])
-    partylist = getParties()
-    partytweet = mostEngagedPartyTweet(myMax(partylist)[0])
-    return render_template('test.html', mplist=mplist, mptweet=mptweet,genderlist=genderlist, gendertweet=gendertweet, partylist=partylist, partytweet=partytweet)
-
 
 if __name__ == "__main__":
     app.run(debug=True)
