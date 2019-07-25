@@ -17,19 +17,25 @@ body {
     background: var(--bgColor);
 }
 
+footer{
+    font-family: var(--regularFont);
+    text-align: center;
+}
+
 h1 {
     font-family: var(--titleFont);
     color: var(--textColor);
     text-align: center;
     text-decoration: underline;
+    margin: auto;
 }
 
 h2 {
     font-family: var(--titleFont);
     color: var(--textColor);
     text-align: center;
-    padding-top: 10px;
     text-decoration: underline;
+    margin: auto;
 }
 
 .maincontainer {
