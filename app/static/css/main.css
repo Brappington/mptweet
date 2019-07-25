@@ -56,6 +56,9 @@ h2 {
 
 .chart {
     color: var(--textColour);
+    display: inline-block;
+    /* align with twitter widget */
+    margin-top: 10px;
 }
 
 .tweet {
@@ -66,7 +69,6 @@ h2 {
 }
 .twitter-tweet {
     margin: auto;
-    
  }
 
  p {
