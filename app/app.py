@@ -167,7 +167,22 @@ def getMPName(user_id):
     conn.close()
     return name
 
+# returns name of MPs party
 
+def getMPColour(user_id):
+    # connect to db
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
+    sql = ''' SELECT colour from party INNER JOIN mp ON party.name = mp.party WHERE mp.user_id = ?'''
+    c.execute(sql, (user_id,))
+    fetch = c.fetchone()
+    # get string of name only
+    colour = fetch[0]
+    print(colour)
+    # close connection
+    conn.close()
+    return colour
 # return user_ids for all mps in database as a list
 
 
@@ -341,7 +356,7 @@ def getMPs():
     mps = getUserIds()
     list = []
     for user_id in mps:
-        list.append([getMPName(user_id), getMPEngagement(user_id)])
+        list.append([getMPName(user_id), getMPEngagement(user_id), getMPColour(user_id)])
     print(list)
     return list
 
@@ -482,6 +497,10 @@ def main():
     partylist = getParties()
     partytweet = mostEngagedPartyTweet(myMax(partylist)[0])
     return render_template('index.html', mplist=mplist, mptweet=mptweet,genderlist=genderlist, gendertweet=gendertweet, partylist=partylist, partytweet=partytweet)
+
+@app.route('/test')
+def test():
+    return getMPColour(120236641)
 
 if __name__ == "__main__":
     app.run(debug=True)
