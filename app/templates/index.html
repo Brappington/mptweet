@@ -125,12 +125,12 @@
             chart2.draw(data2, options2);
            }
 
-        $(window).on("load", function(){
+        /* $(window).on("load", function(){
             drawChart1();
             drawChart2();
             drawChart3();
             console.log('page load event: chart redrawn')
-        })
+        }) */
            // resize jquery event to redraw charts when window is resized.
         $(window).resize(function(){
             drawChart1();
@@ -138,6 +138,12 @@
             drawChart3();
             console.log('resize event: chart redrawn')
         });
+        // force chart to redraw to fix google charts size bug
+        setTimeout(function() {
+            drawChart1();
+            drawChart2();
+            drawChart3();
+        }, 700);
     </script>
 </head>
 
