@@ -1,12 +1,12 @@
 # import flask class
 from flask import Flask, render_template
-
+import os
 import sqlite3
 import tweepy
 import json
 
 # set root directory path
-
+os.chdir('/home/mptwitter/mptweet/')
 # instance of the flask class is our WSGI application
 # we use __name__ so that it can adapt to be imported as a module.
 app = Flask(__name__)
