@@ -4,7 +4,6 @@ import os
 import sqlite3
 import tweepy
 import json
-import secrets
 
 # set root directory path
 os.chdir('/home/mptwitter/mptweet/')
@@ -28,10 +27,10 @@ with open('app/static/data/mpData.json', 'r') as myfile:
 mpdata = json.loads(data)
 
 # twitter api config
-consumer_key = secrets.consumer_key
-consumer_secret = secrets.consumer_secret
-access_token = secrets.access_token
-access_secret = secrets.access_secret
+consumer_key = 'NtLIPnCyyeEiiEWl3LWPCNssl'
+consumer_secret = 'nkOUbyh5mUeVp3pxO5mjqbBIJFxaQYNoUN0ybcPJPC3fwnEcTI'
+access_token = '1090976401333858304-Vu5Y7y7KUyxpblwkzegs7VMxfKbXTt'
+access_secret = 'xLZBZxojXvpPMIE4tJnylTJ7DIZLKZauLytyzSUb2Y1s6'
 # database module
 
 # delete the database 
