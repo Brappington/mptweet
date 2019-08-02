@@ -49,7 +49,7 @@ def createTables(cursor):
     # create mp table
     create_mp = "CREATE TABLE mp (user_id VARCHAR(255) PRIMARY KEY NOT NULL, name VARCHAR(255) NOT NULL, gender CHECK(gender IN ('Male', 'Female')) NOT NULL, party VARCHAR(255) NOT NULL, FOREIGN KEY (party) REFERENCES party(name))"
     # create status update
-    create_status = "CREATE TABLE status (id_str VARCHAR(255) PRIMARY KEY, created_at TEXT, user_id VARCHAR(255) NOT NULL, favorite_count MEDIUMINT, retweet_count MEDIUMINT, text TEXT NOT NULL, FOREIGN KEY (user_id) REFERENCES mp(user_id))"
+    create_status = "CREATE TABLE status (id_str VARCHAR(255) PRIMARY KEY, created_at TEXT, user_id VARCHAR(255) NOT NULL, favorite_count MEDIUMINT, retweet_count MEDIUMINT, FOREIGN KEY (user_id) REFERENCES mp(user_id))"
     cursor.execute(create_party)
     cursor.execute(create_mp)
     cursor.execute(create_status)
@@ -113,18 +113,18 @@ def addMP(user_id, name, gender, party):
 # add status to database
 
 
-def addStatus(id_str, created_at, user_id, favorite_count, retweet_count, text):
+def addStatus(id_str, created_at, user_id, favorite_count, retweet_count):
     # connect to it
     conn = sqlite3.connect(db)
     # get cursor
     c = conn.cursor()
-    sql = ''' INSERT INTO status(id_str, created_at, user_id, favorite_count, retweet_count, text)
-    VALUES(?,?,?,?,?,?)'''
+    sql = ''' INSERT INTO status(id_str, created_at, user_id, favorite_count, retweet_count)
+    VALUES(?,?,?,?,?)'''
     try:
         c.execute(sql, (id_str, created_at, user_id,
-                        favorite_count, retweet_count, text))
+                        favorite_count, retweet_count))
         print('adding tweet: ')
-        print(id_str, created_at, user_id, favorite_count, retweet_count, text)
+        print(id_str, created_at, user_id, favorite_count, retweet_count)
     except sqlite3.IntegrityError:
         print('Tweet already exists!')
     # commit database changes
@@ -242,7 +242,7 @@ def getAllTweets(user_id):
     # iterates through tweets and adds each tweet to database using addStatus()
     for tweet in alltweets:
         addStatus(tweet.id_str, tweet.created_at,
-                  tweet.user.id_str, tweet.favorite_count, tweet.retweet_count, tweet.text)
+                  tweet.user.id_str, tweet.favorite_count, tweet.retweet_count)
 
 # gets recent tweets for mps from list and adds them to database
 
@@ -356,11 +356,11 @@ def getPartyEngagement(party):
 
 def getMPs():
     mps = getUserIds()
-    list = []
+    mplist = []
     for user_id in mps:
-        list.append([getMPName(user_id), getMPEngagement(user_id), getMPColour(user_id)])
-    print(list)
-    return list
+        mplist.append([getMPName(user_id), getMPEngagement(user_id), getMPColour(user_id)])
+    print(mplist)
+    return mplist
 
 # returns list of gender and average engagement
 
