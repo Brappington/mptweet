@@ -8,7 +8,7 @@
         "user_id": "2885503101",
         "name": "Adrian Bailey",
         "gender": "Male",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "3011043981",
         "name": "Alan Brown",
@@ -63,12 +63,12 @@
         "user_id": "20142835",
         "name": "Alex Norris",
         "gender": "Male",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "15726425",
         "name": "Alex Sobel",
         "gender": "Male",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "21713090",
         "name": "Alison McGovern",
@@ -213,7 +213,7 @@
         "user_id": "518660800",
         "name": "Anneliese Dodds",
         "gender": "Female",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "92759618",
         "name": "Antoinette Sandbach",
@@ -238,7 +238,7 @@
         "user_id": "250091875",
         "name": "Barry Sheerman",
         "gender": "Male",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "24211594",
         "name": "Ben Bradshaw",
@@ -363,7 +363,7 @@
         "user_id": "3128468829",
         "name": "Chris Evans",
         "gender": "Male",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "1305528373",
         "name": "Chris Green",
@@ -418,7 +418,7 @@
         "user_id": "1351389578",
         "name": "Christina Rees",
         "gender": "Female",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "87647640",
         "name": "Christine Jardine",
@@ -533,7 +533,7 @@
         "user_id": "47345180",
         "name": "David Drew",
         "gender": "Male",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "2230539338",
         "name": "David Gauke",
@@ -673,7 +673,7 @@
         "user_id": "124154899",
         "name": "Elisha McCallion",
         "gender": "Female",
-        "party": "Sinn Fein"
+        "party": "Sinn F\u00e9in"
     }, {
         "user_id": "52124856",
         "name": "Ellie Reeves",
@@ -738,12 +738,12 @@
         "user_id": "63111042",
         "name": "Gareth Snell",
         "gender": "Male",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "219976700",
         "name": "Gareth Thomas",
         "gender": "Male",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "140604687",
         "name": "Gavin Newlands",
@@ -768,7 +768,7 @@
         "user_id": "20441118",
         "name": "Ged Killen",
         "gender": "Male",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "101712079",
         "name": "George Freeman",
@@ -778,7 +778,7 @@
         "user_id": "144791011",
         "name": "Geraint Davies",
         "gender": "Male",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "496060628",
         "name": "Gerald Jones",
@@ -1098,7 +1098,7 @@
         "user_id": "154661114",
         "name": "Jim McMahon",
         "gender": "Male",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "2855674449",
         "name": "Jo Churchill",
@@ -1113,7 +1113,7 @@
         "user_id": "56657187",
         "name": "Jo Platt",
         "gender": "Female",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "1328897358",
         "name": "Jo Stevens",
@@ -1223,7 +1223,7 @@
         "user_id": "18632946",
         "name": "Jonathan Reynolds",
         "gender": "Male",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "401568431",
         "name": "Judith Cummins",
@@ -1303,7 +1303,7 @@
         "user_id": "415910519",
         "name": "Kate Osamor",
         "gender": "Female",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "2425571623",
         "name": "Keir Starmer",
@@ -1448,7 +1448,7 @@
         "user_id": "77224096",
         "name": "Louise Ellman",
         "gender": "Female",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "143508762",
         "name": "Louise Haigh",
@@ -1473,7 +1473,7 @@
         "user_id": "32439211",
         "name": "Lucy Powell",
         "gender": "Female",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "3072168695",
         "name": "Luke Graham",
@@ -1488,7 +1488,7 @@
         "user_id": "10955042",
         "name": "Luke Pollard",
         "gender": "Male",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "1478483473",
         "name": "Lyn Brown",
@@ -1563,7 +1563,7 @@
         "user_id": "1302003805",
         "name": "Mark Hendrick",
         "gender": "Male",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "175005016",
         "name": "Mark Lancaster",
@@ -1693,12 +1693,12 @@
         "user_id": "127619354",
         "name": "Michelle Gildernew",
         "gender": "Female",
-        "party": "Sinn Fein"
+        "party": "Sinn F\u00e9in"
     }, {
         "user_id": "2982986710",
         "name": "Mickey Brady",
         "gender": "Male",
-        "party": "Sinn Fein"
+        "party": "Sinn F\u00e9in"
     }, {
         "user_id": "20325923",
         "name": "Mike Amesbury",
@@ -1953,7 +1953,7 @@
         "user_id": "620007630",
         "name": "Preet Kaur Gill",
         "gender": "Female",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "61660254",
         "name": "Priti Patel",
@@ -1963,7 +1963,7 @@
         "user_id": "80151292",
         "name": "Rachael Maskell",
         "gender": "Female",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "860896517737119747",
         "name": "Rachel Maclean",
@@ -2203,7 +2203,7 @@
         "user_id": "622426905",
         "name": "Stephen Doughty",
         "gender": "Male",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "997293914",
         "name": "Stephen Gethins",
@@ -2258,7 +2258,7 @@
         "user_id": "35781487",
         "name": "Stephen Twigg",
         "gender": "Male",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "11564602",
         "name": "Steve Brine",
@@ -2278,7 +2278,7 @@
         "user_id": "23749162",
         "name": "Steve Reed",
         "gender": "Male",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "219298196",
         "name": "Stewart Hosie",
@@ -2398,7 +2398,7 @@
         "user_id": "48280657",
         "name": "Tracy Brabin",
         "gender": "Female",
-        "party": "Labour/Co-operative"
+        "party": "Labour"
     }, {
         "user_id": "113491007",
         "name": "Tulip Siddiq",

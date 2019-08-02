@@ -5,8 +5,8 @@ import sqlite3
 import tweepy
 import json
 
-# set root directory path
-os.chdir('/home/mptwitter/mptweet/')
+# set root directory path comment out this line when testing 
+#os.chdir('/home/mptwitter/mptweet/')
 # instance of the flask class is our WSGI application
 # we use __name__ so that it can adapt to be imported as a module.
 app = Flask(__name__)
@@ -21,7 +21,7 @@ with open('app/static/data/partyData.json', 'r') as myfile:
 partydata = json.loads(data)
 
 # read the json  data of MPs for the database
-with open('app/static/data/mpData.json', 'r') as myfile:
+with open('app/static/data/mpDataAll.json', 'r') as myfile:
     data=myfile.read()
 # parse file
 mpdata = json.loads(data)
@@ -45,7 +45,7 @@ def deleteDatabase(cursor):
 
 def createTables(cursor):
     # create party table
-    create_party = "CREATE TABLE party (name VARCHAR(255) PRIMARY KEY NOT NULL, colour CHECK(colour IN ('red', 'blue', 'yellow', 'green', 'orange', 'black')) NOT NULL)"
+    create_party = "CREATE TABLE party (name VARCHAR(255) PRIMARY KEY NOT NULL, colour CHECK(colour IN ('red', 'blue', 'yellow', 'green', 'orange', 'black', 'lime', 'silver', 'olive')) NOT NULL)"
     # create mp table
     create_mp = "CREATE TABLE mp (user_id VARCHAR(255) PRIMARY KEY NOT NULL, name VARCHAR(255) NOT NULL, gender CHECK(gender IN ('Male', 'Female')) NOT NULL, party VARCHAR(255) NOT NULL, FOREIGN KEY (party) REFERENCES party(name))"
     # create status update
@@ -502,7 +502,7 @@ def main():
 
 @app.route('/test')
 def test():
-    updateDB()
+    intialiseDB()
     return 'database updated'
 
 if __name__ == "__main__":
