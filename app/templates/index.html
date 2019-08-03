@@ -131,17 +131,11 @@
             drawChart3();
             console.log('resize event: chart redrawn')
         });
-        twttr.events.bind(
-            'loaded', function (event) {
-                event.widgets.forEach(function (widget) {
-                    console.log("Created widget", widget.id);
-                });
-                drawChart1();
-                drawChart2();
-                drawChart3();
-                console.log('tweet loaded event: chart redrawn')
-            }
-        );
+        setTimeout(function(){ 
+            drawChart1();
+            drawChart2();
+            drawChart3(); }, 600);
+        
     </script>
 </head>
 

@@ -18,23 +18,6 @@
         {
             "name": "Green Party",
             "colour": "green"
-        },
-        {
-            "name": "Independent",
-            "colour": "black"
-        },
-        {
-            "name": "Sinn Fein",
-            "colour": "lime"
-        },
-        {
-            "name": "DUP",
-            "colour": "silver"
-        },
-        {
-            "name": "Plaid Cymru",
-            "colour": "olive"
         }
-        
     ]
 }
