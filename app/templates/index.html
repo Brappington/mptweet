@@ -124,13 +124,6 @@
             var chart2 = new google.visualization.ColumnChart(document.getElementById('chart_div3'));
             chart2.draw(data2, options2);
            }
-
-        /* $(window).on("load", function(){
-            drawChart1();
-            drawChart2();
-            drawChart3();
-            console.log('page load event: chart redrawn')
-        }) */
            // resize jquery event to redraw charts when window is resized.
         $(window).resize(function(){
             drawChart1();
@@ -138,12 +131,17 @@
             drawChart3();
             console.log('resize event: chart redrawn')
         });
-        // force chart to redraw to fix google charts size bug
-        setTimeout(function() {
-            drawChart1();
-            drawChart2();
-            drawChart3();
-        }, 500);
+        twttr.events.bind(
+            'loaded', function (event) {
+                event.widgets.forEach(function (widget) {
+                    console.log("Created widget", widget.id);
+                });
+                drawChart1();
+                drawChart2();
+                drawChart3();
+                console.log('tweet loaded event: chart redrawn')
+            }
+        );
     </script>
 </head>
 

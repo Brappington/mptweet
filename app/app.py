@@ -62,6 +62,7 @@ def addJsonData():
     for x in partydata["parties"]:
         addParty(x["name"], x["colour"])
 
+
 # initialise a new database with provided data.
 def intialiseDB():
     # create database and tables
@@ -209,7 +210,7 @@ def getAllTweets(user_id):
     # authorize twitter, initialise tweepy
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_secret)
-    api = tweepy.API(auth)
+    api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 
     # initialize a list to save all the  Tweets
     alltweets = []
@@ -359,8 +360,9 @@ def getMPs():
     mplist = []
     for user_id in mps:
         mplist.append([getMPName(user_id), getMPEngagement(user_id), getMPColour(user_id)])
-    print(mplist)
-    return mplist
+    mplist = sorted(mplist, key=lambda x: x[1], reverse=True)
+    print(mplist[:9])
+    return mplist[:9]
 
 # returns list of gender and average engagement
 
