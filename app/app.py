@@ -21,7 +21,7 @@ with open('app/static/data/partyData.json', 'r') as myfile:
 partydata = json.loads(data)
 
 # read the json  data of MPs for the database
-with open('app/static/data/mpDataAll.json', 'r') as myfile:
+with open('app/static/data/mpData.json', 'r') as myfile:
     data=myfile.read()
 # parse file
 mpdata = json.loads(data)
@@ -216,34 +216,39 @@ def getAllTweets(user_id):
     alltweets = []
 
     # make first request for most recent tweets (200 is the maximum allowed count)
-    new_tweets = api.user_timeline(user_id=user_id, count=200, include_rts=False)
-
-    # save most recent tweets
-    alltweets.extend(new_tweets)
-
-    # save id of the oldest tweet minus one
-    oldest = alltweets[-1].id - 1
-
-    # keep getting tweets until there are no tweets left to get
-    while len(new_tweets) > 0:
-        print("getting tweets before %s" % (oldest))
-
-        # all subsequent requests use the max_id param to prevent duplicates
-        # added include_rts=False to not include retweets
-        new_tweets = api.user_timeline(
-            user_id=user_id, count=200, max_id=oldest, include_rts=False)
+    try:
+        new_tweets = api.user_timeline(user_id=user_id, count=200, include_rts=False)
 
         # save most recent tweets
         alltweets.extend(new_tweets)
 
-        # update the id of the oldest tweet minus one
+        # save id of the oldest tweet minus one
         oldest = alltweets[-1].id - 1
 
-        print("...%s tweets downloaded so far" % (len(alltweets)))
-    # iterates through tweets and adds each tweet to database using addStatus()
-    for tweet in alltweets:
-        addStatus(tweet.id_str, tweet.created_at,
-                  tweet.user.id_str, tweet.favorite_count, tweet.retweet_count)
+        # keep getting tweets until there are no tweets left to get
+        while len(new_tweets) > 0:
+            print("getting tweets before %s" % (oldest))
+
+            # all subsequent requests use the max_id param to prevent duplicates
+            # added include_rts=False to not include retweets
+            new_tweets = api.user_timeline(
+                user_id=user_id, count=200, max_id=oldest, include_rts=False)
+
+            # save most recent tweets
+            alltweets.extend(new_tweets)
+
+            # update the id of the oldest tweet minus one
+            oldest = alltweets[-1].id - 1
+
+            print("...%s tweets downloaded so far" % (len(alltweets)))
+        # iterates through tweets and adds each tweet to database using addStatus()
+        for tweet in alltweets:
+            addStatus(tweet.id_str, tweet.created_at,
+                    tweet.user.id_str, tweet.favorite_count, tweet.retweet_count)
+        print(getMPName(user_id), 'MP tweets imported to database')
+    except:
+        print('error occurred: skipping mp', getMPName(user_id))
+    
 
 # gets recent tweets for mps from list and adds them to database
 
@@ -251,7 +256,6 @@ def getAllTweets(user_id):
 def allMPTweets(mp_ids):
     for user_id in mp_ids:
         getAllTweets(user_id)
-        print(getMPName(user_id), ' MP tweets imported to database')
 
 # These functions return the average engagement for mps, genders and parties respectively
 
@@ -280,7 +284,10 @@ def getMPEngagement(user_id):
     total = fetch[0]
     print("Total tweets: ", total)
     # find average
-    avg = round((totalretweet + totalfavorite) / total)
+    if total==0:
+        avg = 0
+    else:
+        avg = round((totalretweet + totalfavorite) / total)
     print("Average engagement: ", avg)
     # close connection
     conn.close()
@@ -312,7 +319,10 @@ def getGenderEngagement(gender):
     total = fetch[0]
     print("Total tweets: ", total)
     # find average
-    avg = round((totalretweet + totalfavorite) / total)
+    if total==0:
+        avg = 0
+    else:
+        avg = round((totalretweet + totalfavorite) / total)    
     print("Average engagement: ", avg)
     # close connection
     conn.close()
@@ -344,7 +354,10 @@ def getPartyEngagement(party):
     total = fetch[0]
     print("Total tweets: ", total)
     # find average
-    avg = round((totalretweet + totalfavorite) / total)
+    if total==0:
+        avg = 0
+    else:
+        avg = round((totalretweet + totalfavorite) / total)
     print("Average engagement: ", avg)
     # close connection
     conn.close()
@@ -361,8 +374,8 @@ def getMPs():
     for user_id in mps:
         mplist.append([getMPName(user_id), getMPEngagement(user_id), getMPColour(user_id)])
     mplist = sorted(mplist, key=lambda x: x[1], reverse=True)
-    print(mplist[:9])
-    return mplist[:9]
+    print(mplist[:5])
+    return mplist[:5]
 
 # returns list of gender and average engagement
 
@@ -502,7 +515,7 @@ def main():
     partytweet = mostEngagedPartyTweet(myMax(partylist)[0])
     return render_template('index.html', mplist=mplist, mptweet=mptweet,genderlist=genderlist, gendertweet=gendertweet, partylist=partylist, partytweet=partytweet)
 
-@app.route('/test')
+@app.route('/update')
 def test():
     intialiseDB()
     return 'database updated'
