@@ -49,6 +49,8 @@
                 hAxis: {
                     title: 'Member of Parliament',
                     showTextEvery: 1,
+                    slantedText: true,
+                    slantedTextAngle: 30
                 },
                 vAxis: {
                     title: 'Engagement'
@@ -78,7 +80,9 @@
                 },
                 hAxis: {
                     title: 'Political Party',
-                    showTextEvery: 1
+                    showTextEvery: 1,
+                    slantedText: true,
+                    slantedTextAngle: 30
                 },
                 vAxis: {
                     title: 'Engagement'
@@ -113,7 +117,10 @@
                     fontSize: 18
                 },
                 hAxis: {
-                    title: 'Gender'
+                    title: 'Gender',
+                    showTextEvery: 1,
+                    slantedText: true,
+                    slantedTextAngle: 30
                 },
                 vAxis: {
                     title: 'Engagement'
@@ -133,8 +140,8 @@
         setTimeout(function(){ 
             drawChart1();
             drawChart2();
-            drawChart3(); }, 600);
-        
+            drawChart3();
+            console.log('timeout event: chart redrawn') }, 600);
     </script>
 </head>
 

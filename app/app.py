@@ -83,6 +83,7 @@ def intialiseDB():
     mps = getUserIds()
     # get tweets from mps and add to database
     allMPTweets(mps) 
+    saveData()
 
 # updates the database without deleting it
 def updateDB():
@@ -90,6 +91,7 @@ def updateDB():
     mps = getUserIds()
     # get tweets from mps and add to database
     allMPTweets(mps)
+    saveData()
 
 # mp module
 
@@ -501,24 +503,71 @@ def myMax(listoflists):
             maximum = item
     return maximum
 
+def saveData():
+    mplist = getMPs()
+    with open('app/static/data/mplist.json', 'w') as outfile:
+        json.dump(mplist, outfile)
+    mptweet = mostEngagedMPTweet(myMax(mplist)[0])
+    with open('app/static/data/mostEngagedMPTweet.json', 'w') as outfile:
+        json.dump(mptweet, outfile)
+    genderlist = getGenders()
+    with open('app/static/data/getGenders.json', 'w') as outfile:
+        json.dump(genderlist, outfile)
+    gendertweet = mostEngagedGenderTweet(myMax(genderlist)[0])
+    with open('app/static/data/mostEngagedGenderTweet.json', 'w') as outfile:
+        json.dump(gendertweet, outfile)
+    partylist = getParties()
+    with open('app/static/data/getParties.json', 'w') as outfile:
+        json.dump(partylist, outfile)
+    partytweet = mostEngagedPartyTweet(myMax(partylist)[0])
+    with open('app/static/data/mostEngagedPartyTweet.json', 'w') as outfile:
+        json.dump(partytweet, outfile)
+    print('files saved')
+
+def readData():
+    with open('app/static/data/mplist.json', 'r') as myfile:
+        data=myfile.read()
+    mpList = json.loads(data)
+    with open('app/static/data/mostEngagedMPTweet.json', 'r') as myfile:
+        data=myfile.read()
+    mostEngagedMPTweet = json.loads(data)
+    with open('app/static/data/getGenders.json', 'r') as myfile:
+        data=myfile.read()
+    getGenders = json.loads(data)
+    with open('app/static/data/mostEngagedGenderTweet.json', 'r') as myfile:
+        data=myfile.read()
+    mostEngagedGenderTweet = json.loads(data)
+    with open('app/static/data/getParties.json', 'r') as myfile:
+        data=myfile.read()
+    getParties = json.loads(data)
+    with open('app/static/data/mostEngagedPartyTweet.json', 'r') as myfile:
+        data=myfile.read()
+    mostEngagedPartyTweet = json.loads(data)
+    return mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet,getParties, mostEngagedPartyTweet
 
 # flask
 
 # route() decorator tells Flask what URL should trigger our function
 @app.route('/')
 def main():
-    mplist = getMPs()
-    mptweet = mostEngagedMPTweet(myMax(mplist)[0])
+    mpList = getMPs()
+    mptweet = mostEngagedMPTweet(myMax(mpList)[0])
     genderlist = getGenders()
     gendertweet = mostEngagedGenderTweet(myMax(genderlist)[0])
     partylist = getParties()
     partytweet = mostEngagedPartyTweet(myMax(partylist)[0])
-    return render_template('index.html', mplist=mplist, mptweet=mptweet,genderlist=genderlist, gendertweet=gendertweet, partylist=partylist, partytweet=partytweet)
+    return render_template('index.html', mplist=mpList, mptweet=mptweet,genderlist=genderlist, gendertweet=gendertweet, partylist=partylist, partytweet=partytweet)
 
 @app.route('/update')
 def test():
     intialiseDB()
     return 'database updated'
+
+@app.route('/test')
+def test2():
+    saveData()
+    mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet,getParties, mostEngagedPartyTweet = readData()
+    return render_template('index.html', mplist=mpList, mptweet=mostEngagedMPTweet,genderlist=getGenders, gendertweet=mostEngagedGenderTweet, partylist=getParties, partytweet=mostEngagedPartyTweet)
 
 if __name__ == "__main__":
     app.run(debug=True)
