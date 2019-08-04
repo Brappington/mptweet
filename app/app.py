@@ -5,8 +5,8 @@ import sqlite3
 import tweepy
 import json
 
-# set root directory path comment out this line when testing 
-#os.chdir('/home/mptwitter/mptweet/')
+# set root directory path comment out this line when testing
+# os.chdir('/home/mptwitter/mptweet/')
 # instance of the flask class is our WSGI application
 # we use __name__ so that it can adapt to be imported as a module.
 app = Flask(__name__)
@@ -16,13 +16,13 @@ db = "app/database/mptweet.db"
 
 # read the json  data of Parties for the database
 with open('app/static/data/partyData.json', 'r') as myfile:
-    data=myfile.read()
+    data = myfile.read()
 # parse file
 partydata = json.loads(data)
 
 # read the json  data of MPs for the database
-with open('app/static/data/mpData.json', 'r') as myfile:
-    data=myfile.read()
+with open('app/static/data/mpDataAll.json', 'r') as myfile:
+    data = myfile.read()
 # parse file
 mpdata = json.loads(data)
 
@@ -33,7 +33,9 @@ access_token = '1090976401333858304-Vu5Y7y7KUyxpblwkzegs7VMxfKbXTt'
 access_secret = 'xLZBZxojXvpPMIE4tJnylTJ7DIZLKZauLytyzSUb2Y1s6'
 # database module
 
-# delete the database 
+# delete the database
+
+
 def deleteDatabase(cursor):
     # drop tables if exist
     drop_mp = "DROP TABLE IF EXISTS mp"
@@ -42,6 +44,7 @@ def deleteDatabase(cursor):
     cursor.execute(drop_mp)
     cursor.execute(drop_party)
     cursor.execute(drop_status)
+
 
 def createTables(cursor):
     # create party table
@@ -55,6 +58,8 @@ def createTables(cursor):
     cursor.execute(create_status)
 
 # add data from mpdata and party data json files stored in app/static/data/
+
+
 def addJsonData():
     # add data from json
     for y in mpdata["mps"]:
@@ -82,10 +87,12 @@ def intialiseDB():
     # get user_ids for MPs in database
     mps = getUserIds()
     # get tweets from mps and add to database
-    allMPTweets(mps) 
+    allMPTweets(mps)
     saveData()
 
 # updates the database without deleting it
+
+
 def updateDB():
     # get user_ids for MPs in database
     mps = getUserIds()
@@ -96,6 +103,8 @@ def updateDB():
 # mp module
 
 # add mp to database
+
+
 def addMP(user_id, name, gender, party):
     # connect to db
     conn = sqlite3.connect(db)
@@ -174,6 +183,7 @@ def getMPName(user_id):
 
 # returns name of MPs party
 
+
 def getMPColour(user_id):
     # connect to db
     conn = sqlite3.connect(db)
@@ -212,14 +222,16 @@ def getAllTweets(user_id):
     # authorize twitter, initialise tweepy
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_secret)
-    api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
+    api = tweepy.API(auth, wait_on_rate_limit=True,
+                     wait_on_rate_limit_notify=True)
 
     # initialize a list to save all the  Tweets
     alltweets = []
 
     # make first request for most recent tweets (200 is the maximum allowed count)
     try:
-        new_tweets = api.user_timeline(user_id=user_id, count=200, include_rts=False)
+        new_tweets = api.user_timeline(
+            user_id=user_id, count=200, include_rts=False)
 
         # save most recent tweets
         alltweets.extend(new_tweets)
@@ -246,11 +258,11 @@ def getAllTweets(user_id):
         # iterates through tweets and adds each tweet to database using addStatus()
         for tweet in alltweets:
             addStatus(tweet.id_str, tweet.created_at,
-                    tweet.user.id_str, tweet.favorite_count, tweet.retweet_count)
+                      tweet.user.id_str, tweet.favorite_count, tweet.retweet_count)
         print(getMPName(user_id), 'MP tweets imported to database')
     except:
         print('error occurred: skipping mp', getMPName(user_id))
-    
+
 
 # gets recent tweets for mps from list and adds them to database
 
@@ -286,7 +298,7 @@ def getMPEngagement(user_id):
     total = fetch[0]
     print("Total tweets: ", total)
     # find average
-    if total==0:
+    if total == 0:
         avg = 0
     else:
         avg = round((totalretweet + totalfavorite) / total)
@@ -321,10 +333,10 @@ def getGenderEngagement(gender):
     total = fetch[0]
     print("Total tweets: ", total)
     # find average
-    if total==0:
+    if total == 0:
         avg = 0
     else:
-        avg = round((totalretweet + totalfavorite) / total)    
+        avg = round((totalretweet + totalfavorite) / total)
     print("Average engagement: ", avg)
     # close connection
     conn.close()
@@ -356,7 +368,7 @@ def getPartyEngagement(party):
     total = fetch[0]
     print("Total tweets: ", total)
     # find average
-    if total==0:
+    if total == 0:
         avg = 0
     else:
         avg = round((totalretweet + totalfavorite) / total)
@@ -374,7 +386,8 @@ def getMPs():
     mps = getUserIds()
     mplist = []
     for user_id in mps:
-        mplist.append([getMPName(user_id), getMPEngagement(user_id), getMPColour(user_id)])
+        mplist.append([getMPName(user_id), getMPEngagement(
+            user_id), getMPColour(user_id)])
     mplist = sorted(mplist, key=lambda x: x[1], reverse=True)
     print(mplist[:5])
     return mplist[:5]
@@ -437,6 +450,7 @@ def getColour(name):
 # get most engaged tweets
 # mp
 
+
 def mostEngagedMPTweet(mp):
     # connect to db
     conn = sqlite3.connect(db)
@@ -453,6 +467,7 @@ def mostEngagedMPTweet(mp):
 
 # gender
 
+
 def mostEngagedGenderTweet(gender):
     # connect to db
     conn = sqlite3.connect(db)
@@ -468,6 +483,7 @@ def mostEngagedGenderTweet(gender):
 
 # party
 
+
 def mostEngagedPartyTweet(party):
     # connect to db
     conn = sqlite3.connect(db)
@@ -480,7 +496,7 @@ def mostEngagedPartyTweet(party):
     tweetid = fetch[0]
     print("The id of the party most engaged tweet is: ", tweetid)
     return(getEmbed(tweetid))
-    
+
 
 # get embededed tweet
 def getEmbed(tweetid):
@@ -493,6 +509,7 @@ def getEmbed(tweetid):
 
 # find the maximum value for the 2nd item in list of lists
 
+
 def myMax(listoflists):
     if not listoflists:
         raise ValueError('empty list')
@@ -502,6 +519,7 @@ def myMax(listoflists):
         if item[1] > maximum[1]:
             maximum = item
     return maximum
+
 
 def saveData():
     mplist = getMPs()
@@ -524,26 +542,27 @@ def saveData():
         json.dump(partytweet, outfile)
     print('files saved')
 
+
 def readData():
     with open('app/static/data/mplist.json', 'r') as myfile:
-        data=myfile.read()
+        data = myfile.read()
     mpList = json.loads(data)
     with open('app/static/data/mostEngagedMPTweet.json', 'r') as myfile:
-        data=myfile.read()
+        data = myfile.read()
     mostEngagedMPTweet = json.loads(data)
     with open('app/static/data/getGenders.json', 'r') as myfile:
-        data=myfile.read()
+        data = myfile.read()
     getGenders = json.loads(data)
     with open('app/static/data/mostEngagedGenderTweet.json', 'r') as myfile:
-        data=myfile.read()
+        data = myfile.read()
     mostEngagedGenderTweet = json.loads(data)
     with open('app/static/data/getParties.json', 'r') as myfile:
-        data=myfile.read()
+        data = myfile.read()
     getParties = json.loads(data)
     with open('app/static/data/mostEngagedPartyTweet.json', 'r') as myfile:
-        data=myfile.read()
+        data = myfile.read()
     mostEngagedPartyTweet = json.loads(data)
-    return mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet,getParties, mostEngagedPartyTweet
+    return mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet, getParties, mostEngagedPartyTweet
 
 # flask
 
@@ -556,18 +575,21 @@ def main():
     gendertweet = mostEngagedGenderTweet(myMax(genderlist)[0])
     partylist = getParties()
     partytweet = mostEngagedPartyTweet(myMax(partylist)[0])
-    return render_template('index.html', mplist=mpList, mptweet=mptweet,genderlist=genderlist, gendertweet=gendertweet, partylist=partylist, partytweet=partytweet)
+    return render_template('index.html', mplist=mpList, mptweet=mptweet, genderlist=genderlist, gendertweet=gendertweet, partylist=partylist, partytweet=partytweet)
+
 
 @app.route('/update')
 def test():
     intialiseDB()
     return 'database updated'
 
+
 @app.route('/test')
 def test2():
     saveData()
-    mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet,getParties, mostEngagedPartyTweet = readData()
-    return render_template('index.html', mplist=mpList, mptweet=mostEngagedMPTweet,genderlist=getGenders, gendertweet=mostEngagedGenderTweet, partylist=getParties, partytweet=mostEngagedPartyTweet)
+    mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet, getParties, mostEngagedPartyTweet = readData()
+    return render_template('index.html', mplist=mpList, mptweet=mostEngagedMPTweet, genderlist=getGenders, gendertweet=mostEngagedGenderTweet, partylist=getParties, partytweet=mostEngagedPartyTweet)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
