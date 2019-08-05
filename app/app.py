@@ -586,15 +586,6 @@ def test():
     intialiseDB()
     return 'database updated'
 
-@app.route('/addparty')
-def addparty():
-    with open('app/static/data/partyData.json', 'r') as myfile:
-        data = myfile.read()
-    # parse file
-    partydata = json.loads(data)
-    for x in partydata["parties"]:
-        addParty(x["name"], x["colour"])
-    return 'parties updated'
 
 @app.route('/test')
 def test2():
