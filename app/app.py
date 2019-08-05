@@ -5,8 +5,8 @@ import sqlite3
 import tweepy
 import json
 
-# set root directory path comment out this line when testing
-# os.chdir('/home/mptwitter/mptweet/')
+# set root directory path, comment out this line when testing locally
+os.chdir('/home/mptwitter/mptweet/')
 # instance of the flask class is our WSGI application
 # we use __name__ so that it can adapt to be imported as a module.
 app = Flask(__name__)
