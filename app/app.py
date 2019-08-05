@@ -193,7 +193,10 @@ def getMPColour(user_id):
     c.execute(sql, (user_id,))
     fetch = c.fetchone()
     # get string of name only
-    colour = fetch[0]
+    try:
+        colour = fetch[0]
+    except:
+        print('This MP with user id:', user_id, 'failed')
     print(colour)
     # close connection
     conn.close()
@@ -280,19 +283,19 @@ def getMPEngagement(user_id):
     # get cursor
     c = conn.cursor()
     # get total retweet_count and favorite_count for user_id
-    favesql = ''' SELECT SUM(favorite_count) FROM status WHERE user_id = ?'''
+    favesql = ''' SELECT SUM(favorite_count) FROM status WHERE user_id = ? AND created_at > date('now','-1 month')'''
     c.execute(favesql, (user_id,))
     fetch = c.fetchone()
     totalfavorite = fetch[0]
     print("Total favorite: ", totalfavorite)
     # find sum of total retweet_count and favorite_count
-    retweetsql = ''' SELECT SUM(retweet_count) FROM status WHERE user_id = ?'''
+    retweetsql = ''' SELECT SUM(retweet_count) FROM status WHERE user_id = ? AND created_at > date('now','-1 month')'''
     c.execute(retweetsql, (user_id,))
     fetch = c.fetchone()
     totalretweet = fetch[0]
     print("Total retweet: ", totalretweet)
     # get total number of status items for user_id
-    totalsql = ''' SELECT COUNT(*) FROM status WHERE user_id = ?'''
+    totalsql = ''' SELECT COUNT(*) FROM status WHERE user_id = ? AND created_at > date('now','-1 month')'''
     c.execute(totalsql, (user_id,))
     fetch = c.fetchone()
     total = fetch[0]
@@ -315,19 +318,19 @@ def getGenderEngagement(gender):
     # get cursor
     c = conn.cursor()
     # get total retweet_count and favorite_count for user_id
-    favesql = ''' SELECT sum(favorite_count) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE gender = ?'''
+    favesql = ''' SELECT sum(favorite_count) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE gender = ? AND created_at > date('now','-1 month')'''
     c.execute(favesql, (gender,))
     fetch = c.fetchone()
     totalfavorite = fetch[0]
     print("Total favorite: ", totalfavorite)
     # find sum of total retweet_count and favorite_count
-    retweetsql = ''' SELECT sum(retweet_count) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE gender = ?'''
+    retweetsql = ''' SELECT sum(retweet_count) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE gender = ? AND created_at > date('now','-1 month')'''
     c.execute(retweetsql, (gender,))
     fetch = c.fetchone()
     totalretweet = fetch[0]
     print("Total retweet: ", totalretweet)
     # get total number of status items for user_id
-    totalsql = ''' SELECT COUNT(*) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE gender = ?'''
+    totalsql = ''' SELECT COUNT(*) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE gender = ? AND created_at > date('now','-1 month')'''
     c.execute(totalsql, (gender,))
     fetch = c.fetchone()
     total = fetch[0]
@@ -350,19 +353,19 @@ def getPartyEngagement(party):
     # get cursor
     c = conn.cursor()
     # get total retweet_count and favorite_count for user_id
-    favesql = ''' SELECT sum(favorite_count) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE party = ?'''
+    favesql = ''' SELECT sum(favorite_count) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE party = ? AND created_at > date('now','-1 month')'''
     c.execute(favesql, (party,))
     fetch = c.fetchone()
     totalfavorite = fetch[0]
     print("Total favorite: ", totalfavorite)
     # find sum of total retweet_count and favorite_count
-    retweetsql = ''' SELECT sum(retweet_count) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE party = ?'''
+    retweetsql = ''' SELECT sum(retweet_count) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE party = ? AND created_at > date('now','-1 month')'''
     c.execute(retweetsql, (party,))
     fetch = c.fetchone()
     totalretweet = fetch[0]
     print("Total retweet: ", totalretweet)
     # get total number of status items for user_id
-    totalsql = ''' SELECT COUNT(*) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE party = ?'''
+    totalsql = ''' SELECT COUNT(*) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE party = ? AND created_at > date('now','-1 month')'''
     c.execute(totalsql, (party,))
     fetch = c.fetchone()
     total = fetch[0]
@@ -583,6 +586,15 @@ def test():
     intialiseDB()
     return 'database updated'
 
+@app.route('/addparty')
+def addparty():
+    with open('app/static/data/partyData.json', 'r') as myfile:
+        data = myfile.read()
+    # parse file
+    partydata = json.loads(data)
+    for x in partydata["parties"]:
+        addParty(x["name"], x["colour"])
+    return 'parties updated'
 
 @app.route('/test')
 def test2():
