@@ -389,8 +389,11 @@ def getMPs():
     mps = getUserIds()
     mplist = []
     for user_id in mps:
-        mplist.append([getMPName(user_id), getMPEngagement(
-            user_id), getMPColour(user_id)])
+        MPEngagement= getMPEngagement(user_id)
+        MPColour = getMPColour(user_id)
+        MPName = getMPName(user_id)
+        if MPEngagement > 0 :
+            mplist.append([MPName, MPEngagement, MPColour])
     mplist = sorted(mplist, key=lambda x: x[1], reverse=True)
     print(mplist[:5])
     return mplist[:5]
@@ -402,7 +405,8 @@ def getGenders():
     genders = ['Male', 'Female']
     list = []
     for gender in genders:
-        list.append([gender, getGenderEngagement(gender)])
+        genderEngagement = getGenderEngagement(gender)
+        list.append([gender, genderEngagement])
     print(list)
     return list
 
@@ -413,8 +417,10 @@ def getParties():
     parties = getPartyNames()
     list = []
     for party in parties:
-        list.append([party, getPartyEngagement(
-            party), 'color: ' + getColour(party)])
+        partyEngagement = getPartyEngagement(party)
+        partyColour = getColour(party)
+        if partyEngagement >0 :
+            list.append([party, partyEngagement, 'color: ' + partyColour])
     print(list)
     return list
 
@@ -572,13 +578,8 @@ def readData():
 # route() decorator tells Flask what URL should trigger our function
 @app.route('/')
 def main():
-    mpList = getMPs()
-    mptweet = mostEngagedMPTweet(myMax(mpList)[0])
-    genderlist = getGenders()
-    gendertweet = mostEngagedGenderTweet(myMax(genderlist)[0])
-    partylist = getParties()
-    partytweet = mostEngagedPartyTweet(myMax(partylist)[0])
-    return render_template('index.html', mplist=mpList, mptweet=mptweet, genderlist=genderlist, gendertweet=gendertweet, partylist=partylist, partytweet=partytweet)
+    mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet, getParties, mostEngagedPartyTweet = readData()
+    return render_template('index.html', mplist=mpList, mptweet=mostEngagedMPTweet, genderlist=getGenders, gendertweet=mostEngagedGenderTweet, partylist=getParties, partytweet=mostEngagedPartyTweet)
 
 
 @app.route('/update')
