@@ -6,3 +6,6 @@ __pycache__/
 # Flask stuff:
 instance/
 .webassets-cache
+
+# database
+database/
