@@ -195,12 +195,13 @@ def getMPColour(user_id):
     # get string of name only
     try:
         colour = fetch[0]
+        conn.close()
+        return colour
     except:
         print('This MP with user id:', user_id, 'failed')
-    print(colour)
-    # close connection
-    conn.close()
-    return colour
+        conn.close()
+        return
+
 # return user_ids for all mps in database as a list
 
 
