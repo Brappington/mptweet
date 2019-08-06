@@ -20,12 +20,13 @@
     <script type="text/javascript">
         // Load the Visualization API and the corechart package.
         google.charts.load('current', {
-            'packages': ['corechart', 'bar']
+            'packages': ['corechart', 'bar', 'scatter']
         });
         // Set a callback to run when the Google Visualization API is loaded.
         google.charts.setOnLoadCallback(drawChart1);
         google.charts.setOnLoadCallback(drawChart2);
         google.charts.setOnLoadCallback(drawChart3);
+        google.charts.setOnLoadCallback(drawChart4);
 
         // Callback that creates and populates a data table,
         // instantiates the chart, passes in the data and draws it.
@@ -39,7 +40,7 @@
             data.addRows(mplist);
             // Set chart options
             var options = {
-                title: 'Average engagement by individual MPs',
+                title: 'Average engagement by the Most engaging MPs',
                 titleTextStyle: {
                     color: 'black',
                     fontName: 'Oswald',
@@ -109,38 +110,74 @@
             data2.addRows(genderlist);
             // Set chart options
             var options2 = {
-                title: 'Average engagement by gender',
-                legend: 'none',
-                titleTextStyle: {
-                    color: 'black',
-                    fontName: 'Oswald',
-                    fontSize: 18
-                },
-                hAxis: {
-                    title: 'Gender',
-                    showTextEvery: 1,
-                    slantedText: true,
-                    slantedTextAngle: 30
-                },
-                vAxis: {
-                    title: 'Engagement'
-                }
+            title: 'Average engagement by gender',
+            legend: 'none',
+            titleTextStyle: {
+            color: 'black',
+            fontName: 'Oswald',
+            fontSize: 18
+            },
+            hAxis: {
+            title: 'Gender',
+            showTextEvery: 1,
+            slantedText: true,
+            slantedTextAngle: 30
+            },
+            vAxis: {
+            title: 'Engagement',
+            minValue: 0
+            }
             };
             // Instantiate and draw our gender chart, passing in some options.
             var chart2 = new google.visualization.ColumnChart(document.getElementById('chart_div3'));
             chart2.draw(data2, options2);
-           }
+            }
+
+        function drawChart4() {
+            var allmplist = {{ allmplist | safe }}
+            var data3 = new google.visualization.DataTable();
+            data3.addColumn('string', 'Member of parliament');
+            data3.addColumn('number', 'Engagement');
+            data3.addColumn({ type:'string', role: 'style'});
+            data3.addRows(allmplist);
+
+            var options3 = {
+            title: 'All MPs engagement',
+            titleTextStyle: {
+            color: 'black',
+            fontName: 'Oswald',
+            fontSize: 18 // equivalent to 1.5em of h2 for default browsers.
+            },
+            legend: 'none',
+            hAxis: {
+            title: 'Member of Parliament',
+            showTextEvery: 1,
+            slantedText: true,
+            slantedTextAngle: 30
+            },
+            vAxis: {
+            title: 'Engagement'
+            },
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div4'));
+
+            chart.draw(data3, options3);
+        }
+
            // resize jquery event to redraw charts when window is resized.
         $(window).resize(function(){
             drawChart1();
             drawChart2();
             drawChart3();
+            drawChart4();
             console.log('resize event: chart redrawn')
         });
         setTimeout(function(){ 
             drawChart1();
             drawChart2();
             drawChart3();
+            drawChart4();
             console.log('timeout event: chart redrawn') }, 600);
     </script>
 </head>
@@ -149,30 +186,39 @@
     <h1>MP Engagement on Twitter </h1>
     <main>
         <div class="maincontainer">
-                <H2 tabindex="0">Twitter engagement by MPs</H2>
-                <div class="container">
-                    <div id="chart_div1" class="chart shadow" tabindex="0"></div>
-                    <div id="tweet1" class="tweet" tabindex="0">
+            <H2 tabindex="0">Twitter engagement by MPs</H2>
+            <div class="container">
+                <div id="chart_div1" class="chart shadow" tabindex="0"></div>
+                <div id="tweet1" class="tweet" tabindex="0">
                             {{ mptweet | safe }} 
                             <p>The most engaged tweet from the most engaging MP </p>
-                    </div>
-                </div>
-                <H2 tabindex="0">Twitter engagement by party</H2>
-                <div class="container">
-                        <div id="chart_div2" class="chart shadow" tabindex="0"></div>
-                        <div id="tweet2" class="tweet" tabindex="0">
+                            </div>
+                            </div>
+            <H2 tabindex="0">Twitter engagement by party</H2>
+            <div class="container">
+                <div id="chart_div2" class="chart shadow" tabindex="0"></div>
+                <div id="tweet2" class="tweet" tabindex="0">
                             {{ partytweet | safe }}
-                            <p>The most engaged tweet from the most engaging party </p>
-                        </div>
+                    <p>The most engaged tweet from the most engaging party </p>
                 </div>
-                <H2 tabindex="0">Twitter engagement by gender</H2>
-                <div class="container">  
-                        <div id="chart_div3" class="chart shadow" tabindex="0"></div>
-                        <div id="tweet3" class="tweet" tabindex="0">
-                            {{ gendertweet | safe }}
-                            <p>The most engaged tweet from the most engaging gender</p>
-                        </div>    
-                </div>               
+            </div>
+            <H2 tabindex="0">Twitter engagement by gender</H2>
+            <div class="container">  
+                <div id="chart_div3" class="chart shadow" tabindex="0"></div>
+                <div id="tweet3" class="tweet" tabindex="0">
+                    {{ gendertweet | safe }}
+                    <p>The most engaged tweet from the most engaging gender</p>
+                </div>    
+            </div>   
+            <h2>All MPs on Twitter and their engagement</h2>
+            <div class="container">
+                    <div tabindex="0" id="chart_div4" class="chart shadow"></div>
+                    <div id="tweet4" class="tweet" tabindex="0">
+                        {{ alltimetweet | safe }}
+                        <p>The most engaging tweet by an MP of all time</p>
+                    </div>
+                   
+            </div>        
         </div>
     </main>
    

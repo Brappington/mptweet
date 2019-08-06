@@ -397,7 +397,7 @@ def getMPs():
             mplist.append([MPName, MPEngagement, MPColour])
     mplist = sorted(mplist, key=lambda x: x[1], reverse=True)
     print(mplist[:5])
-    return mplist[:5]
+    return mplist
 
 # returns list of gender and average engagement
 
@@ -420,7 +420,7 @@ def getParties():
     for party in parties:
         partyEngagement = getPartyEngagement(party)
         partyColour = getColour(party)
-        if partyEngagement >0 :
+        if partyEngagement > 0 :
             list.append([party, partyEngagement, 'color: ' + partyColour])
     print(list)
     return list
@@ -475,8 +475,18 @@ def mostEngagedMPTweet(mp):
     print("The id of the tweet is: ", tweetid)
     return(getEmbed(tweetid))
 
-# gender
+def mostEngagedTweet():
+    conn = sqlite3.connect(db)
+    c = conn.cursor()
+    sql = ''' SELECT id_str, (MAX(favorite_count + retweet_count)) FROM status
+    '''
+    c.execute(sql)
+    fetch = c.fetchone()
+    tweetid = fetch[0]
+    print("The id of the tweet is: ", tweetid)
+    return(getEmbed(tweetid))
 
+# gender
 
 def mostEngagedGenderTweet(gender):
     # connect to db
@@ -533,54 +543,65 @@ def myMax(listoflists):
 
 def saveData():
     mplist = getMPs()
-    with open('app/static/data/mplist.json', 'w') as outfile:
-        json.dump(mplist, outfile)
+    with open('app/data/mplist.json', 'w') as outfile:
+        json.dump(mplist[:5], outfile)
     mptweet = mostEngagedMPTweet(myMax(mplist)[0])
-    with open('app/static/data/mostEngagedMPTweet.json', 'w') as outfile:
+    with open('app/data/mostengagedmptweet.json', 'w') as outfile:
         json.dump(mptweet, outfile)
     genderlist = getGenders()
-    with open('app/static/data/getGenders.json', 'w') as outfile:
+    with open('app/data/getgenders.json', 'w') as outfile:
         json.dump(genderlist, outfile)
     gendertweet = mostEngagedGenderTweet(myMax(genderlist)[0])
-    with open('app/static/data/mostEngagedGenderTweet.json', 'w') as outfile:
+    with open('app/data/mostengagedgendertweet.json', 'w') as outfile:
         json.dump(gendertweet, outfile)
     partylist = getParties()
-    with open('app/static/data/getParties.json', 'w') as outfile:
+    with open('app/data/getparties.json', 'w') as outfile:
         json.dump(partylist, outfile)
     partytweet = mostEngagedPartyTweet(myMax(partylist)[0])
-    with open('app/static/data/mostEngagedPartyTweet.json', 'w') as outfile:
+    with open('app/data/mostengagedpartytweet.json', 'w') as outfile:
         json.dump(partytweet, outfile)
+    with open('app/data/allmplist.json', 'w') as outfile:
+        json.dump(mplist, outfile)
+    alltimetweet = mostEngagedTweet()
+    with open('app/data/alltimetweet.json', 'w') as outfile:
+        json.dump(alltimetweet, outfile)    
     print('files saved')
 
 
 def readData():
-    with open('app/static/data/mplist.json', 'r') as myfile:
+    with open('app/data/mplist.json', 'r') as myfile:
         data = myfile.read()
     mpList = json.loads(data)
-    with open('app/static/data/mostEngagedMPTweet.json', 'r') as myfile:
+    with open('app/data/mostengagedmptweet.json', 'r') as myfile:
         data = myfile.read()
     mostEngagedMPTweet = json.loads(data)
-    with open('app/static/data/getGenders.json', 'r') as myfile:
+    with open('app/data/getgenders.json', 'r') as myfile:
         data = myfile.read()
     getGenders = json.loads(data)
-    with open('app/static/data/mostEngagedGenderTweet.json', 'r') as myfile:
+    with open('app/data/mostengagedgendertweet.json', 'r') as myfile:
         data = myfile.read()
     mostEngagedGenderTweet = json.loads(data)
-    with open('app/static/data/getParties.json', 'r') as myfile:
+    with open('app/data/getparties.json', 'r') as myfile:
         data = myfile.read()
     getParties = json.loads(data)
-    with open('app/static/data/mostEngagedPartyTweet.json', 'r') as myfile:
+    with open('app/data/mostengagedpartyTweet.json', 'r') as myfile:
         data = myfile.read()
     mostEngagedPartyTweet = json.loads(data)
-    return mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet, getParties, mostEngagedPartyTweet
+    with open('app/data/allmplist.json', 'r') as myfile:
+        data = myfile.read()
+    allMPList = json.loads(data)
+    with open('app/data/alltimetweet.json', 'r') as myfile:
+        data = myfile.read()
+    allTimeTweet = json.loads(data)
+    return mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet, getParties, mostEngagedPartyTweet, allMPList, allTimeTweet
 
 # flask
 
 # route() decorator tells Flask what URL should trigger our function
 @app.route('/')
 def main():
-    mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet, getParties, mostEngagedPartyTweet = readData()
-    return render_template('index.html', mplist=mpList, mptweet=mostEngagedMPTweet, genderlist=getGenders, gendertweet=mostEngagedGenderTweet, partylist=getParties, partytweet=mostEngagedPartyTweet)
+    mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet, getParties, mostEngagedPartyTweet, allMPList, allTimeTweet = readData()
+    return render_template('index.html', mplist=mpList, mptweet=mostEngagedMPTweet, genderlist=getGenders, gendertweet=mostEngagedGenderTweet, partylist=getParties, partytweet=mostEngagedPartyTweet, allmplist=allMPList, alltimetweet=allTimeTweet)
 
 
 @app.route('/update')
@@ -592,8 +613,8 @@ def test():
 @app.route('/test')
 def test2():
     saveData()
-    mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet, getParties, mostEngagedPartyTweet = readData()
-    return render_template('index.html', mplist=mpList, mptweet=mostEngagedMPTweet, genderlist=getGenders, gendertweet=mostEngagedGenderTweet, partylist=getParties, partytweet=mostEngagedPartyTweet)
+    mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet, getParties, mostEngagedPartyTweet, allMPList, allTimeTweet = readData()
+    return render_template('index.html', mplist=mpList, mptweet=mostEngagedMPTweet, genderlist=getGenders, gendertweet=mostEngagedGenderTweet, partylist=getParties, partytweet=mostEngagedPartyTweet, allmplist=allMPList, alltimetweet=allTimeTweet)
 
 
 if __name__ == "__main__":
