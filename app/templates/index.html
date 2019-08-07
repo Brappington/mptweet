@@ -26,6 +26,7 @@
         google.charts.setOnLoadCallback(drawChart1);
         google.charts.setOnLoadCallback(drawChart2);
         google.charts.setOnLoadCallback(drawChart3);
+        google.charts.setOnLoadCallback(drawChart4);
 
         // Callback that creates and populates a data table,
         // instantiates the chart, passes in the data and draws it.
@@ -132,8 +133,6 @@
             chart2.draw(data2, options2);
             }
 
-<<<<<<< HEAD
-=======
         function drawChart4() {
             var allmplist = {{ allmplist | safe }}
             var data3 = new google.visualization.DataTable();
@@ -166,18 +165,19 @@
             chart.draw(data3, options3);
         }
 
->>>>>>> parent of bef0dc3... lastcommit before deleting drawchart4
            // resize jquery event to redraw charts when window is resized.
         $(window).resize(function(){
             drawChart1();
             drawChart2();
             drawChart3();
+            drawChart4()
             console.log('resize event: chart redrawn')
         });
         setTimeout(function(){ 
             drawChart1();
             drawChart2();
             drawChart3();
+            drawChart4()
             console.log('timeout event: chart redrawn') }, 1000);
     </script>
 </head>
@@ -209,7 +209,11 @@
                     {{ gendertweet | safe }}
                     <p>The most engaged tweet from the most engaged gender</p>
                 </div>    
-            </div>   
+            </div>  
+            <H2 tabindex="0">All MPs and their engagement</H2>
+            <div class="allmpscontainer">
+                    <div id="chart_div4" class="chart shadow" tabindex="0"></div>
+            </div> 
         </div>
     </main>
    

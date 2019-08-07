@@ -399,24 +399,6 @@ def getMPs():
     print(mplist[:5])
     return mplist
 
-<<<<<<< HEAD
-# return list of mp name, engagement, colour and party
-
-""" def getAllMps():
-    mps = getUserIds()
-    allmplist=[]
-    for user_id in mps:
-        MPEngagement= getMPEngagement(user_id)
-        MPColour = getMPColour(user_id)
-        MPName = getMPName(user_id)
-        MPParty = getParty(user_id)
-        if MPEngagement > 0 :
-            allmplist.append([MPName, MPParty, MPEngagement, MPColour])
-    allmplist = sorted(allmplist, key=lambda x: x[1], reverse=True)
-    return allmplist """
-
-=======
->>>>>>> parent of bef0dc3... lastcommit before deleting drawchart4
 # returns list of gender and average engagement
 
 
@@ -577,16 +559,12 @@ def saveData():
         json.dump(partylist, outfile)
     partytweet = mostEngagedPartyTweet(myMax(partylist)[0])
     with open('app/data/mostengagedpartytweet.json', 'w') as outfile:
-<<<<<<< HEAD
-        json.dump(partytweet, outfile)  
-=======
         json.dump(partytweet, outfile)
     with open('app/data/allmplist.json', 'w') as outfile:
         json.dump(mplist, outfile)
     alltimetweet = mostEngagedTweet()
     with open('app/data/alltimetweet.json', 'w') as outfile:
         json.dump(alltimetweet, outfile)    
->>>>>>> parent of bef0dc3... lastcommit before deleting drawchart4
     print('files saved')
 
 
@@ -611,15 +589,16 @@ def readData():
     mostEngagedPartyTweet = json.loads(data)
     with open('app/data/allmplist.json', 'r') as myfile:
         data = myfile.read()
-    return mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet, getParties, mostEngagedPartyTweet 
+    allmplist = json.loads(data)
+    return mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet, getParties, mostEngagedPartyTweet, allmplist
 
 # flask
 
 # route() decorator tells Flask what URL should trigger our function
 @app.route('/')
 def main():
-    mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet, getParties, mostEngagedPartyTweet = readData()
-    return render_template('index.html', mplist=mpList, mptweet=mostEngagedMPTweet, genderlist=getGenders, gendertweet=mostEngagedGenderTweet, partylist=getParties, partytweet=mostEngagedPartyTweet)
+    mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet, getParties, mostEngagedPartyTweet, allMPList = readData()
+    return render_template('index.html', mplist=mpList, mptweet=mostEngagedMPTweet, genderlist=getGenders, gendertweet=mostEngagedGenderTweet, partylist=getParties, partytweet=mostEngagedPartyTweet, allmplist=allMPList)
 
 
 @app.route('/update')
@@ -630,13 +609,9 @@ def test():
 
 @app.route('/test')
 def test2():
-<<<<<<< HEAD
-    return 'no functions to test'
-=======
     saveData()
-    mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet, getParties, mostEngagedPartyTweet, allMPList, allTimeTweet = readData()
-    return render_template('index.html', mplist=mpList, mptweet=mostEngagedMPTweet, genderlist=getGenders, gendertweet=mostEngagedGenderTweet, partylist=getParties, partytweet=mostEngagedPartyTweet, allmplist=allMPList, alltimetweet=allTimeTweet)
->>>>>>> parent of bef0dc3... lastcommit before deleting drawchart4
+    mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet, getParties, mostEngagedPartyTweet, allMPList = readData()
+    return render_template('index.html', mplist=mpList, mptweet=mostEngagedMPTweet, genderlist=getGenders, gendertweet=mostEngagedGenderTweet, partylist=getParties, partytweet=mostEngagedPartyTweet, allmplist=allMPList)
 
 
 if __name__ == "__main__":
