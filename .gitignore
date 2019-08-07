@@ -8,8 +8,15 @@ instance/
 .webassets-cache
 
 # database
-database/
+app/database/mptweet.db
 
 # dynamic json
-app/data/
 app/static/data/twitter_credentials.json
+app/data/allmplist.json
+app/data/alltimetweet.json
+app/data/getgenders.json
+app/data/getparties.json
+app/data/mostengagedgendertweet.json
+app/data/mostengagedmptweet.json
+app/data/mostengagedpartytweet.json
+app/data/mplist.json
