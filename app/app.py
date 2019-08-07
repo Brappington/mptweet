@@ -27,7 +27,7 @@ with open('app/static/data/mpDataAll.json', 'r') as myfile:
 mpdata = json.loads(data)
 
 # read twitter credentials
-with open('app/static/data/twitter_credentials', 'r') as myfile:
+with open('app/static/data/twitter_credentials.json', 'r') as myfile:
     data = myfile.read()
 # parse file and assign twitter api config
 twitter_credentials = json.loads(data)
