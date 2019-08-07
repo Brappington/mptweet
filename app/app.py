@@ -399,6 +399,7 @@ def getMPs():
     print(mplist[:5])
     return mplist
 
+<<<<<<< HEAD
 # return list of mp name, engagement, colour and party
 
 """ def getAllMps():
@@ -414,6 +415,8 @@ def getMPs():
     allmplist = sorted(allmplist, key=lambda x: x[1], reverse=True)
     return allmplist """
 
+=======
+>>>>>>> parent of bef0dc3... lastcommit before deleting drawchart4
 # returns list of gender and average engagement
 
 
@@ -457,18 +460,6 @@ def getPartyNames():
     return names
 
 
-# returns the name of the party associated with an MP
-
-def getParty(user_id):
-    conn = sqlite3.connect(db)
-    # get cursor
-    c = conn.cursor()
-    sql = ''' SELECT party.name FROM party INNER JOIN mp on mp.party = party.name WHERE mp.user_id = ? '''
-    c.execute(sql, (user_id,))
-    fetch = c.fetchone()
-    party = fetch[0]
-    print("The party name is:", party)
-    return party
 # returns the colour of a party in the database
 
 
@@ -477,7 +468,7 @@ def getColour(name):
     conn = sqlite3.connect(db)
     # get cursor
     c = conn.cursor()
-    sql = ''' SELECT colour FROM party INNER JOIN party on party.name WHERE name = ? '''
+    sql = ''' SELECT colour FROM party WHERE name = ? '''
     c.execute(sql, (name,))
     fetch = c.fetchone()
     colour = fetch[0]
@@ -586,7 +577,16 @@ def saveData():
         json.dump(partylist, outfile)
     partytweet = mostEngagedPartyTweet(myMax(partylist)[0])
     with open('app/data/mostengagedpartytweet.json', 'w') as outfile:
+<<<<<<< HEAD
         json.dump(partytweet, outfile)  
+=======
+        json.dump(partytweet, outfile)
+    with open('app/data/allmplist.json', 'w') as outfile:
+        json.dump(mplist, outfile)
+    alltimetweet = mostEngagedTweet()
+    with open('app/data/alltimetweet.json', 'w') as outfile:
+        json.dump(alltimetweet, outfile)    
+>>>>>>> parent of bef0dc3... lastcommit before deleting drawchart4
     print('files saved')
 
 
@@ -630,7 +630,13 @@ def test():
 
 @app.route('/test')
 def test2():
+<<<<<<< HEAD
     return 'no functions to test'
+=======
+    saveData()
+    mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet, getParties, mostEngagedPartyTweet, allMPList, allTimeTweet = readData()
+    return render_template('index.html', mplist=mpList, mptweet=mostEngagedMPTweet, genderlist=getGenders, gendertweet=mostEngagedGenderTweet, partylist=getParties, partytweet=mostEngagedPartyTweet, allmplist=allMPList, alltimetweet=allTimeTweet)
+>>>>>>> parent of bef0dc3... lastcommit before deleting drawchart4
 
 
 if __name__ == "__main__":

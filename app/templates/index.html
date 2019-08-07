@@ -132,6 +132,41 @@
             chart2.draw(data2, options2);
             }
 
+<<<<<<< HEAD
+=======
+        function drawChart4() {
+            var allmplist = {{ allmplist | safe }}
+            var data3 = new google.visualization.DataTable();
+            data3.addColumn('string', 'Member of parliament');
+            data3.addColumn('number', 'Engagement');
+            data3.addColumn({ type:'string', role: 'style'});
+            data3.addRows(allmplist);
+
+            var options3 = {
+            title: 'All MPs engagement',
+            titleTextStyle: {
+            color: 'black',
+            fontName: 'Oswald',
+            fontSize: 18 // equivalent to 1.5em of h2 for default browsers.
+            },
+            legend: 'none',
+            hAxis: {
+            title: 'Member of Parliament',
+            showTextEvery: 1,
+            slantedText: true,
+            slantedTextAngle: 30
+            },
+            vAxis: {
+            title: 'Engagement'
+            },
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div4'));
+
+            chart.draw(data3, options3);
+        }
+
+>>>>>>> parent of bef0dc3... lastcommit before deleting drawchart4
            // resize jquery event to redraw charts when window is resized.
         $(window).resize(function(){
             drawChart1();
