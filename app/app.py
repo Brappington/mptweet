@@ -584,7 +584,7 @@ def readData():
     with open('app/data/getparties.json', 'r') as myfile:
         data = myfile.read()
     getParties = json.loads(data)
-    with open('app/data/mostengagedpartyTweet.json', 'r') as myfile:
+    with open('app/data/mostengagedpartytweet.json', 'r') as myfile:
         data = myfile.read()
     mostEngagedPartyTweet = json.loads(data)
     with open('app/data/allmplist.json', 'r') as myfile:
