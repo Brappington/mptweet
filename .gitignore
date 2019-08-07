@@ -11,5 +11,5 @@ instance/
 database/
 
 # dynamic json
-data/*.json
-.twitter_credentials.json
+app/data/
+app/static/data/twitter_credentials.json
