@@ -475,7 +475,7 @@ def mostEngagedMPTweet(mp):
     print("The id of the tweet is: ", tweetid)
     return(getEmbed(tweetid))
 
-""" def mostEngagedTweet():
+def mostEngagedTweet():
     conn = sqlite3.connect(db)
     c = conn.cursor()
     sql = ''' SELECT id_str, (MAX(favorite_count + retweet_count)) FROM status
@@ -484,7 +484,7 @@ def mostEngagedMPTweet(mp):
     fetch = c.fetchone()
     tweetid = fetch[0]
     print("The id of the tweet is: ", tweetid)
-    return(getEmbed(tweetid)) """
+    return(getEmbed(tweetid)) 
 
 # gender
 
