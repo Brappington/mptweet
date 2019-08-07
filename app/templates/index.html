@@ -138,6 +138,7 @@
             var data3 = new google.visualization.DataTable();
             data3.addColumn('string', 'Member of parliament');
             data3.addColumn('number', 'Engagement');
+            data3.addColumn('string', 'Party');
             data3.addColumn({ type:'string', role: 'style'});
             data3.addRows(allmplist);
 
@@ -160,7 +161,7 @@
             },
             };
 
-            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div4'));
+            var chart = new google.visualization.ScatterChart(document.getElementById('chart_div4'));
 
             chart.draw(data3, options3);
         }

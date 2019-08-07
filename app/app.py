@@ -399,6 +399,20 @@ def getMPs():
     print(mplist[:5])
     return mplist
 
+# return list of mp name, engagement, colour and party
+
+def getAllMps():
+    mps = getUserIds()
+    allmplist=[]
+    for user_id in mps:
+        MPEngagement= getMPEngagement(user_id)
+        MPColour = getMPColour(user_id)
+        MPName = getMPName(user_id)
+        MPParty = getParty(user_id)
+        if MPEngagement > 0 :
+            allmplist.append([MPName, MPParty, MPEngagement, MPColour])
+    allmplist = sorted(allmplist, key=lambda x: x[1], reverse=True)
+    return allmplist
 # returns list of gender and average engagement
 
 
@@ -442,6 +456,18 @@ def getPartyNames():
     return names
 
 
+# returns the name of the party associated with an MP
+
+def getParty(user_id):
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
+    sql = ''' SELECT party.name FROM party INNER JOIN mp on mp.party = party.name WHERE mp.user_id = ? '''
+    c.execute(sql, (user_id,))
+    fetch = c.fetchone()
+    party = fetch[0]
+    print("The party name is:", party)
+    return party
 # returns the colour of a party in the database
 
 
@@ -450,7 +476,7 @@ def getColour(name):
     conn = sqlite3.connect(db)
     # get cursor
     c = conn.cursor()
-    sql = ''' SELECT colour FROM party WHERE name = ? '''
+    sql = ''' SELECT colour FROM party INNER JOIN party on party.name WHERE name = ? '''
     c.execute(sql, (name,))
     fetch = c.fetchone()
     colour = fetch[0]
@@ -560,8 +586,9 @@ def saveData():
     partytweet = mostEngagedPartyTweet(myMax(partylist)[0])
     with open('app/data/mostengagedpartytweet.json', 'w') as outfile:
         json.dump(partytweet, outfile)
+    allmplist = getAllMps()
     with open('app/data/allmplist.json', 'w') as outfile:
-        json.dump(mplist, outfile)
+        json.dump(allmplist, outfile)
     alltimetweet = mostEngagedTweet()
     with open('app/data/alltimetweet.json', 'w') as outfile:
         json.dump(alltimetweet, outfile)    
@@ -612,9 +639,10 @@ def test():
 
 @app.route('/test')
 def test2():
-    saveData()
-    mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet, getParties, mostEngagedPartyTweet, allMPList, allTimeTweet = readData()
-    return render_template('index.html', mplist=mpList, mptweet=mostEngagedMPTweet, genderlist=getGenders, gendertweet=mostEngagedGenderTweet, partylist=getParties, partytweet=mostEngagedPartyTweet, allmplist=allMPList, alltimetweet=allTimeTweet)
+    allmplist = getAllMps()
+    with open('app/data/allmplist.json', 'w') as outfile:
+        json.dump(allmplist, outfile)
+    return 'getallmps saved'
 
 
 if __name__ == "__main__":
