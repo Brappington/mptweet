@@ -26,11 +26,17 @@ with open('app/static/data/mpDataAll.json', 'r') as myfile:
 # parse file
 mpdata = json.loads(data)
 
+# read twitter credentials
+with open('app/static/data/twitter_credentials', 'r') as myfile:
+    data = myfile.read()
+# parse file and assign twitter api config
+twitter_credentials = json.loads(data)
+
 # twitter api config
-consumer_key = 'NtLIPnCyyeEiiEWl3LWPCNssl'
-consumer_secret = 'nkOUbyh5mUeVp3pxO5mjqbBIJFxaQYNoUN0ybcPJPC3fwnEcTI'
-access_token = '1090976401333858304-Vu5Y7y7KUyxpblwkzegs7VMxfKbXTt'
-access_secret = 'xLZBZxojXvpPMIE4tJnylTJ7DIZLKZauLytyzSUb2Y1s6'
+consumer_key = twitter_credentials['CONSUMER_KEY']
+consumer_secret = twitter_credentials['CONSUMER_SECRET']
+access_token = twitter_credentials['ACCESS_TOKEN']
+access_secret = twitter_credentials['ACCESS_SECRET']
 # database module
 
 # delete the database
