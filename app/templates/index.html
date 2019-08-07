@@ -178,7 +178,7 @@
             drawChart2();
             drawChart3();
             drawChart4();
-            console.log('timeout event: chart redrawn') }, 600);
+            console.log('timeout event: chart redrawn') }, 1000);
     </script>
 </head>
 
@@ -191,7 +191,7 @@
                 <div id="chart_div1" class="chart shadow" tabindex="0"></div>
                 <div id="tweet1" class="tweet" tabindex="0">
                             {{ mptweet | safe }} 
-                            <p>The most engaged tweet from the most engaging MP </p>
+                            <p>The most engaged tweet from the most engaged MP </p>
                             </div>
                             </div>
             <H2 tabindex="0">Twitter engagement by party</H2>
@@ -199,7 +199,7 @@
                 <div id="chart_div2" class="chart shadow" tabindex="0"></div>
                 <div id="tweet2" class="tweet" tabindex="0">
                             {{ partytweet | safe }}
-                    <p>The most engaged tweet from the most engaging party </p>
+                    <p>The most engaged tweet from the most engaged party </p>
                 </div>
             </div>
             <H2 tabindex="0">Twitter engagement by gender</H2>
@@ -207,7 +207,7 @@
                 <div id="chart_div3" class="chart shadow" tabindex="0"></div>
                 <div id="tweet3" class="tweet" tabindex="0">
                     {{ gendertweet | safe }}
-                    <p>The most engaged tweet from the most engaging gender</p>
+                    <p>The most engaged tweet from the most engaged gender</p>
                 </div>    
             </div>   
             <h2>All MPs on Twitter and their engagement</h2>

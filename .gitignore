@@ -9,3 +9,7 @@ instance/
 
 # database
 database/
+
+# dynamic json
+data/
+
