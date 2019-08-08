@@ -399,7 +399,8 @@ def getMPs():
         MPEngagement= getMPEngagement(user_id)
         MPColour = getMPColour(user_id)
         MPName = getMPName(user_id)
-        if MPEngagement > 0 :
+        # added minimum engagement to limit the dataset for the allmps chart
+        if MPEngagement > 100 :
             mplist.append([MPName, MPEngagement, MPColour])
     mplist = sorted(mplist, key=lambda x: x[1], reverse=True)
     print(mplist[:5])
