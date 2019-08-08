@@ -530,7 +530,7 @@ def getEmbed(tweetid):
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_secret)
     api = tweepy.API(auth)
-    embed_tweet = api.get_oembed(tweetid)
+    embed_tweet = api.get_oembed(tweetid, hide_media=1)
     print(embed_tweet)
     return(embed_tweet["html"])
 
@@ -609,17 +609,20 @@ def main():
 
 
 @app.route('/update')
-def test():
+def update():
     intialiseDB()
     return 'database updated'
 
 
-@app.route('/test')
-def test2():
+@app.route('/save')
+def save():
     saveData()
     mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet, getParties, mostEngagedPartyTweet, allMPList = readData()
     return render_template('index.html', mplist=mpList, mptweet=mostEngagedMPTweet, genderlist=getGenders, gendertweet=mostEngagedGenderTweet, partylist=getParties, partytweet=mostEngagedPartyTweet, allmplist=allMPList)
 
+@app.route('/test')
+def test():
+    return 'done'
 
 if __name__ == "__main__":
     app.run(debug=True)
