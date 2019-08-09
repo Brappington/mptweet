@@ -236,7 +236,6 @@ def getAllTweets(user_id):
     fetch = c.fetchone()
     try:
         lastTweetId = fetch[0]
-        print(lastTweetId)
         conn.close()
     except:
         print('data not found: mp statuses')
