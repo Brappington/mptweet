@@ -51,7 +51,7 @@ def deleteDatabase(cursor):
     cursor.execute(drop_party)
     cursor.execute(drop_status)
 
-
+# create tables in new database
 def createTables(cursor):
     # create party table
     create_party = "CREATE TABLE party (name VARCHAR(255) PRIMARY KEY NOT NULL, colour CHECK(colour IN ('red', 'blue', 'yellow', 'green', 'orange', 'black', 'lime', 'silver', 'olive')) NOT NULL)"
@@ -64,8 +64,6 @@ def createTables(cursor):
     cursor.execute(create_status)
 
 # add data from mpdata and party data json files stored in app/static/data/
-
-
 def addJsonData():
     # add data from json
     for y in mpdata["mps"]:
@@ -91,24 +89,20 @@ def intialiseDB():
     # get user_ids for MPs in database
     mps = getUserIds()
     # get tweets from mps and add to database
-    allMPTweets(mps)
+    intialiseMPTweets(mps)
     saveData()
 
 # updates the database without deleting it
-
-
 def updateDB():
     # get user_ids for MPs in database
     mps = getUserIds()
     # get tweets from mps and add to database
-    allMPTweets(mps)
+    updateMPTweets(mps)
     saveData()
 
 # mp module
 
 # add mp to database
-
-
 def addMP(user_id, name, gender, party):
     # connect to db
     c, conn = connectDatabase()
@@ -209,6 +203,7 @@ def getUserIds():
     conn.close()
     return ids
 
+# returns a cursor and connection to database
 def connectDatabase():
     # connect to db
     conn = sqlite3.connect(db)
@@ -216,10 +211,61 @@ def connectDatabase():
     c = conn.cursor()
     return c, conn
 
-# gets recent tweets for mp with provided user_id and adds them to database
+# gets all tweets for mp with provided user_id and adds them to database
 
+def intialiseAllTweets(user_id):
+    # Twitter only allows access to a users most recent 3240 tweets with this method
 
-def getAllTweets(user_id):
+    # authorize twitter, initialise tweepy
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_secret)
+    api = tweepy.API(auth, wait_on_rate_limit=True,
+                     wait_on_rate_limit_notify=True)
+
+    # initialize a list to save all the  Tweets
+    alltweets = []
+
+    # make first request for most recent tweets (200 is the maximum allowed count)
+    try:
+        new_tweets = api.user_timeline(
+            user_id=user_id, count=200, include_rts=False)
+
+        # save most recent tweets
+        alltweets.extend(new_tweets)
+
+        # save id of the oldest tweet minus one
+        oldest = alltweets[-1].id - 1
+
+        # keep getting tweets until there are no tweets left to get
+        while len(new_tweets) > 0:
+            print("getting tweets before %s" % (oldest))
+
+            # all subsequent requests use the max_id param to prevent duplicates
+            # added include_rts=False to not include retweets
+            new_tweets = api.user_timeline(
+                user_id=user_id, count=200, max_id=oldest, include_rts=False)
+
+            # save most recent tweets
+            alltweets.extend(new_tweets)
+
+            # update the id of the oldest tweet minus one
+            oldest = alltweets[-1].id - 1
+
+            print("...%s tweets downloaded so far" % (len(alltweets)))
+        # iterates through tweets and adds each tweet to database using addStatus()
+        for tweet in alltweets:
+            addStatus(tweet.id_str, tweet.created_at,
+                      tweet.user.id_str, tweet.favorite_count, tweet.retweet_count)
+        print(getMPName(user_id), 'MP tweets imported to database')
+    except:
+        print('error occurred: skipping mp', getMPName(user_id))
+
+# intialises database with tweets from twitter api for the list mps
+def intialiseMPTweets(mp_ids):
+    for user_id in mp_ids:
+        intialiseAllTweets(user_id)
+
+def updateAllTweets(user_id):
     # Twitter only allows access to a users most recent 3240 tweets with this method
     # authorize twitter, initialise tweepy
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
@@ -252,7 +298,7 @@ def getAllTweets(user_id):
         try:
             oldest = alltweets[-1].id - 1
         except:
-            print ('MP with id', user_id, 'is up to date')
+            print ('MP with id', getMPName(user_id), 'is up to date')
             return 
         # keep getting tweets until there are no tweets left to get
         while len(new_tweets) > 0:
@@ -282,9 +328,9 @@ def getAllTweets(user_id):
 # gets recent tweets for mps from list and adds them to database
 
 
-def allMPTweets(mp_ids):
+def updateMPTweets(mp_ids):
     for user_id in mp_ids:
-        getAllTweets(user_id)
+        updateAllTweets(user_id)
 
 # These functions return the average engagement for mps, genders and parties respectively
 
@@ -601,8 +647,8 @@ def main():
     return render_template('index.html', mplist=mpList, mptweet=mostEngagedMPTweet, genderlist=getGenders, gendertweet=mostEngagedGenderTweet, partylist=getParties, partytweet=mostEngagedPartyTweet, allmplist=allMPList)
 
 
-@app.route('/update')
-def update():
+@app.route('/intialise')
+def intialise():
     intialiseDB()
     return 'database updated'
 
@@ -613,8 +659,8 @@ def save():
     mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet, getParties, mostEngagedPartyTweet, allMPList = readData()
     return render_template('index.html', mplist=mpList, mptweet=mostEngagedMPTweet, genderlist=getGenders, gendertweet=mostEngagedGenderTweet, partylist=getParties, partytweet=mostEngagedPartyTweet, allmplist=allMPList)
 
-@app.route('/test')
-def test():
+@app.route('/update')
+def update():
     updateDB()
     return 'done'
 
