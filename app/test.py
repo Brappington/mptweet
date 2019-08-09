@@ -1,4 +1,5 @@
-# import flask class
+
+   # import flask class
 from flask import Flask, render_template
 import os
 import sqlite3
@@ -78,7 +79,9 @@ def addJsonData():
 def intialiseDB():
     # create database and tables
         # connect to db
-    c, conn = connectDatabase()
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
     # delete previous database and create new
     deleteDatabase(c)
     createTables(c)
@@ -111,7 +114,9 @@ def updateDB():
 
 def addMP(user_id, name, gender, party):
     # connect to db
-    c, conn = connectDatabase()
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
     sql = ''' INSERT INTO mp(user_id, name, gender, party)
     VALUES(?,?,?,?)'''
     try:
@@ -129,7 +134,9 @@ def addMP(user_id, name, gender, party):
 
 def addStatus(id_str, created_at, user_id, favorite_count, retweet_count):
     # connect to it
-    c, conn = connectDatabase()
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
     sql = ''' INSERT INTO status(id_str, created_at, user_id, favorite_count, retweet_count)
     VALUES(?,?,?,?,?)'''
     try:
@@ -149,7 +156,9 @@ def addStatus(id_str, created_at, user_id, favorite_count, retweet_count):
 
 def addParty(name, colour):
     # connect to db
-    c, conn = connectDatabase()
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
     sql = ''' INSERT INTO party(name, colour) VALUES(?,?)'''
     try:
         c.execute(sql, (name, colour))
@@ -166,7 +175,9 @@ def addParty(name, colour):
 
 def getMPName(user_id):
     # connect to db
-    c, conn = connectDatabase()
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
     sql = ''' SELECT name FROM mp WHERE user_id =?'''
     c.execute(sql, (user_id,))
     fetch = c.fetchone()
@@ -182,7 +193,9 @@ def getMPName(user_id):
 
 def getMPColour(user_id):
     # connect to db
-    c, conn = connectDatabase()
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
     sql = ''' SELECT colour from party INNER JOIN mp ON party.name = mp.party WHERE mp.user_id = ?'''
     c.execute(sql, (user_id,))
     fetch = c.fetchone()
@@ -201,20 +214,15 @@ def getMPColour(user_id):
 
 def getUserIds():
     # connect to db
-    c, conn = connectDatabase()
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
     sql = ''' SELECT user_id FROM mp'''
     ids = [id[0] for id in c.execute(sql)]
     print(ids)
     # close connection
     conn.close()
     return ids
-
-def connectDatabase():
-    # connect to db
-    conn = sqlite3.connect(db)
-    # get cursor
-    c = conn.cursor()
-    return c, conn
 
 # gets recent tweets for mp with provided user_id and adds them to database
 
@@ -230,7 +238,8 @@ def getAllTweets(user_id):
     # initialize a list to save all the  Tweets
     alltweets = []
     # find last tweet id from database:
-    c, conn = connectDatabase()
+    conn = sqlite3.connect(db)
+    c= conn.cursor()
     sql = ''' SELECT id_str FROM status WHERE user_id= ? ORDER BY created_at DESC LIMIT 1'''
     c.execute(sql, (user_id,))
     fetch = c.fetchone()
@@ -246,6 +255,7 @@ def getAllTweets(user_id):
     try:
         new_tweets = api.user_timeline(
             user_id=user_id, count=200, include_rts=False, since_id=lastTweetId)
+        print(new_tweets)
         # save most recent tweets
         alltweets.extend(new_tweets)
 
@@ -262,7 +272,7 @@ def getAllTweets(user_id):
             # all subsequent requests use the max_id param to prevent duplicates
             # added include_rts=False to not include retweets
             new_tweets = api.user_timeline(
-                user_id=user_id, count=200, max_id=oldest, include_rts=False, since_id=lastTweetId)
+                user_id=user_id, count=200, max_id=oldest, include_rts=False)
 
             # save most recent tweets
             alltweets.extend(new_tweets)
@@ -292,7 +302,9 @@ def allMPTweets(mp_ids):
 
 def getMPEngagement(user_id):
     # connect to db
-    c, conn = connectDatabase()
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
     # get total retweet_count and favorite_count for user_id
     favesql = ''' SELECT SUM(favorite_count) FROM status WHERE user_id = ? AND created_at > date('now','-1 month')'''
     c.execute(favesql, (user_id,))
@@ -325,7 +337,9 @@ def getMPEngagement(user_id):
 
 def getGenderEngagement(gender):
     # connect to db
-    c, conn = connectDatabase()
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
     # get total retweet_count and favorite_count for user_id
     favesql = ''' SELECT sum(favorite_count) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE gender = ? AND created_at > date('now','-1 month')'''
     c.execute(favesql, (gender,))
@@ -358,7 +372,9 @@ def getGenderEngagement(gender):
 
 def getPartyEngagement(party):
      # connect to db
-    c, conn = connectDatabase()
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
     # get total retweet_count and favorite_count for user_id
     favesql = ''' SELECT sum(favorite_count) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE party = ? AND created_at > date('now','-1 month')'''
     c.execute(favesql, (party,))
@@ -438,7 +454,9 @@ def getParties():
 
 def getPartyNames():
     # connect to db
-    c, conn = connectDatabase()
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
     sql = ''' SELECT DISTINCT name FROM party '''
     names = [id[0] for id in c.execute(sql)]
     print(names)
@@ -452,12 +470,13 @@ def getPartyNames():
 
 def getColour(name):
     # connect to db
-    c, conn = connectDatabase()
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
     sql = ''' SELECT colour FROM party WHERE name = ? '''
     c.execute(sql, (name,))
     fetch = c.fetchone()
     colour = fetch[0]
-    conn.close()
     print("The colour of", name, "is:", colour)
     return colour
 
@@ -467,7 +486,9 @@ def getColour(name):
 
 def mostEngagedMPTweet(mp):
     # connect to db
-    c, conn = connectDatabase()
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
     sql = ''' SELECT id_str FROM (SELECT  MAX(favorite_count + retweet_count), id_str FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE
     name = ? AND
     created_at > date('now','-1 month')) '''
@@ -475,32 +496,32 @@ def mostEngagedMPTweet(mp):
     fetch = c.fetchone()
     tweetid = fetch[0]
     print("The id of the tweet is: ", tweetid)
-    conn.close()
     return(getEmbed(tweetid))
 
 def mostEngagedTweet():
-    c, conn = connectDatabase()
+    conn = sqlite3.connect(db)
+    c = conn.cursor()
     sql = ''' SELECT id_str, (MAX(favorite_count + retweet_count)) FROM status
     '''
     c.execute(sql)
     fetch = c.fetchone()
     tweetid = fetch[0]
     print("The id of the tweet is: ", tweetid)
-    conn.close()
     return(getEmbed(tweetid)) 
 
 # gender
 
 def mostEngagedGenderTweet(gender):
     # connect to db
-    c, conn = connectDatabase()
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
     sql = ''' SELECT id_str FROM (SELECT MAX(favorite_count + retweet_count), id_str FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE gender = ? AND
     created_at > date('now','-1 month'))'''
     c.execute(sql, (gender,))
     fetch = c.fetchone()
     tweetid = fetch[0]
     print("The id of gender most engaged tweet is: ", tweetid)
-    conn.close()
     return(getEmbed(tweetid))
 
 # party
@@ -508,14 +529,15 @@ def mostEngagedGenderTweet(gender):
 
 def mostEngagedPartyTweet(party):
     # connect to db
-    c, conn = connectDatabase()
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
     sql = ''' SELECT id_str FROM (SELECT MAX(favorite_count + retweet_count), id_str FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE party = ? AND
     created_at > date('now','-1 month'))'''
     c.execute(sql, (party,))
     fetch = c.fetchone()
     tweetid = fetch[0]
     print("The id of the party most engaged tweet is: ", tweetid)
-    conn.close()
     return(getEmbed(tweetid))
 
 
@@ -616,7 +638,6 @@ def save():
 
 @app.route('/test')
 def test():
-    updateDB()
     return 'done'
 
 if __name__ == "__main__":
