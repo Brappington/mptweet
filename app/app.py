@@ -21,7 +21,7 @@ with open('app/static/data/partyData.json', 'r') as myfile:
 partydata = json.loads(data)
 
 # read the json  data of MPs for the database
-with open('app/static/data/mpData.json', 'r') as myfile:
+with open('app/static/data/mpDataAll.json', 'r') as myfile:
     data = myfile.read()
 # parse file
 mpdata = json.loads(data)
