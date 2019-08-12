@@ -13,6 +13,8 @@
     <!-- load favicon -->
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico')}}" type="image/x-icon">
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico')}}">
+    <!-- Title of website-->
+    <title>MP Twitter</title>
     <!-- Load jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <!--Load the AJAX API-->
@@ -26,7 +28,6 @@
         google.charts.setOnLoadCallback(drawChart1);
         google.charts.setOnLoadCallback(drawChart2);
         google.charts.setOnLoadCallback(drawChart3);
-        google.charts.setOnLoadCallback(drawChart4);
 
         // Callback that creates and populates a data table,
         // instantiates the chart, passes in the data and draws it.
@@ -130,50 +131,18 @@
             chart2.draw(data2, options2);
             }
 
-        function drawChart4() {
-            var allmplist = {{ allmplist | safe }}
-            var data3 = new google.visualization.DataTable();
-            data3.addColumn('string', 'Member of parliament');
-            data3.addColumn('number', 'Engagement');
-            data3.addColumn({ type:'string', role: 'style'});
-            data3.addRows(allmplist);
-
-            var options3 = {
-            title: 'All MPs average engagement',
-            titleTextStyle: {
-            color: 'black',
-            fontSize: 18 // equivalent to 1.5em of h2 for default browsers.
-            },
-            legend: 'none',
-            hAxis: {
-            title: 'Member of Parliament',
-            showTextEvery: 1,
-            slantedText: true,
-            slantedTextAngle: 30
-            },
-            vAxis: {
-            title: 'Engagement'
-            },
-            };
-
-            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div4'));
-
-            chart.draw(data3, options3);
-        }
 
            // resize jquery event to redraw charts when window is resized.
         $(window).resize(function(){
             drawChart1();
             drawChart2();
             drawChart3();
-            drawChart4()
             console.log('resize event: chart redrawn')
         });
         setTimeout(function(){ 
             drawChart1();
             drawChart2();
             drawChart3();
-            drawChart4()
             console.log('timeout event: chart redrawn') }, 1000);
     </script>
 </head>
@@ -206,10 +175,6 @@
                     <p>The most engaged tweet from the most engaged gender</p>
                 </div>    
             </div>  
-            <H2 tabindex="0">All MPs and their engagement</H2>
-            <div class="allmpscontainer">
-                    <div id="chart_div4" class="chart shadow" tabindex="0"></div>
-            </div> 
         </div>
     </main>
 </body>

@@ -42,7 +42,7 @@ h2 {
 .maincontainer {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 100px 1fr 100px 1fr 100px 1fr 100px 1fr;
+    grid-template-rows: 100px 1fr 100px 1fr 100px 1fr;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
 }
@@ -51,14 +51,9 @@ h2 {
     display: grid;
     grid-gap: 5px;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    grid-template-rows: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-rows: repeat(auto-fit, minmax(250px, 1fr));
     grid-column-gap: 2em;
     padding: 1em;
-}
-
-#chart_div4 {
-    width: 100%;
-    height: 100%;
 }
 
 .shadow {

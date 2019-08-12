@@ -6,7 +6,7 @@ import tweepy
 import json
 
 # set root directory path, comment out this line when testing locally
-os.chdir('/home/mptwitter/mptweet/')
+#os.chdir('/home/mptwitter/mptweet/')
 # instance of the flask class is our WSGI application
 # we use __name__ so that it can adapt to be imported as a module.
 app = Flask(__name__)
@@ -445,10 +445,9 @@ def getMPs():
         MPColour = getMPColour(user_id)
         MPName = getMPName(user_id)
         # added minimum engagement to limit the dataset for the allmps chart
-        if MPEngagement > 100 :
+        if MPEngagement > 1 :
             mplist.append([MPName, MPEngagement, MPColour])
     mplist = sorted(mplist, key=lambda x: x[1], reverse=True)
-    print(mplist[:5])
     return mplist
 
 # returns list of gender and average engagement
@@ -650,7 +649,7 @@ def main():
 @app.route('/intialise')
 def intialise():
     intialiseDB()
-    return 'database updated'
+    return 'database reset and updated'
 
 
 @app.route('/save')
