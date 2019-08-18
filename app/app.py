@@ -6,7 +6,7 @@ import tweepy
 import json
 
 # set root directory path, comment out this line when testing locally
-#os.chdir('/home/mptwitter/mptweet/')
+# os.chdir('/Users/brap/coding/mptweet/')
 # instance of the flask class is our WSGI application
 # we use __name__ so that it can adapt to be imported as a module.
 app = Flask(__name__)
@@ -39,9 +39,16 @@ access_token = twitter_credentials['ACCESS_TOKEN']
 access_secret = twitter_credentials['ACCESS_SECRET']
 # database module
 
+
+# returns a cursor and connection to database
+def connectDatabase():
+    # connect to db
+    conn = sqlite3.connect(db)
+    # get cursor
+    c = conn.cursor()
+    return c, conn
+
 # delete the database
-
-
 def deleteDatabase(cursor):
     # drop tables if exist
     drop_mp = "DROP TABLE IF EXISTS mp"
@@ -74,11 +81,11 @@ def addJsonData():
 
 # initialise a new database with provided data.
 def intialiseDB():
-    # create database and tables
-        # connect to db
+    # connect to db
     c, conn = connectDatabase()
-    # delete previous database and create new
-    deleteDatabase(c)
+    # delete previous database  
+    deleteDatabase(c)    
+    # create new tables
     createTables(c)
     # commit database changes
     conn.commit()
@@ -90,13 +97,14 @@ def intialiseDB():
     mps = getUserIds()
     # get tweets from mps and add to database
     intialiseMPTweets(mps)
+    # get save engagement and most engaged data
     saveData()
 
 # updates the database without deleting it
 def updateDB():
     # get user_ids for MPs in database
     mps = getUserIds()
-    # get tweets from mps and add to database
+    # get new tweets from mps and add to database
     updateMPTweets(mps)
     saveData()
 
@@ -203,13 +211,6 @@ def getUserIds():
     conn.close()
     return ids
 
-# returns a cursor and connection to database
-def connectDatabase():
-    # connect to db
-    conn = sqlite3.connect(db)
-    # get cursor
-    c = conn.cursor()
-    return c, conn
 
 # gets all tweets for mp with provided user_id and adds them to database
 
@@ -260,11 +261,12 @@ def intialiseAllTweets(user_id):
     except:
         print('error occurred: skipping mp', getMPName(user_id))
 
-# intialises database with tweets from twitter api for the list mps
+# intialise database with tweets from twitter api for the list mps
 def intialiseMPTweets(mp_ids):
     for user_id in mp_ids:
         intialiseAllTweets(user_id)
 
+# gets all recent tweets not in database fromMP with user_id
 def updateAllTweets(user_id):
     # Twitter only allows access to a users most recent 3240 tweets with this method
     # authorize twitter, initialise tweepy
@@ -405,19 +407,22 @@ def getPartyEngagement(party):
      # connect to db
     c, conn = connectDatabase()
     # get total retweet_count and favorite_count for user_id
-    favesql = ''' SELECT sum(favorite_count) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE party = ? AND created_at > date('now','-1 month')'''
+    favesql = ''' SELECT sum(favorite_count) FROM status INNER JOIN mp 
+    ON status.user_id = mp.user_id WHERE party = ? AND created_at > date('now','-1 month')'''
     c.execute(favesql, (party,))
     fetch = c.fetchone()
     totalfavorite = fetch[0]
     print("Total favorite: ", totalfavorite)
     # find sum of total retweet_count and favorite_count
-    retweetsql = ''' SELECT sum(retweet_count) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE party = ? AND created_at > date('now','-1 month')'''
+    retweetsql = ''' SELECT sum(retweet_count) FROM status INNER JOIN mp 
+    ON status.user_id = mp.user_id WHERE party = ? AND created_at > date('now','-1 month')'''
     c.execute(retweetsql, (party,))
     fetch = c.fetchone()
     totalretweet = fetch[0]
     print("Total retweet: ", totalretweet)
     # get total number of status items for user_id
-    totalsql = ''' SELECT COUNT(*) FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE party = ? AND created_at > date('now','-1 month')'''
+    totalsql = ''' SELECT COUNT(*) FROM status INNER JOIN mp 
+    ON status.user_id = mp.user_id WHERE party = ? AND created_at > date('now','-1 month')'''
     c.execute(totalsql, (party,))
     fetch = c.fetchone()
     total = fetch[0]
@@ -436,7 +441,6 @@ def getPartyEngagement(party):
 
 # returns list of mp name and average engagement
 
-
 def getMPs():
     mps = getUserIds()
     mplist = []
@@ -451,7 +455,6 @@ def getMPs():
     return mplist
 
 # returns list of gender and average engagement
-
 
 def getGenders():
     genders = ['Male', 'Female']
@@ -470,8 +473,8 @@ def getParties():
     list = []
     for party in parties:
         partyEngagement = getPartyEngagement(party)
-        partyColour = getColour(party)
-        if partyEngagement > 0 :
+        partyColour = getPartyColour(party)
+        if partyEngagement > 1 :
             list.append([party, partyEngagement, 'color: ' + partyColour])
     print(list)
     return list
@@ -494,7 +497,7 @@ def getPartyNames():
 # returns the colour of a party in the database
 
 
-def getColour(name):
+def getPartyColour(name):
     # connect to db
     c, conn = connectDatabase()
     sql = ''' SELECT colour FROM party WHERE name = ? '''
@@ -513,8 +516,7 @@ def mostEngagedMPTweet(mp):
     # connect to db
     c, conn = connectDatabase()
     sql = ''' SELECT id_str FROM (SELECT  MAX(favorite_count + retweet_count), id_str FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE
-    name = ? AND
-    created_at > date('now','-1 month')) '''
+    name = ? AND created_at > date('now','-1 month')) '''
     c.execute(sql, (mp,))
     fetch = c.fetchone()
     tweetid = fetch[0]
@@ -524,8 +526,8 @@ def mostEngagedMPTweet(mp):
 
 def mostEngagedTweet():
     c, conn = connectDatabase()
-    sql = ''' SELECT id_str, (MAX(favorite_count + retweet_count)) FROM status
-    '''
+    sql = ''' SELECT id_str, (MAX(favorite_count + retweet_count)) 
+    FROM status '''
     c.execute(sql)
     fetch = c.fetchone()
     tweetid = fetch[0]
@@ -538,8 +540,9 @@ def mostEngagedTweet():
 def mostEngagedGenderTweet(gender):
     # connect to db
     c, conn = connectDatabase()
-    sql = ''' SELECT id_str FROM (SELECT MAX(favorite_count + retweet_count), id_str FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE gender = ? AND
-    created_at > date('now','-1 month'))'''
+    sql = ''' SELECT id_str FROM (SELECT MAX(favorite_count + retweet_count), id_str 
+    FROM status INNER JOIN mp ON status.user_id = mp.user_id 
+    WHERE gender = ? AND created_at > date('now','-1 month'))'''
     c.execute(sql, (gender,))
     fetch = c.fetchone()
     tweetid = fetch[0]
@@ -549,11 +552,11 @@ def mostEngagedGenderTweet(gender):
 
 # party
 
-
 def mostEngagedPartyTweet(party):
     # connect to db
     c, conn = connectDatabase()
-    sql = ''' SELECT id_str FROM (SELECT MAX(favorite_count + retweet_count), id_str FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE party = ? AND
+    sql = ''' SELECT id_str FROM (SELECT MAX(favorite_count + retweet_count), id_str 
+    FROM status INNER JOIN mp ON status.user_id = mp.user_id WHERE party = ? AND
     created_at > date('now','-1 month'))'''
     c.execute(sql, (party,))
     fetch = c.fetchone()
