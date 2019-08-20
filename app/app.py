@@ -646,7 +646,8 @@ def readData():
 @app.route('/')
 def main():
     mpList, mostEngagedMPTweet, getGenders, mostEngagedGenderTweet, getParties, mostEngagedPartyTweet, allMPList = readData()
-    return render_template('index.html', mplist=mpList, mptweet=mostEngagedMPTweet, genderlist=getGenders, gendertweet=mostEngagedGenderTweet, partylist=getParties, partytweet=mostEngagedPartyTweet, allmplist=allMPList)
+    return render_template('index.html', mplist=mpList, mptweet=mostEngagedMPTweet, genderlist=getGenders, 
+    gendertweet=mostEngagedGenderTweet, partylist=getParties, partytweet=mostEngagedPartyTweet, allmplist=allMPList)
 
 
 @app.route('/intialise')
