@@ -4,10 +4,6 @@
 :root {
     --bgColor: white;
     --textColor: black;
-    --accent: #5b50b6;
-    --bgDarkColor: #5b50b6;
-    --textDarkColor: #FEFFFF;
-    --accentDark: #538cd9;
     --titleFont: 'Oswald', sans-serif;
     --regularFont: 'Raleway', sans-serif;
 }
@@ -67,7 +63,6 @@ h2 {
 }
 
 .tweet {
-    /* potential class. delete laterif unused*/
     align-items: center;
     display: inline-block;
     color: var(--textColour);
