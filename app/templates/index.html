@@ -97,10 +97,8 @@
             // create the data table
             var genderlist = {{ genderlist | safe}};
             // add colour for the chart
-            console.log(genderlist);
             genderlist[0].push('blue');
             genderlist[1].push('red');
-            console.log(genderlist);
             var data2 = new google.visualization.DataTable();
             data2.addColumn('string', 'Gender');
             data2.addColumn('number', 'Engagement');
@@ -137,7 +135,6 @@
             data3.addColumn('number', 'Engagement');
             data3.addColumn({ type:'string', role: 'style'});
             data3.addRows(allmplist);
-
             var options3 = {
             title: 'All MPs average engagement',
             titleTextStyle: {
@@ -155,31 +152,28 @@
             title: 'Engagement'
             },
             };
-
             var chart = new google.visualization.ColumnChart(document.getElementById('chart_div4'));
-
             chart.draw(data3, options3);
         }
-
            // resize jquery event to redraw charts when window is resized.
         $(window).resize(function(){
             drawChart1();
             drawChart2();
             drawChart3();
-            drawChart4()
+            drawChart4();
             console.log('resize event: chart redrawn')
         });
         setTimeout(function(){ 
             drawChart1();
             drawChart2();
             drawChart3();
-            drawChart4()
+            drawChart4();
             console.log('timeout event: chart redrawn') }, 1000);
     </script>
 </head>
 
 <body>
-    <h1>MP Engagement on Twitter </h1>
+    <h1>MP Engagement on Twitter</h1>
     <main>
         <div class="maincontainer">
             <H2 tabindex="0">Twitter engagement by MPs</H2>
