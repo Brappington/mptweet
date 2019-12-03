@@ -1,0 +1,645 @@
+commit 6b94c4f136a83d9f257f0d9675b03dc2bc2cf4c3
+Author: brap <doctor.fun107@gmail.com>
+Date:   Fri Sep 6 13:40:10 2019 +0100
+
+    formatted main.css
+
+commit 07a0cb3325c98d93f76c7de119805b7c9a9184b3
+Author: brap <doctor.fun107@gmail.com>
+Date:   Tue Sep 3 16:40:18 2019 +0100
+
+    removed some console logs from googlecharts call
+
+commit 9e2857f2cef0550089477c9a4e53aac1a1ed84a8
+Author: brap <doctor.fun107@gmail.com>
+Date:   Sat Aug 10 14:58:25 2019 +0100
+
+    reverted to mpdataall
+
+commit 829ed1ffab000e541f6fe639a6f9ea89c45bb406
+Author: brap <doctor.fun107@gmail.com>
+Date:   Sat Aug 10 14:58:10 2019 +0100
+
+    no changes
+
+commit 40e8deafb66d647c6bc8986fb93803a287ae116c
+Author: brap <doctor.fun107@gmail.com>
+Date:   Sat Aug 10 14:49:35 2019 +0100
+
+    deleted line
+
+commit db66bb23b18228ace5e7dbfc52a8e5210c669a3b
+Author: brap <doctor.fun107@gmail.com>
+Date:   Fri Aug 9 19:08:03 2019 +0100
+
+    deleted test.py
+    added comments
+    seperated twitter functions for intialising db and just updating it.
+
+commit 003b59364b2f741ef5669c26d761d54a5a10f8cd
+Author: brap <doctor.fun107@gmail.com>
+Date:   Fri Aug 9 15:50:35 2019 +0100
+
+    removed print(lasttweetid)
+
+commit f2765c05313f9a7dc295e5d9090f30919ddcea92
+Author: brap <doctor.fun107@gmail.com>
+Date:   Fri Aug 9 15:36:17 2019 +0100
+
+    removed comment on os.chdir for server deploy
+
+commit fd61a31bf28970b75c2a81e2238b0413c168af80
+Author: brap <doctor.fun107@gmail.com>
+Date:   Fri Aug 9 15:35:53 2019 +0100
+
+    extracted connect to db into connectDatabase
+    changed getAlltweets so it only gets recent tweets
+
+commit 6a2e8400712f6628a79ef518a511d61f37f75d84
+Author: brap <doctor.fun107@gmail.com>
+Date:   Thu Aug 8 14:17:59 2019 +0100
+
+    uncommented os.chdir
+
+commit 275e8293a4ff5734eea9e1697d1327111ae231c7
+Author: brap <doctor.fun107@gmail.com>
+Date:   Thu Aug 8 14:16:40 2019 +0100
+
+    added hide_media=1 to getoembed
+    changed some urls for testing
+    added minheight for the charts
+
+commit 0d0e0279d904a447a7bd7188f4a4fa134b5c4d27
+Author: brap <doctor.fun107@gmail.com>
+Date:   Thu Aug 8 13:46:23 2019 +0100
+
+    removed cutom font from gcharts
+    changed title of drawchart4
+    added margin to footer
+    added min threshold of 100 engagement to getMPs()
+
+commit d491245ca187e9ebca113a7fc51625ac4bffa6e4
+Merge: 231abd5 09bd8c2
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Aug 7 15:35:51 2019 +0100
+
+    Merge branch 'master' of https://github.com/Brappington/mptweet
+
+commit 231abd57d6209531fce7661148f4211b449daf4e
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Aug 7 15:35:30 2019 +0100
+
+    added .keep files to make sure empty folders visible
+
+commit 09bd8c2dcb9e2ebf964aadc65887fc2273a88f7c
+Author: Brappington <doctor.fun107@gmail.com>
+Date:   Wed Aug 7 15:26:11 2019 +0100
+
+    Create README.md
+
+commit 1607d26891cd603d250d7f0c6d4e38979d3f549b
+Merge: a5b3a2a b4c523d
+Author: Brappington <doctor.fun107@gmail.com>
+Date:   Wed Aug 7 15:25:14 2019 +0100
+
+    Merge pull request #1 from Brappington/dependabot/pip/urllib3-1.24.2
+    
+    Bump urllib3 from 1.24.1 to 1.24.2
+
+commit a5b3a2ad62dc51e08ad0e3a548eb0ece1b44f291
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Aug 7 15:24:23 2019 +0100
+
+    fixed typo
+
+commit 2d675551d84167e948456c5d0fda390126e0f099
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Aug 7 15:22:21 2019 +0100
+
+    g
+
+commit c67686a327255d494c65343d67b0be75078eeff6
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Aug 7 15:22:02 2019 +0100
+
+    more twitter crendeital bs
+
+commit 05a31e097e789ccf9ad5675c53bf1f6372f068e0
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Aug 7 15:19:56 2019 +0100
+
+    attempt to ignore twitter_credentials
+
+commit d6a2c61cc359416fb2754260d28e2e134313829a
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Aug 7 15:13:13 2019 +0100
+
+    untracking json 2
+
+commit 5e6c1c3d3bb19965263a67874880b269c156481f
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Aug 7 15:13:02 2019 +0100
+
+    untracked dynamic json
+
+commit db2aeb0f5c9810e7b172df56430714aa02745389
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Aug 7 15:09:27 2019 +0100
+
+    updated gitignore
+    added twittercrednetial json
+
+commit fcb22f239a73a4790883eb87271f56826f537a45
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Aug 7 14:54:34 2019 +0100
+
+    uncommented mostengaged tweet in case we need it
+
+commit 4844ef6fb29e14dbe254c09ff4d24efaf8f5a385
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Aug 7 14:52:37 2019 +0100
+
+    reverted changes by undeleting drawchart4
+    and its app functions
+
+commit 2aaeab5eed33c7bd899655821821c6ccf6a0f32b
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Aug 7 14:34:04 2019 +0100
+
+    merge?
+
+commit dd94e38c6caf2e64cd5df8082d48cdb0707d937c
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Aug 7 12:52:02 2019 +0100
+
+    removed most engaging tweets for all mps
+    and their functions.
+
+commit bef0dc3e91d07f5220cd092946fa4c4ee3adfddb
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Aug 7 12:45:43 2019 +0100
+
+    lastcommit before deleting drawchart4
+
+commit 243960983d3e128b558fa949c23c167dbe079d94
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Aug 7 11:40:42 2019 +0100
+
+    fixed typo in line 587
+
+commit 9964ccf08c8f28c48993e4cf03f337e66600fca8
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Aug 7 11:33:32 2019 +0100
+
+    added data folder to gitignore
+
+commit 3fdc63725b0258605d612444d2b9d6317ba53240
+Author: brap <doctor.fun107@gmail.com>
+Date:   Tue Aug 6 15:17:22 2019 +0100
+
+    moved dynamic data to new folder
+    added
+    moved mplist[:5] to saveddata()
+    added mostengagedtweet()
+    added allmplist()
+    added these functions to saveData() and readData()
+    added new section to index htmkl with allmps chart and alltimetweet
+    fixed routes to allow for the above
+
+commit b4c523d23a43c5bd7fdab6a81147bb49c61253d2
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Mon Aug 5 13:27:02 2019 +0000
+
+    Bump urllib3 from 1.24.1 to 1.24.2
+    
+    Bumps [urllib3](https://github.com/urllib3/urllib3) from 1.24.1 to 1.24.2.
+    - [Release notes](https://github.com/urllib3/urllib3/releases)
+    - [Changelog](https://github.com/urllib3/urllib3/blob/master/CHANGES.rst)
+    - [Commits](https://github.com/urllib3/urllib3/compare/1.24.1...1.24.2)
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+
+commit 5159223f609476ecb3aa79dd438e1694bf991f53
+Author: brap <doctor.fun107@gmail.com>
+Date:   Mon Aug 5 14:25:15 2019 +0100
+
+    added database to gitignore, removed db
+
+commit 34a09d9b490387a8adbec2e6dc75c8b1868dae65
+Author: brap <doctor.fun107@gmail.com>
+Date:   Mon Aug 5 14:11:50 2019 +0100
+
+    removed pycache and added gitignore
+
+commit 036eccfa6bc695b564855f4a5500c09580af0fd5
+Author: brap <doctor.fun107@gmail.com>
+Date:   Mon Aug 5 14:04:05 2019 +0100
+
+    added gitignore file and user generated json
+
+commit df8c45ecc209b66b3543d8b92798604b763e7e47
+Author: brap <doctor.fun107@gmail.com>
+Date:   Mon Aug 5 13:21:33 2019 +0100
+
+    server ready
+
+commit d67eca5a4e190fc054466dca708dac14f6baaf56
+Author: brap <doctor.fun107@gmail.com>
+Date:   Mon Aug 5 13:20:14 2019 +0100
+
+    reworked getmpcolour
+
+commit c0251cc26c1beabfcc8b501405e8e50260a33b3a
+Author: brap <doctor.fun107@gmail.com>
+Date:   Mon Aug 5 13:17:09 2019 +0100
+
+    removed old main() and replaced with test()
+    this gets data from json not from db
+    added if engagement >0 rule to avoid errors for mps + party without eng
+
+commit c9716bb13f9566c026a4d6695d02c4faf113a74e
+Author: brap <doctor.fun107@gmail.com>
+Date:   Mon Aug 5 12:59:00 2019 +0100
+
+    removed add party route, unncessary
+
+commit 1e31d5bd6dbcaeeb9a7ad49b1a5fb6486c5d0979
+Author: brap <doctor.fun107@gmail.com>
+Date:   Mon Aug 5 12:58:25 2019 +0100
+
+    added try catch to mpcolour to find errors.
+    added AND created_at > date('now','-1 month') to all engagement function
+    so we only get the last months engagement figures.
+    database not currently including all tweets
+
+commit 443779aed6e672135c133b807958061513713bcb
+Author: brap <doctor.fun107@gmail.com>
+Date:   Sun Aug 4 14:23:13 2019 +0100
+
+    testing importing all mps to database
+
+commit 42183dafd56126445413c7b82acdc7e8f4aa43dc
+Author: brap <doctor.fun107@gmail.com>
+Date:   Sun Aug 4 14:17:23 2019 +0100
+
+    changed some chart options
+    added alternative way to save engagement data
+    now saves to json files in data folder
+    we then read these static files when a web page is requested
+
+commit 291df1e93b4559eccf060a3ada96faa9b8e171c6
+Author: brap <doctor.fun107@gmail.com>
+Date:   Sat Aug 3 21:35:37 2019 +0100
+
+    removed slanted names
+
+commit 4799953bfae3c6b91a3af1739bc6d98621437ba9
+Author: brap <doctor.fun107@gmail.com>
+Date:   Sat Aug 3 21:32:08 2019 +0100
+
+    db update
+
+commit dcedec8540eb12425ff849a3658d83b00703f33d
+Author: brap <doctor.fun107@gmail.com>
+Date:   Sat Aug 3 21:22:11 2019 +0100
+
+    reverted to setTimeout to fix chart rendering issue
+    removed extra parties from partydata
+
+commit 6817c5a2de6ddf5c148a7e7352fc65fe56c6c0ef
+Author: brap <doctor.fun107@gmail.com>
+Date:   Sat Aug 3 19:45:56 2019 +0100
+
+    gave up on implementing more mpdata
+    changed chart fontsize to 18
+    added try except to getalltweets in case of errors.
+    moved print mp name impoted into db into try block of getalltweets
+    added if/else to prevent error when calculcating engagement for mp with no tweets
+    changed getMPs() for chart to top 5
+    changed url for intialise db to update
+
+commit 9763e84c2a15014e698a9455f9f32a340ebeee8e
+Author: brap <doctor.fun107@gmail.com>
+Date:   Sat Aug 3 14:35:01 2019 +0100
+
+    removed special character from sinn fein
+    removed window.onload e event function
+    replaced with a twitter embed on load
+    added rate limit parameters to tweepy.api
+
+commit b83a342bc67b6ec8e9f8b699569e25429cdae26f
+Author: brap <doctor.fun107@gmail.com>
+Date:   Fri Aug 2 16:06:28 2019 +0100
+
+    removed text from db and functions
+
+commit 1da7ddc8a3282bd6d5d74e203288f5f7dc17d79d
+Author: brap <doctor.fun107@gmail.com>
+Date:   Fri Aug 2 15:39:39 2019 +0100
+
+    added more parties to partyData.json
+    changed labour/coop to labour
+
+commit 289b3a74796af633e675162b18c9e45df4a53c89
+Author: brap <doctor.fun107@gmail.com>
+Date:   Fri Aug 2 14:58:42 2019 +0100
+
+    added mps brackets to mpdataall
+
+commit daa49748f400b5e250d8f083669e57bed242705d
+Author: brap <doctor.fun107@gmail.com>
+Date:   Fri Aug 2 14:55:49 2019 +0100
+
+    uncommented font size in drawchart1()
+    added female gender to mpdataall
+    last commit before trying to add all mps
+
+commit 3f8f56a53715b25952b98e4e3e542d4b0b96c25f
+Author: brap <doctor.fun107@gmail.com>
+Date:   Thu Aug 1 17:03:10 2019 +0100
+
+    removed secrets again
+
+commit 55eb33622ccea3d274136c4fc47ce2d141a7cf1f
+Author: brap <doctor.fun107@gmail.com>
+Date:   Thu Aug 1 16:51:38 2019 +0100
+
+    2nd attempt and making secret keys work
+
+commit b872119ea8202d9d6535c47e1100762bfa3df629
+Author: brap <doctor.fun107@gmail.com>
+Date:   Thu Aug 1 16:49:25 2019 +0100
+
+    imported correct json for mp data
+    changed setTimeout to 500
+
+commit 5cf6160426c230c363827e461e3f9e9be61f16b2
+Author: brap <doctor.fun107@gmail.com>
+Date:   Thu Aug 1 16:31:30 2019 +0100
+
+    deleted getmptlist.py its unnneccesary
+    added expanded mp data
+    added os.chdir to app.py
+
+commit 293042f7b444267eb850980b7101ee13bedc1b8c
+Author: brap <doctor.fun107@gmail.com>
+Date:   Thu Aug 1 15:04:16 2019 +0100
+
+    changed updatedb to import all code from app.py
+    this enables us to call updatedb() using a scheduled task
+
+commit 5277bfc7550987728e684ffe6e74794018e34217
+Author: brap <doctor.fun107@gmail.com>
+Date:   Thu Aug 1 14:40:08 2019 +0100
+
+    took out secrets file to reduce import errors
+
+commit bbca66a40029ba5b7b1e7b84eded6fb367c548a1
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Jul 31 22:33:26 2019 +0100
+
+    added setTimeout function to fix
+    google charts load
+
+commit 92894c7f29e29d496e5057aed0ffeecc2126d6db
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Jul 31 21:49:35 2019 +0100
+
+    moved some json around, added latest merged mpdata
+
+commit 062c58cb53b0cd08d4557ed9e05259c07fb1cb69
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Jul 31 12:40:51 2019 +0100
+
+    added secrets.py to store api credentials
+    imported credentials into app.py and assigned them
+    added getmplist.py to start to get all mp twitter handles
+
+commit 267d0ad03b00a50b8d5ba6b5b485eb6724d0d018
+Author: brap <doctor.fun107@gmail.com>
+Date:   Tue Jul 30 15:53:21 2019 +0100
+
+    removed manually adding colours to mpdata
+    added getMPColour to return colour of their party
+    added getMPColour to getMPs()
+    added test route for testing
+
+commit 512a3916fe8a55b67aff797833e0350745bc1bd4
+Author: brap <doctor.fun107@gmail.com>
+Date:   Tue Jul 30 15:20:00 2019 +0100
+
+    changed haxis title of drawchart2()
+    added showtextevery: 1 to haxis  of drawchart2()
+
+commit f09637e3e41e8eb2be74738d1c1044507c450482
+Author: brap <doctor.fun107@gmail.com>
+Date:   Tue Jul 30 15:01:48 2019 +0100
+
+    needs testing but added new jquery
+    to fix charts not loading
+
+commit 057cce8469a2139dce9e634feefc606b987359c4
+Author: brap <doctor.fun107@gmail.com>
+Date:   Tue Jul 30 14:51:45 2019 +0100
+
+    added slanted text to display proper label
+
+commit 798a46efdd4b02c1bde00eec3f3e0ed6afe4f053
+Author: brap <doctor.fun107@gmail.com>
+Date:   Thu Jul 25 15:41:14 2019 +0100
+
+    removed on load jquerty as it had no effect
+    added updateDB() in app.py to update database without deleting
+    added updateDatabase().py for automation by pyuthonanywhere.
+
+commit 3913b90b83f0bdabdc55e91b511a0cebbe084744
+Author: brap <doctor.fun107@gmail.com>
+Date:   Thu Jul 25 15:23:33 2019 +0100
+
+    added footer css and adjusted margins
+    changed email contact link
+
+commit 064b0e81ac5359550512b97604a48d857754125c
+Author: brap <doctor.fun107@gmail.com>
+Date:   Thu Jul 25 14:23:01 2019 +0100
+
+    added flask_app.py
+    this enables web server to find flask app
+
+commit 3dce4ef67bf9f8ba49f2257e1383611ad7452699
+Author: brap <doctor.fun107@gmail.com>
+Date:   Thu Jul 25 14:05:16 2019 +0100
+
+    aligning chart with twitter widget
+
+commit 45ea007510eff42bb1e8ba91ffc4848c344998bb
+Author: brap <doctor.fun107@gmail.com>
+Date:   Thu Jul 25 13:50:45 2019 +0100
+
+    added folder for images
+    added favicon image
+
+commit 5eed376d153a20ae6214630d9300c903b3104016
+Author: brap <doctor.fun107@gmail.com>
+Date:   Thu Jul 25 13:41:35 2019 +0100
+
+    added font css variables
+
+commit 99e76223432e1d7c863eaea93da1428906d7245a
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Jul 24 16:58:16 2019 +0100
+
+    changed to minimal theme
+
+commit d8eb3917e164ea813b9d14b6ef9e04e2e941b535
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Jul 24 16:53:22 2019 +0100
+
+    removed test files
+    removed apscheduler
+    changed some css
+
+commit 36535e3efadf85535b239d5b552c861cd28f7a30
+Author: brap <doctor.fun107@gmail.com>
+Date:   Tue Jul 23 16:56:18 2019 +0100
+
+    moved requirements to root directory
+
+commit 58d08888dc383c980fdd1f338079b32f8df4581a
+Author: brap <doctor.fun107@gmail.com>
+Date:   Tue Jul 23 16:53:51 2019 +0100
+
+    added requirements file for dependencies
+
+commit c72f647008d3b37c5b51f51d05af4f466fc02846
+Author: brap <doctor.fun107@gmail.com>
+Date:   Mon Jul 22 16:10:38 2019 +0100
+
+    added and tested automation of allMPTweets()
+
+commit afc24d3d66e9393e313eaa2358ded3135613928e
+Author: brap <doctor.fun107@gmail.com>
+Date:   Mon Jul 22 15:11:00 2019 +0100
+
+    fixed json import
+    test.app still in progress
+    save before adding scheduler
+    installed pip apscheduler
+
+commit 9c0c01cdaff5cb27c4f36e500b25039fee0039bc
+Author: brap <doctor.fun107@gmail.com>
+Date:   Sat Jul 20 16:48:11 2019 +0100
+
+    removed extra code from index.html that caused an error.
+    added json data import that works for addmp but not addparty
+    need to fix json data
+
+commit 7a47c64f6fb6313b57e769a8378428a318f9775e
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Jul 17 15:09:16 2019 +0100
+
+    small changes
+
+commit b87a7653e6b5b3841db8b26fd31ae266057951cc
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Jul 17 13:16:55 2019 +0100
+
+    merged test.css/html into index and main
+
+commit ecdde8896e7424377dad842698afff329f667d15
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Jul 17 12:49:30 2019 +0100
+
+    new design in test.html/css
+    commit before new design merged
+
+commit fd3b6ec888b0de8273dd4265d461b520e292fe48
+Author: brap <doctor.fun107@gmail.com>
+Date:   Mon Jul 15 19:07:25 2019 +0100
+
+    finalised sql for mostengagedtweet mebed.
+    added test html/css for testing css frameworks
+
+commit 5d8c25c8165a19888ed552a4b8674fa27cc5de17
+Author: brap <doctor.fun107@gmail.com>
+Date:   Sat Jul 13 14:38:16 2019 +0100
+
+    mostegnagedtweets implemented.
+
+commit 0c510fd4c57f2fe5c17107572cc10f4b983ad837
+Author: brap <doctor.fun107@gmail.com>
+Date:   Sat Jul 13 14:36:23 2019 +0100
+
+    engaged tweets now work properly. next commit will merge test with main
+
+commit 9132159b600488c6641ce160a4584345356b7e7e
+Author: brap <doctor.fun107@gmail.com>
+Date:   Thu Jul 11 15:27:19 2019 +0100
+
+    copied new index.html from test.html and css. started with most engaged tweet functions
+
+commit 13b1623e1fe2fefe887bd4705ae29eecccf6ba8f
+Author: brap <doctor.fun107@gmail.com>
+Date:   Sun Jun 30 15:46:26 2019 +0100
+
+    changed comment line 220
+
+commit cc572806cb51cd375480395f8b58e248a902b734
+Author: brap <doctor.fun107@gmail.com>
+Date:   Fri Jun 28 13:54:40 2019 +0100
+
+    delete test.py updated function names to camelcase
+
+commit d541b65a67c7d586e8b14c5c717bf1d41fde3280
+Author: brap <doctor.fun107@gmail.com>
+Date:   Fri Jun 28 13:08:02 2019 +0100
+
+    updated function names to camel case
+
+commit 2cb0dd32301a36193c1d04ac6d51d836059e1c48
+Author: brap <doctor.fun107@gmail.com>
+Date:   Mon Jun 24 14:34:03 2019 +0100
+
+    deleted duplicate functions in app.py
+
+commit 6d0ec80610aff302772a8731f37eacc0ad8c9f8c
+Author: brap <doctor.fun107@gmail.com>
+Date:   Mon Jun 24 13:46:08 2019 +0100
+
+    skeleton website finished
+
+commit be7a7d4b4ac019c1e5feccdddad28db14455c1d1
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Jun 19 16:31:31 2019 +0100
+
+    added skeleton css ready for development
+
+commit f44d6215e3c25f52d8da1228b77e8abf27a25ad6
+Author: brap <doctor.fun107@gmail.com>
+Date:   Wed Jun 19 15:03:45 2019 +0100
+
+    deleted html templates and combined them into one index.html
+
+commit 1645b0a31676f45f42b1c6fe63676a0254a6e7ad
+Author: brap <doctor.fun107@gmail.com>
+Date:   Tue Jun 18 16:13:12 2019 +0100
+
+    changed to barcharts added colours to charts
+
+commit f817a52f16846816d413f095f15845959ad6f20e
+Author: brap <doctor.fun107@gmail.com>
+Date:   Mon Jun 17 19:55:27 2019 +0100
+
+    fixed db, added getengage methods, google graphs
+
+commit f8564d3a3b898050c2b67784f0ffa4bc3539bbdf
+Author: brap <doctor.fun107@gmail.com>
+Date:   Mon Jun 17 14:08:44 2019 +0100
+
+    fixed issue of not connecting to database
+
+commit 981fb44186feabec35ed83023b2c4cba2effa22f
+Author: brap <doctor.fun107@gmail.com>
+Date:   Sun Jun 16 14:51:31 2019 +0100
+
+    first commit with basic app
