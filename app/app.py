@@ -6,7 +6,7 @@ import tweepy
 import json
 
 # set root directory path, comment out this line when testing locally
-# os.chdir('/home/mptwitter/mptweet/')
+os.chdir('/home/mptwitter/mptweet/')
 # instance of the flask class is our WSGI application
 # we use __name__ so that it can adapt to be imported as a module.
 app = Flask(__name__)
@@ -21,7 +21,7 @@ with open('app/static/data/partyData.json', 'r') as myfile:
 partydata = json.loads(data)
 
 # read the json  data of MPs for the database
-with open('app/static/data/mpDataAll.json', 'r') as myfile:
+with open('app/static/data/cabinet.json', 'r') as myfile:
     data = myfile.read()
 # parse file
 mpdata = json.loads(data)
